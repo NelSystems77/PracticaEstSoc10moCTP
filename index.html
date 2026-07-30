@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>CraftHistoria: La Aventura del I Periodo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grass:#5d9c41; --grass-d:#3f6f2b; --dirt:#8b5a2b; --dirt-d:#5c3a1a;
+  --stone:#8b8b8b; --stone-d:#5a5a5a; --obsidian:#16121f; --gold:#ffd700;
+  --diamond:#4fd8e0; --redstone:#e13a2e; --ink:#1c1c1c; --paper:#e8dcc4;
+  --ok:#5cc95c; --bad:#e13a2e;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:'VT323', monospace; font-size:22px; color:var(--paper);
+  background:
+    linear-gradient(180deg, #2b2140 0%, #16121f 55%, #0c0a13 100%);
+  min-height:100vh; overflow-x:hidden;
+}
+.pixel-font{ font-family:'Press Start 2P', monospace; }
+#root{ max-width:720px; margin:0 auto; min-height:100vh; padding:14px; padding-bottom:40px; position:relative; }
+
+/* ---------- generic block components ---------- */
+.block-btn{
+  font-family:'Press Start 2P', monospace; font-size:12px; color:#fff; text-align:center;
+  background:var(--grass); border:none; padding:16px 10px;
+  box-shadow: inset -4px -6px 0 rgba(0,0,0,.35), inset 4px 4px 0 rgba(255,255,255,.18), 4px 4px 0 #000;
+  cursor:pointer; width:100%; line-height:1.5; letter-spacing:.5px;
+  image-rendering:pixelated; transition:transform .05s ease;
+}
+.block-btn:active{ transform:translate(3px,3px); box-shadow: inset -4px -6px 0 rgba(0,0,0,.35), inset 4px 4px 0 rgba(255,255,255,.18), 1px 1px 0 #000; }
+.block-btn.dirt{ background:var(--dirt); }
+.block-btn.stone{ background:var(--stone-d); }
+.block-btn.gold{ background:#caa61f; color:#3a2b00; }
+.block-btn.redstone{ background:var(--redstone); }
+.block-btn.diamond{ background:#1b8f96; }
+.block-btn[disabled]{ opacity:.4; cursor:not-allowed; }
+
+.panel{
+  background:#2a2438; border:4px solid #000;
+  box-shadow: inset -6px -6px 0 rgba(0,0,0,.4), inset 6px 6px 0 rgba(255,255,255,.06);
+  padding:16px; margin-bottom:14px;
+}
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  background:#000; border:3px solid #000; padding:8px 12px; margin-bottom:14px;
+  font-family:'Press Start 2P', monospace; font-size:10px;
+}
+.badge{ display:flex; align-items:center; gap:6px; }
+.progresswrap{ background:#000; border:3px solid #000; height:16px; width:100%; margin:10px 0 16px; }
+.progressbar{ height:100%; background:linear-gradient(90deg,var(--gold),#ffb300); transition:width .3s ease; }
+
+h1.title{ font-family:'Press Start 2P', monospace; font-size:clamp(16px,5vw,24px); text-align:center; color:var(--gold); text-shadow:3px 3px 0 #000; line-height:1.6; margin:6px 0 4px;}
+p.subtitle{ text-align:center; color:var(--diamond); font-size:20px; margin:0 0 18px;}
+
+.world-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
+@media(min-width:520px){ .world-grid{grid-template-columns:1fr 1fr;} }
+
+.world-card{
+  border:4px solid #000; padding:14px; cursor:pointer; position:relative;
+  box-shadow: inset -6px -6px 0 rgba(0,0,0,.35), inset 6px 6px 0 rgba(255,255,255,.1), 5px 5px 0 #000;
+}
+.world-card:active{ transform:translate(2px,2px); box-shadow:2px 2px 0 #000; }
+.world-card .emoji{ font-size:34px; }
+.world-card h3{ font-family:'Press Start 2P',monospace; font-size:12px; margin:8px 0 6px; line-height:1.5; color:#fff; text-shadow:2px 2px 0 #000;}
+.world-card p{ margin:0; font-size:18px; color:#eee; }
+.world-card .stat{ margin-top:8px; font-size:16px; color:var(--gold); }
+
+.card-actions{ display:flex; gap:8px; margin-top:12px; }
+
+/* answer options */
+.option{
+  display:block; width:100%; text-align:left; font-family:'VT323',monospace; font-size:22px;
+  background:#3a3450; color:#fff; border:3px solid #000; padding:14px 12px; margin-bottom:10px;
+  box-shadow: inset -4px -4px 0 rgba(0,0,0,.3), inset 4px 4px 0 rgba(255,255,255,.08), 4px 4px 0 #000;
+  cursor:pointer;
+}
+.option:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 #000; }
+.option.correct{ background:var(--ok) !important; color:#04270b; }
+.option.incorrect{ background:var(--bad) !important; color:#2a0000; animation:shake .3s; }
+.option.disabled{ pointer-events:none; opacity:.85; }
+@keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+
+.qbox{ font-size:24px; line-height:1.5; margin-bottom:16px; background:#000; padding:14px; border:3px solid #000;}
+.explain{ background:#1c3a1c; border:3px solid #000; padding:12px; margin:10px 0 16px; font-size:19px; color:#d4ffd4;}
+.explain.bad{ background:#3a1c1c; color:#ffd4d4; }
+
+.flash{ background:var(--paper); color:#2a2213; border:4px solid #000; padding:18px; font-size:22px; line-height:1.5; margin-bottom:14px; box-shadow:5px 5px 0 #000;}
+.flash .n{ font-family:'Press Start 2P',monospace; font-size:11px; color:#7a5a1c; margin-bottom:8px; display:block;}
+
+.center{ text-align:center; }
+.small{ font-size:16px; opacity:.85; }
+.mt{ margin-top:16px; }
+.row{ display:flex; gap:10px; }
+.row > *{ flex:1; }
+
+.score-big{ font-family:'Press Start 2P',monospace; font-size:clamp(30px,10vw,48px); text-align:center; color:var(--gold); text-shadow:4px 4px 0 #000; margin:10px 0;}
+
+.review-item{ border:3px solid #000; padding:10px; margin-bottom:10px; font-size:18px; background:#241f33; }
+.review-item.wrong{ background:#3a1c1c; }
+.review-item.right{ background:#1c3a1c; }
+.review-item .tag{ font-family:'Press Start 2P',monospace; font-size:9px; color:var(--gold); }
+
+::-webkit-scrollbar{ width:10px; }
+::-webkit-scrollbar-thumb{ background:#555; }
+
+.footer-nav{ position:sticky; bottom:0; margin-top:20px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* ================= CONTENIDO PEDAGÓGICO ================= */
+/* Cobertura 100% del temario: Revolución Rusa, Crisis 1929, Segunda Guerra Mundial */
+
+const STUDY = {
+rusia:[
+ "Antecedentes: Rusia era gobernada por el zar Nicolás II bajo una autocracia. La Duma (parlamento) tenía poder muy limitado y el descontento social crecía.",
+ "El Domingo Sangriento (1905) y la derrota en la guerra ruso-japonesa mostraron la debilidad del régimen zarista años antes de 1917.",
+ "Causas: atraso económico e industrial, fuerte desigualdad social entre nobleza y campesinado, y el desgaste que produjo la Primera Guerra Mundial (hambre, derrotas, descontento).",
+ "Revolución de Febrero de 1917: el zar abdica. Se forma un Gobierno Provisional (Kerensky) que convive en 'doble poder' con los Soviets (consejos de obreros y soldados).",
+ "Revolución de Octubre de 1917: los bolcheviques, liderados por Lenin, toman el poder con la consigna 'Paz, Pan y Tierra' y decretan el fin de la propiedad privada de la tierra.",
+ "Guerra Civil Rusa (1918-1921): el Ejército Rojo (bolchevique, organizado por Trotsky) derrota al Ejército Blanco (contrarrevolucionario, apoyado por potencias extranjeras).",
+ "Durante la guerra civil se aplicó el 'comunismo de guerra' (control total y requisición estatal). Tras la victoria bolchevique, en 1922 se crea la URSS.",
+ "Transformaciones: nacionalización de tierras e industrias, fin de la nobleza como clase privilegiada, y en 1921 la NEP (Nueva Política Económica) para reactivar la economía."
+],
+crisis29:[
+ "Antecedentes: los 'felices años veinte' en EE.UU. trajeron auge bursátil, producción en cadena (fordismo) y un fuerte aumento del consumo a crédito.",
+ "Factores de la prosperidad previa: nuevas tecnologías (automóvil, electrodomésticos), producción en masa y el papel de Estados Unidos como principal acreedor mundial tras la Primera Guerra Mundial.",
+ "Características del modelo: sobreproducción industrial y agrícola, especulación bursátil desmedida y una distribución muy desigual de la riqueza.",
+ "Causas: la especulación en la Bolsa de Nueva York y la compra de acciones a crédito generaron una burbuja que estalló el Jueves Negro, 24 de octubre de 1929.",
+ "La caída bursátil provocó quiebras masivas de bancos y empresas, arrastrando a toda la economía mundial a una profunda depresión.",
+ "Consecuencias: desempleo masivo, pobreza generalizada, caída del comercio internacional y adopción de políticas proteccionistas (más aranceles).",
+ "Medidas para enfrentar la crisis: el New Deal de Franklin D. Roosevelt aplicó intervención estatal, obras públicas y regulación bancaria, siguiendo ideas keynesianas."
+],
+wwiiAnte:[
+ "El fascismo (Italia, Mussolini) y el nazismo (Alemania, Hitler) fueron movimientos totalitarios: antidemocráticos, anticomunistas, de partido único y con culto a la violencia y el expansionismo.",
+ "Mussolini llegó al poder tras la Marcha sobre Roma (1922) y en 1925 impuso la dictadura de partido único, conocido como 'el Duce'.",
+ "El Partido Nacionalsocialista Alemán nació en 1920 sobre la base del Partido Obrero Alemán. Entre 1933-1934 Hitler llegó al poder con apoyo de las clases dirigentes y milicias como las SS y SA.",
+ "El nazismo defendía una supuesta superioridad de la 'raza aria' y difundía un antisemitismo abierto, culpando a los judíos de los problemas económicos y sociales de Alemania.",
+ "Las leyes antisemitas nazis (más de 400 decretos, 1933-1938) separaron legalmente a los judíos de la sociedad: exclusión laboral, educativa y, en 1935, las Leyes Raciales de Núremberg les quitaron la ciudadanía.",
+ "El Holocausto: sistema de campos de concentración y exterminio (Auschwitz, Treblinka, entre otros) donde murieron cerca de 5.7 millones de judíos entre 1941 y 1945.",
+ "Además de los judíos, fueron perseguidos sistemáticamente los gitanos, los eslavos, personas con discapacidad, homosexuales y opositores políticos."
+],
+wwiiCausas:[
+ "Causas mediatas: el ascenso de los totalitarismos en Europa, las rivalidades imperialistas por motivos económicos y la política expansionista de Japón sobre el Pacífico.",
+ "El Tratado de Versalles (que puso fin a la Primera Guerra Mundial) humilló y limitó a Alemania; muchos historiadores lo señalan como causa de fondo de la Segunda Guerra Mundial.",
+ "Causas inmediatas: el Pacto de no agresión entre Alemania y la URSS (23 de agosto de 1939) y la invasión alemana a Polonia (1 de setiembre de 1939).",
+ "Sistema de alianzas: el Eje (Alemania, Italia y Japón, Pacto Tripartito Berlín-Roma-Tokio) contra los Aliados (Francia, Gran Bretaña y la URSS, a los que luego se sumó Estados Unidos)."
+],
+wwiiFases:[
+ "Fase 1 (set. 1939 - dic. 1940): invasión a Polonia, la 'Guerra Fingida', y luego la ocupación de Dinamarca, Noruega y Francia mediante la Guerra Relámpago (Blitzkrieg).",
+ "Las Batallas de Gran Bretaña (jul-set 1940) frustraron los intentos alemanes de doblegar a los ingleses por vía aérea.",
+ "Fase 2 (1941-1942): Alemania invade la URSS (junio 1941), rompiendo el pacto de no agresión; Japón ataca Pearl Harbor (dic. 1941), lo que suma a EE.UU. a la guerra.",
+ "Fase 3 (verano 1942 - verano 1943): batallas clave de Midway, El Alamein y Stalingrado (el ejército alemán es rodeado y se rinde), que cambian el curso de la guerra a favor de los Aliados.",
+ "Fase 4 (jun. 1943 - ago. 1945): desembarco aliado en Normandía (junio 1944), avance soviético desde el este, rendición de Alemania (mayo 1945) y de Japón (agosto 1945) tras las bombas atómicas."
+],
+wwiiConf:[
+ "Conferencia de Bretton Woods (1944): buscó restablecer el orden económico mundial; creó el Fondo Monetario Internacional (FMI) y el Banco Mundial.",
+ "Conferencia de Yalta (feb. 1945): Roosevelt, Churchill y Stalin decidieron la eliminación del régimen nazi y la división de Alemania en zonas de influencia.",
+ "Conferencia de Potsdam (jul-ago 1945): Truman, Attlee y Stalin acordaron desmantelar la industria militar nazi y castigar a los principales líderes nazis.",
+ "Conferencia de San Francisco (jun. 1945): culminó con la creación de la Organización de las Naciones Unidas (ONU), que sustituyó a la Sociedad de las Naciones.",
+ "Conferencia de París (nov-dic 1945): se elaboraron los tratados de paz y las indemnizaciones de guerra para los aliados de Alemania.",
+ "Consecuencias: cerca de 60 millones de muertos, el Holocausto judío, la Guerra Fría entre EE.UU. y la URSS, la división de Alemania, y un fuerte impulso a la descolonización de África y Asia.",
+ "Nuevo orden mundial: nace la ONU para mantener la paz, y se organiza un nuevo sistema económico internacional (FMI, Banco Mundial, y luego la OMC como sucesora del GATT)."
+]
+};
+
+const QB = {
+rusia:[
+{q:"¿Quién era el zar de Rusia al inicio del siglo XX, cuyo gobierno autocrático generó gran descontento social?",o:["Nicolás II","Alejandro III","Pedro el Grande","Iván el Terrible"],a:0,e:"Nicolás II gobernaba con poder absoluto (autocracia), sin ceder poder real a la Duma."},
+{q:"¿Qué hecho de 1905 mostró el descontento popular contra el zarismo antes de la revolución de 1917?",o:["El Domingo Sangriento","La Toma de la Bastilla","El Motín de Kronstadt de 1921","La Marcha sobre Roma"],a:0,e:"El Domingo Sangriento de 1905 fue una masacre de manifestantes pacíficos que debilitó al régimen zarista."},
+{q:"¿Cuál de las siguientes NO fue una causa de la Revolución Rusa?",o:["La industrialización acelerada y el bienestar generalizado del campesinado","El atraso económico e industrial de Rusia","La desigualdad social entre nobleza y campesinado","El desgaste producido por la Primera Guerra Mundial"],a:0,e:"Rusia sufría atraso económico y fuerte desigualdad social; no existía tal bienestar generalizado."},
+{q:"¿Qué consigna utilizaron Lenin y los bolcheviques para ganar apoyo popular en 1917?",o:["Paz, Pan y Tierra","Libertad, Igualdad, Fraternidad","Sangre y Honor","Trabajo, Familia, Patria"],a:0,e:"Esta consigna respondía a las principales demandas populares: fin de la guerra, alimento y reparto de tierras."},
+{q:"¿En qué mes de 1917 abdicó el zar Nicolás II, dando paso a un Gobierno Provisional?",o:["Febrero","Octubre","Enero","Diciembre"],a:0,e:"La Revolución de Febrero de 1917 forzó la abdicación del zar."},
+{q:"¿Quién encabezó el Gobierno Provisional ruso tras la abdicación del zar?",o:["Aleksandr Kerensky","Vladimir Lenin","León Trotsky","Iósif Stalin"],a:0,e:"Kerensky lideró el Gobierno Provisional hasta que fue derrocado en la Revolución de Octubre."},
+{q:"¿Qué fenómeno de poder compartido se dio entre febrero y octubre de 1917 en Rusia?",o:["El doble poder entre el Gobierno Provisional y los Soviets","La diarquía zarista","El triunvirato bolchevique","La coalición aliada"],a:0,e:"El Gobierno Provisional convivió con los Soviets (consejos de obreros y soldados) en una situación de poder dual."},
+{q:"¿Qué grupo político tomó el poder en la Revolución de Octubre de 1917?",o:["Los bolcheviques liderados por Lenin","Los mencheviques","Los zaristas","Los kadetes"],a:0,e:"Los bolcheviques, dirigidos por Lenin, tomaron el poder en octubre de 1917."},
+{q:"¿Qué bando se enfrentó al Ejército Rojo durante la Guerra Civil Rusa (1918-1921)?",o:["El Ejército Blanco, contrarrevolucionario","La Wehrmacht alemana","Las tropas de asalto (SA)","El ejército del Eje"],a:0,e:"El Ejército Blanco agrupaba a fuerzas contrarrevolucionarias opuestas a los bolcheviques."},
+{q:"¿Quién organizó y dirigió militarmente al Ejército Rojo durante la Guerra Civil Rusa?",o:["León Trotsky","José Stalin","Nicolás II","Kerensky"],a:0,e:"Trotsky organizó y comandó al Ejército Rojo durante la guerra civil."},
+{q:"¿Qué potencias apoyaron al Ejército Blanco durante la Guerra Civil Rusa?",o:["Varias potencias extranjeras, como Francia, Reino Unido y EE.UU.","Solo Alemania y Japón","Solo China","Ninguna, fue un conflicto exclusivamente interno"],a:0,e:"Potencias extranjeras intervinieron apoyando a los contrarrevolucionarios, temerosas del avance comunista."},
+{q:"¿Cómo se conoce la política económica bolchevique durante la guerra civil, basada en la requisición estatal de alimentos y el control total de la producción?",o:["El comunismo de guerra","La NEP","El Plan Quinquenal","El Gosplan"],a:0,e:"El comunismo de guerra centralizó la economía para sostener el esfuerzo bélico bolchevique."},
+{q:"¿Qué política económica implementó Lenin en 1921 para reactivar la economía tras la guerra civil?",o:["La Nueva Política Económica (NEP)","El comunismo de guerra","El New Deal","El Gran Salto Adelante"],a:0,e:"La NEP permitió cierto comercio privado y flexibilizó la economía tras el desgaste de la guerra civil."},
+{q:"¿En qué año se formó oficialmente la Unión de Repúblicas Socialistas Soviéticas (URSS)?",o:["1922","1917","1905","1929"],a:0,e:"La URSS se constituyó formalmente en 1922, tras el triunfo bolchevique en la guerra civil."},
+{q:"¿Cuál fue una de las principales transformaciones sociales impulsadas por la Revolución Rusa?",o:["La nacionalización de tierras e industrias y el fin de la nobleza como clase privilegiada","El fortalecimiento de la Iglesia Ortodoxa como poder de Estado","La restauración de la monarquía constitucional","La expansión del sistema zarista a otras naciones"],a:0,e:"Los bolcheviques nacionalizaron la propiedad y eliminaron los privilegios de la antigua nobleza."}
+],
+crisis29:[
+{q:"¿Cómo se conoce popularmente a la década de 1920 en Estados Unidos, marcada por el auge económico previo a la crisis?",o:["Los felices años veinte","La Belle Époque","La Edad Dorada Victoriana","El Gran Despertar"],a:0,e:"Los 'felices años veinte' fueron una época de auge bursátil y consumismo antes del colapso de 1929."},
+{q:"¿Qué día se produjo el colapso bursátil en la Bolsa de Nueva York que dio inicio a la crisis de 1929?",o:["El Jueves Negro, 24 de octubre de 1929","El Lunes Negro, 1 de mayo de 1929","El Viernes Negro, 25 de diciembre de 1929","El Miércoles Negro, 1 de enero de 1930"],a:0,e:"El Jueves Negro marcó el inicio del desplome bursátil que desató la Gran Depresión."},
+{q:"¿Qué factor productivo caracterizó la prosperidad de los años 20 previa a la crisis?",o:["La producción en cadena (fordismo) y el auge del automóvil y los electrodomésticos","La reforma agraria colectivizada","El monopolio estatal de la producción","La desindustrialización acelerada"],a:0,e:"La producción en masa y las nuevas tecnologías impulsaron el consumo y la prosperidad previa."},
+{q:"¿Qué práctica financiera de los años 20 incrementó el riesgo especulativo antes de la crisis?",o:["La compra de acciones a crédito (a margen)","La eliminación total del sistema bancario","La prohibición de las bolsas de valores","El regreso al patrón oro puro sin bancos"],a:0,e:"Comprar acciones a crédito infló artificialmente los precios bursátiles, alimentando la burbuja especulativa."},
+{q:"¿Cuál de las siguientes es una causa directa de la Crisis de 1929?",o:["La sobreproducción industrial y agrícola no absorbida por el consumo","El exceso de regulación estatal sobre la banca","La abolición del capitalismo en Estados Unidos","La firma del Tratado de Versalles"],a:0,e:"La sobreproducción generó excedentes que no encontraban compradores, deprimiendo precios y ganancias."},
+{q:"¿Qué caracterizó al modelo económico previo a 1929, contribuyendo a gestar la crisis?",o:["Sobreproducción, especulación bursátil y desigual distribución de la riqueza","Planificación centralizada estatal","Control absoluto de precios por el gobierno","Ausencia total de industria"],a:0,e:"Estos tres factores combinados generaron una economía frágil y vulnerable al colapso."},
+{q:"¿Cuál fue una consecuencia social inmediata de la Crisis de 1929?",o:["Desempleo masivo y quiebra de bancos y empresas","Pleno empleo generalizado","Aumento sostenido de salarios","Reducción de la pobreza mundial"],a:0,e:"El desempleo y las quiebras se dispararon en Estados Unidos y se extendieron globalmente."},
+{q:"¿Cómo afectó la crisis de 1929 al comercio internacional?",o:["Provocó una fuerte caída del comercio internacional","Lo hizo crecer aceleradamente","No tuvo ningún efecto","Solo afectó a Asia"],a:0,e:"El colapso económico y el proteccionismo redujeron drásticamente los intercambios comerciales mundiales."},
+{q:"¿Qué política implementó Franklin D. Roosevelt para enfrentar la crisis en Estados Unidos?",o:["El New Deal","La NEP","El Plan Marshall","El comunismo de guerra"],a:0,e:"El New Deal fue el conjunto de reformas de Roosevelt para reactivar la economía estadounidense."},
+{q:"¿Qué elementos incluyó el New Deal como medida frente a la crisis?",o:["Intervención estatal, obras públicas y regulación bancaria y de seguridad social","La privatización total de la banca","La abolición de la Bolsa de Nueva York","El retorno al laissez-faire puro"],a:0,e:"El New Deal combinó gasto público, regulación financiera y programas sociales."},
+{q:"¿Qué corriente económica respaldó teóricamente la intervención estatal frente a crisis como la de 1929?",o:["El keynesianismo","El liberalismo clásico puro","El anarquismo económico","El feudalismo"],a:0,e:"John Maynard Keynes defendía que el Estado debía intervenir activamente para reactivar la economía."},
+{q:"¿Qué medida comercial adoptaron muchos países durante la crisis, agravando la caída del comercio mundial?",o:["El proteccionismo (aumento de aranceles)","El libre comercio total","La eliminación de aduanas","La unión monetaria mundial"],a:0,e:"El aumento de aranceles buscaba proteger la producción nacional, pero redujo aún más el comercio mundial."},
+{q:"¿Qué papel jugó Estados Unidos como principal acreedor mundial tras la Primera Guerra Mundial en la gestación de la crisis?",o:["Concentró gran parte del capital y crédito mundial, alimentando la especulación","Fue irrelevante para la crisis","Impidió cualquier posibilidad de crisis","Generó una economía completamente cerrada"],a:0,e:"El flujo masivo de capital y crédito estadounidense alimentó la burbuja bursátil previa al colapso."},
+{q:"¿La Crisis de 1929 tuvo impacto únicamente en Estados Unidos?",o:["Falso, se extendió a Europa y América Latina, entre otras regiones","Verdadero, fue un fenómeno exclusivamente estadounidense","Solo afectó a Asia","Solo afectó a los países comunistas"],a:0,e:"La crisis se propagó globalmente por los vínculos comerciales y financieros internacionales."},
+{q:"¿Cuál de estas NO fue una medida para enfrentar la crisis de 1929?",o:["La abolición completa del dinero y el comercio","La intervención estatal en la economía","Las obras públicas para generar empleo","La regulación del sistema financiero"],a:0,e:"Ningún país abolió el dinero; las medidas reales apuntaron a intervención estatal, obras públicas y regulación."}
+],
+wwiiAnte:[
+{q:"¿Qué características comparten el fascismo y el nazismo como movimientos totalitarios?",o:["Ser antidemocráticos, anticomunistas, de partido único y con culto a la violencia y el expansionismo","Ser regímenes parlamentarios multipartidistas","Defender la propiedad colectiva y el fin del Estado","Promover la integración religiosa universal"],a:0,e:"Ambos movimientos compartían una estructura totalitaria, antidemocrática y expansionista."},
+{q:"¿Quién fundó y lideró el Partido Nacional Fascista en Italia?",o:["Benito Mussolini","Adolf Hitler","Francisco Franco","Josef Stalin"],a:0,e:"Mussolini fundó el Partido Fascista y gobernó Italia como 'el Duce'."},
+{q:"¿En qué año llegó Mussolini al poder en Italia tras la 'Marcha sobre Roma'?",o:["1922","1933","1917","1939"],a:0,e:"En octubre de 1922 los fascistas marcharon sobre Roma y Mussolini fue nombrado jefe de Gobierno."},
+{q:"¿Cómo se conocía a Mussolini como líder de Italia?",o:["El Duce","El Führer","El Caudillo","El Zar"],a:0,e:"'Il Duce' (el caudillo, en italiano) era el título con que se conocía a Mussolini."},
+{q:"¿Sobre qué base se formó el Partido Nacionalsocialista Alemán en 1920?",o:["El Partido Obrero Alemán","El Partido Comunista Alemán","La Liga Espartaquista","El Partido Socialdemócrata"],a:0,e:"El partido nazi surgió a partir del recién formado Partido Obrero Alemán."},
+{q:"¿Entre qué años llegó el partido nazi al poder en Alemania?",o:["1933-1934","1917-1918","1939-1940","1945-1946"],a:0,e:"Entre 1933 y 1934 Hitler consolidó el poder mediante violencia, elecciones favorables y apoyo de las élites."},
+{q:"¿Qué grupos paramilitares destacaron en el ascenso nazi al poder?",o:["Las SS y las SA","El Ejército Rojo","La Gestapo únicamente","La Wehrmacht regular"],a:0,e:"Las SS (fuerzas privadas de Hitler) y las SA (tropas de asalto) fueron claves en la consolidación nazi."},
+{q:"¿Qué teoría sostenía el nazismo sobre la 'raza aria'?",o:["Que los arios estaban destinados a gobernar el mundo frente a otras razas","Que todas las razas eran iguales ante la ley","Que la superioridad dependía únicamente de la riqueza","Que no existían diferencias raciales relevantes"],a:0,e:"El nazismo difundía una falsa teoría biológica de superioridad racial aria."},
+{q:"¿Qué establecieron las Leyes Raciales de Núremberg de 1935?",o:["Despojaron a los judíos de la ciudadanía alemana y prohibieron matrimonios con 'arios'","Otorgaron plenos derechos civiles a los judíos","Crearon el Estado de Israel","Establecieron la libertad religiosa plena"],a:0,e:"Estas leyes normalizaron legalmente la segregación racial contra la población judía."},
+{q:"¿Qué medida de 1933 excluyó a judíos y opositores políticos de los empleos estatales en Alemania?",o:["La Ley para la Restauración de la Función Pública Profesional","El Tratado de Versalles","El Pacto de no agresión","La Conferencia de Yalta"],a:0,e:"Esta ley de abril de 1933 fue una de las primeras medidas de exclusión contra los judíos."},
+{q:"¿A qué grupos, además de los judíos, persiguió sistemáticamente el régimen nazi?",o:["Gitanos, eslavos, personas con discapacidad y homosexuales, entre otros","Únicamente a los católicos practicantes","Solo a los ciudadanos alemanes de clase alta","Solo a los prisioneros de guerra franceses"],a:0,e:"La persecución nazi alcanzó a múltiples grupos considerados 'inferiores' o enemigos del régimen."},
+{q:"¿Qué prohibieron las restricciones nazis de 1938 contra los judíos?",o:["Asistir a escuelas, universidades, cines y ciertos espacios públicos","Nada, ese año se ampliaron sus derechos","Practicar cualquier religión","Vivir en cualquier país de Europa"],a:0,e:"En 1938 se profundizó el aislamiento social y legal de la población judía en Alemania."},
+{q:"¿Aproximadamente cuántos judíos se estima que murieron en los campos nazis entre 1941 y 1945?",o:["Cerca de 5.7 millones","Cerca de 500 mil","Cerca de 20 millones","Cerca de 1 millón únicamente"],a:0,e:"Se calcula que murieron cerca de 5.7 millones de judíos en los campos de concentración y exterminio."},
+{q:"¿Qué grupos étnicos fueron víctimas, junto a los judíos, de la destrucción sistemática nazi en los campos de concentración?",o:["Judíos, gitanos y eslavos","Solo alemanes disidentes","Solo prisioneros de guerra italianos","Solo ciudadanos franceses"],a:0,e:"El régimen nazi buscó la destrucción sistemática de judíos, gitanos y eslavos, entre otros grupos."},
+{q:"¿Qué fue el programa Lebensborn implementado por el régimen nazi?",o:["Un programa que reclutaba mujeres en territorios eslavos para tener hijos considerados de 'raza aria'","Un programa de ayuda humanitaria a refugiados judíos","Una alianza militar germano-soviética","Un plan de reconstrucción económica de posguerra"],a:0,e:"Lebensborn buscaba 'mejorar' la supuesta raza aria mediante la selección y adopción forzada de niños."}
+],
+wwiiCausas:[
+{q:"¿Cuál de las siguientes es una causa mediata de la Segunda Guerra Mundial?",o:["El ascenso de los totalitarismos en Europa","El ataque a Pearl Harbor","La invasión a Polonia","El pacto de no agresión germano-soviético"],a:0,e:"El auge de los totalitarismos fue una causa de fondo (mediata), previa a los hechos que detonaron la guerra."},
+{q:"¿Qué tratado es señalado por historiadores como una de las principales causas de fondo de la guerra, por humillar y limitar a Alemania?",o:["El Tratado de Versalles","El Tratado de Yalta","El Pacto de Bretton Woods","El Tratado de Núremberg"],a:0,e:"El Tratado de Versalles impuso duras condiciones a Alemania tras la Primera Guerra Mundial."},
+{q:"¿Qué rivalidad ideológica se identifica como causa mediata de la guerra?",o:["La rivalidad entre el nazismo/fascismo y las democracias junto con el comunismo","La rivalidad entre budismo e hinduismo","La rivalidad entre monarquías absolutas europeas","La rivalidad comercial entre España y Portugal"],a:0,e:"El choque ideológico entre totalitarismos, democracias liberales y comunismo tensionó a Europa."},
+{q:"¿Qué pacto de agosto de 1939 convirtió temporalmente a Alemania y la URSS en aliadas?",o:["El Pacto de no agresión germano-soviético","El Pacto Tripartito","El Tratado de Versalles","La Conferencia de Múnich"],a:0,e:"Firmado el 23 de agosto de 1939, este pacto sorprendió al mundo al unir a dos potencias rivales."},
+{q:"¿Qué hecho del 1 de setiembre de 1939 se considera el inicio inmediato de la guerra en Europa?",o:["La invasión alemana a Polonia","El ataque a Pearl Harbor","La invasión a la URSS","La caída de Francia"],a:0,e:"La invasión a Polonia precipitó la entrada de Gran Bretaña y Francia a la guerra días después."},
+{q:"¿Qué países formaron el Eje Berlín-Roma-Tokio?",o:["Alemania, Italia y Japón","Alemania, Francia y Reino Unido","Italia, España y Portugal","Japón, China y Corea"],a:0,e:"El Pacto Tripartito unió a Alemania, Italia y Japón como potencias del Eje."},
+{q:"¿Qué países integraron originalmente el bloque Aliado antes de sumarse Estados Unidos?",o:["Francia, Gran Bretaña y la URSS","Alemania, Italia y Japón","China, India y Australia","México, Brasil y Argentina"],a:0,e:"Estos tres países conformaron el núcleo original de los Aliados frente al Eje."},
+{q:"¿En qué momento se sumó Estados Unidos formalmente a los Aliados?",o:["Tras el ataque japonés a Pearl Harbor en diciembre de 1941","Desde el inicio de la guerra en 1939","Tras la caída de Berlín en 1945","Nunca se unió oficialmente"],a:0,e:"El ataque a Pearl Harbor obligó a Estados Unidos a entrar de lleno en el conflicto."},
+{q:"¿Qué política expansionista impulsada por Hitler desde 1939 buscaba someter y dominar Europa?",o:["La política expansionista alemana","El aislacionismo alemán","La neutralidad armada","El pacifismo del Tercer Reich"],a:0,e:"Hitler buscaba expandir el territorio alemán conquistando y dominando gran parte de Europa."},
+{q:"¿Qué papel jugó la política expansionista de Japón como causa mediata de la guerra?",o:["Buscaba un amplio dominio sobre el Pacífico","Buscaba la independencia total de su territorio sin expansión","Se limitaba a alianzas comerciales pacíficas","No tuvo relación con el conflicto"],a:0,e:"Japón perseguía el control territorial y económico de amplias zonas del Océano Pacífico."}
+],
+wwiiFases:[
+{q:"¿Qué caracterizó la Fase 1 de la guerra (setiembre 1939 - diciembre 1940)?",o:["La invasión a Polonia, la 'Guerra Fingida' y la ocupación alemana de gran parte de Europa occidental","La rendición incondicional de Japón","El desembarco en Normandía","El lanzamiento de la bomba atómica"],a:0,e:"En esta primera fase Alemania invadió Polonia y luego avanzó sobre Dinamarca, Noruega y Francia."},
+{q:"¿Cómo se conoció la táctica militar alemana que permitió derrotar rápidamente a Francia en 1940?",o:["La Guerra Relámpago (Blitzkrieg)","La Guerra de Trincheras","La Guerra Fría","La Guerra de Guerrillas"],a:0,e:"La Blitzkrieg combinaba velocidad, tanques y aviación para lograr victorias rápidas."},
+{q:"¿Qué batallas de 1940 frustraron los intentos alemanes de doblegar a Gran Bretaña por vía aérea?",o:["Las Batallas de Gran Bretaña (julio-setiembre de 1940)","La Batalla de Stalingrado","La Batalla de Midway","La Batalla de El Alamein"],a:0,e:"Los bombardeos alemanes no lograron doblegar a los británicos en estas batallas aéreas."},
+{q:"¿Qué evento de junio de 1941 marcó el inicio de la Fase 2 y rompió el pacto de no agresión germano-soviético?",o:["La invasión alemana a la Unión Soviética","El ataque a Pearl Harbor","El desembarco de Normandía","La rendición de Italia"],a:0,e:"Hitler invadió la URSS en junio de 1941, rompiendo el pacto firmado en 1939."},
+{q:"¿Qué ataque de diciembre de 1941 obligó a Estados Unidos a entrar en la guerra?",o:["El ataque japonés a Pearl Harbor","La invasión alemana a Polonia","El bombardeo de Londres","La invasión a Grecia"],a:0,e:"Japón atacó la base naval de Pearl Harbor, arrastrando a EE.UU. al conflicto mundial."},
+{q:"¿Cuáles batallas definieron el rumbo de la guerra durante la Fase 3 (verano 1942-verano 1943)?",o:["Midway, El Alamein y Stalingrado","Waterloo, Trafalgar y Austerlitz","Verdún, el Somme y Ypres","Gettysburg, Bull Run y Antietam"],a:0,e:"Estas tres grandes batallas marcaron el giro de la guerra a favor de los Aliados."},
+{q:"¿Qué ocurrió en la Batalla de Stalingrado, punto de quiebre de la guerra?",o:["El ejército alemán fue rodeado y obligado a rendirse ante la resistencia soviética","Alemania logró una victoria decisiva y definitiva","Japón se rindió incondicionalmente","Estados Unidos perdió el control del Pacífico"],a:0,e:"La derrota alemana en Stalingrado (febrero de 1943) fue un golpe decisivo para el Eje."},
+{q:"¿Qué desembarco de junio de 1944 ayudó a la liberación de Francia, Bélgica y Holanda?",o:["El desembarco de Normandía","El desembarco en Sicilia","El desembarco en Okinawa","El desembarco en Guadalcanal"],a:0,e:"El desembarco angloestadounidense en Normandía abrió el frente occidental decisivo."},
+{q:"¿En qué mes y año se rindió Alemania, poniendo fin a la guerra en Europa?",o:["Mayo de 1945","Agosto de 1945","Setiembre de 1939","Diciembre de 1941"],a:0,e:"Alemania se rindió en mayo de 1945, ante el avance aliado desde el oeste y soviético desde el este."},
+{q:"¿Qué general estadounidense comandó las fuerzas aliadas que avanzaron por el oeste europeo hasta Alemania?",o:["Dwight Eisenhower","Douglas MacArthur","George Patton únicamente","Erwin Rommel"],a:0,e:"Eisenhower comandó las fuerzas aliadas en el frente occidental europeo."}
+],
+wwiiConf:[
+{q:"¿Qué arma nueva usó Estados Unidos contra Japón en agosto de 1945, provocando su rendición incondicional?",o:["La bomba atómica","Armas químicas","Misiles balísticos intercontinentales","Armas biológicas"],a:0,e:"El uso de la bomba atómica forzó la rendición incondicional de Japón."},
+{q:"¿En qué ciudades japonesas se lanzaron las bombas atómicas en agosto de 1945?",o:["Hiroshima y Nagasaki","Tokio y Osaka","Kioto y Yokohama","Nagoya y Kobe"],a:0,e:"Hiroshima (6 de agosto) y Nagasaki (9 de agosto) de 1945 sufrieron los ataques atómicos."},
+{q:"¿Qué conferencia de 1944 buscó restablecer el orden económico mundial y creó el FMI y el Banco Mundial?",o:["La Conferencia de Bretton Woods","La Conferencia de Yalta","La Conferencia de Potsdam","La Conferencia de San Francisco"],a:0,e:"Bretton Woods sentó las bases del nuevo orden económico internacional de posguerra."},
+{q:"¿Qué líderes se reunieron en la Conferencia de Potsdam para decidir el desmantelamiento de la industria militar nazi?",o:["Truman, Attlee y Stalin","Roosevelt, Churchill y Stalin","Hitler, Mussolini e Hirohito","Lenin, Trotsky y Stalin"],a:0,e:"En Potsdam (jul-ago 1945) estos líderes acordaron el desarme y castigo de los jerarcas nazis."},
+{q:"¿Qué se decidió en la Conferencia de Yalta (febrero de 1945)?",o:["La eliminación del régimen nazi y la división de Alemania en zonas de influencia","La creación de la Unión Europea","El fin de la Guerra Fría","La independencia de la India"],a:0,e:"En Yalta, los Aliados definieron el futuro reparto de influencia sobre Alemania y Europa."},
+{q:"¿Qué organización internacional se creó tras la Conferencia de San Francisco, sustituyendo a la Sociedad de las Naciones?",o:["La Organización de las Naciones Unidas (ONU)","La OTAN","La Unión Europea","El FMI"],a:0,e:"La ONU se fundó el 25 de junio de 1945 para mantener la paz y la seguridad mundial."},
+{q:"¿Qué se estableció en la Conferencia de París (nov-dic 1945)?",o:["Los tratados de paz y las indemnizaciones de guerra para los aliados de Alemania","La creación de la ONU","El inicio de la Guerra Fría","La rendición de Japón"],a:0,e:"En París se definieron los tratados de paz y las reparaciones de guerra."},
+{q:"¿Aproximadamente cuántas personas murieron en total durante la Segunda Guerra Mundial?",o:["Cerca de 60 millones","Cerca de 1 millón","Cerca de 10 millones","Cerca de 200 millones"],a:0,e:"Se estima que la Segunda Guerra Mundial causó cerca de 60 millones de muertes."},
+{q:"¿Qué rivalidad de posguerra surgió entre Estados Unidos y la URSS como consecuencia directa del conflicto?",o:["La Guerra Fría","La Guerra de Corea únicamente","La Guerra de los Cien Años","La Guerra Franco-Prusiana"],a:0,e:"La rivalidad ideológica y de poder entre ambas potencias dio origen a la Guerra Fría."},
+{q:"¿Cómo quedó dividida Alemania tras la guerra?",o:["En la República Federal de Alemania y la República Democrática de Alemania (bajo dominio soviético)","Se mantuvo unificada bajo un gobierno único","Fue anexada completamente por Francia","Desapareció como Estado"],a:0,e:"Alemania se dividió entre las zonas administradas por potencias occidentales y la zona soviética."},
+{q:"¿Qué proceso mundial se aceleró tras la Segunda Guerra Mundial, duplicando el número de naciones en menos de 20 años?",o:["La descolonización de África y Asia","La reunificación de los imperios coloniales","La expansión del sistema zarista","La desaparición de las fronteras nacionales"],a:0,e:"La descolonización transformó el mapa mundial tras el debilitamiento de las potencias europeas."},
+{q:"¿Qué organismo económico internacional, sucesor del GATT, regula el comercio internacional en el nuevo orden de posguerra?",o:["La Organización Mundial del Comercio (OMC)","El Banco Mundial","La ONU","La OTAN"],a:0,e:"La OMC sucedió al GATT como plataforma de negociación comercial internacional."}
+]
+};
+
+const WORLDS = [
+ {key:'rusia', name:'Aldea Rusa 1917', emoji:'🌾', bg:'linear-gradient(160deg,#4a1414,#1c0505)', accent:'#c62828', desc:'Revolución Rusa: causas, octubre 1917 y guerra civil.'},
+ {key:'crisis29', name:'El Gran Colapso', emoji:'📉', bg:'linear-gradient(160deg,#4a4034,#241f18)', accent:'#c9a227', desc:'La Crisis de 1929 y la Gran Depresión.'},
+ {key:'wwiiAnte', name:'Sombra Totalitaria', emoji:'⛓️', bg:'linear-gradient(160deg,#241125,#0d0710)', accent:'#8b0000', desc:'Fascismo, nazismo, antisemitismo y el Holocausto.'},
+ {key:'wwiiCausas', name:'Alianzas en Guerra', emoji:'⚔️', bg:'linear-gradient(160deg,#1c2b33,#0c1418)', accent:'#546e7a', desc:'Causas mediatas, inmediatas y sistema de alianzas.'},
+ {key:'wwiiFases', name:'Campo de Batalla', emoji:'💥', bg:'linear-gradient(160deg,#3b220e,#190d04)', accent:'#ff6f00', desc:'Las 4 fases de la Segunda Guerra Mundial.'},
+ {key:'wwiiConf', name:'Templo de la Paz', emoji:'🕊️', bg:'linear-gradient(160deg,#0d3b4f,#052029)', accent:'#4fc3f7', desc:'Conferencias, fin de la guerra y consecuencias.'}
+];
+
+const EXAM_PLAN = {rusia:6, crisis29:6, wwiiAnte:8, wwiiCausas:6, wwiiFases:6, wwiiConf:8};
+
+/* ================= ESTADO ================= */
+let state = {
+  screen:'home', worldKey:null, mode:null,
+  qIndex:0, questions:[], gems:0, correctFirstTry:0, attempts:0,
+  studyIndex:0,
+  examAnswers:[], examScore:0
+};
+
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function worldOf(key){ return WORLDS.find(w=>w.key===key); }
+
+/* ================= NAVEGACIÓN ================= */
+function goHome(){ state.screen='home'; render(); }
+function openWorld(key){ state.worldKey=key; state.screen='worldMenu'; render(); }
+function startStudy(key){ state.worldKey=key; state.studyIndex=0; state.screen='study'; render(); }
+function startPractice(key){
+  state.worldKey=key; state.mode='practice';
+  state.questions = shuffle(QB[key]);
+  state.qIndex=0; state.gems=0; state.correctFirstTry=0; state.attempts=0;
+  state.screen='quiz'; render();
+}
+function startFinal(){
+  let all=[];
+  Object.keys(EXAM_PLAN).forEach(k=>{
+    const n=EXAM_PLAN[k];
+    const picked=shuffle(QB[k]).slice(0,n).map(q=>({...q, topic:k}));
+    all=all.concat(picked);
+  });
+  state.questions=shuffle(all);
+  state.qIndex=0; state.examAnswers=[]; state.examScore=0;
+  state.mode='exam'; state.screen='quiz'; render();
+}
+
+/* ================= RENDER ================= */
+function render(){
+  const root=document.getElementById('root');
+  if(state.screen==='home') root.innerHTML=renderHome();
+  else if(state.screen==='worldMenu') root.innerHTML=renderWorldMenu();
+  else if(state.screen==='study') root.innerHTML=renderStudy();
+  else if(state.screen==='quiz') root.innerHTML=renderQuiz();
+  else if(state.screen==='worldResult') root.innerHTML=renderWorldResult();
+  else if(state.screen==='examResult') root.innerHTML=renderExamResult();
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  return `
+  <h1 class="title">⛏️ CraftHistoria</h1>
+  <p class="subtitle">La Aventura del I Periodo &mdash; Décimo Año</p>
+  <div class="panel center small">
+    Explora 6 mundos para dominar la Revolución Rusa, la Crisis de 1929 y la Segunda Guerra Mundial. Estudia, practica y luego enfréntate al <b>Examen Final</b>.
+  </div>
+  <div class="world-grid">
+    ${WORLDS.map(w=>`
+      <div class="world-card" style="background:${w.bg}; border-color:${w.accent}" data-action="openWorld" data-key="${w.key}">
+        <div class="emoji">${w.emoji}</div>
+        <h3>${w.name}</h3>
+        <p>${w.desc}</p>
+        <div class="stat">📘 ${STUDY[w.key].length} fichas &nbsp; ❓ ${QB[w.key].length} preguntas</div>
+      </div>
+    `).join('')}
+  </div>
+  <div class="world-card mt" style="background:linear-gradient(160deg,#1a0000,#000); border-color:#ffd700;" data-action="goExamIntro">
+    <div class="emoji">🐉</div>
+    <h3 style="color:#ffd700">Examen Final: El Jefe Final</h3>
+    <p>40 preguntas de todos los mundos. ¡Demuestra que dominas el I Periodo!</p>
+  </div>
+  `;
+}
+
+function renderWorldMenu(){
+  const w=worldOf(state.worldKey);
+  return `
+  <div class="topbar" style="background:${w.accent}"><span>${w.emoji} ${w.name.toUpperCase()}</span><span data-action="goHome" style="cursor:pointer">🏠 MAPA</span></div>
+  <div class="panel">
+    <p>${w.desc}</p>
+    <p class="small">Este mundo tiene <b>${STUDY[w.key].length}</b> fichas de estudio y <b>${QB[w.key].length}</b> preguntas de práctica.</p>
+  </div>
+  <button class="block-btn" style="background:${w.accent}" data-action="startStudy" data-key="${w.key}">📘 Modo Estudio</button>
+  <div style="height:10px"></div>
+  <button class="block-btn dirt" data-action="startPractice" data-key="${w.key}">⚔️ Modo Práctica</button>
+  <div style="height:16px"></div>
+  <button class="block-btn stone" data-action="goHome">← Volver al mapa</button>
+  `;
+}
+
+function renderStudy(){
+  const w=worldOf(state.worldKey);
+  const cards=STUDY[state.worldKey];
+  const i=state.studyIndex;
+  const pct=Math.round(((i+1)/cards.length)*100);
+  return `
+  <div class="topbar" style="background:${w.accent}"><span>${w.emoji} ESTUDIO</span><span>${i+1}/${cards.length}</span></div>
+  <div class="progresswrap"><div class="progressbar" style="width:${pct}%"></div></div>
+  <div class="flash"><span class="n">FICHA ${i+1}</span>${cards[i]}</div>
+  <div class="row">
+    <button class="block-btn stone" data-action="studyPrev" ${i===0?'disabled':''}>← Anterior</button>
+    ${i===cards.length-1
+      ? `<button class="block-btn" style="background:${w.accent}" data-action="openWorld" data-key="${w.key}">Terminar ✔</button>`
+      : `<button class="block-btn" style="background:${w.accent}" data-action="studyNext">Siguiente →</button>`}
+  </div>
+  <div style="height:16px"></div>
+  <button class="block-btn dirt" data-action="goHome">🏠 Volver al mapa</button>
+  `;
+}
+function studyNext(){ state.studyIndex++; render(); }
+function studyPrev(){ state.studyIndex--; render(); }
+
+function renderQuiz(){
+  const isExam = state.mode==='exam';
+  const w = isExam ? null : worldOf(state.worldKey);
+  const total = state.questions.length;
+  const i = state.qIndex;
+  const q = state.questions[i];
+  const pct = Math.round((i/total)*100);
+  const accent = isExam ? '#ffd700' : w.accent;
+  const label = isExam ? `🐉 EXAMEN FINAL` : `${w.emoji} ${w.name.toUpperCase()}`;
+  const rightbadge = isExam ? `Pregunta ${i+1}/${total}` : `💎 ${state.gems}`;
+  return `
+  <div class="topbar" style="background:${accent}; color:${isExam?'#1a1000':'#fff'}"><span>${label}</span><span class="badge">${rightbadge}</span></div>
+  <div class="progresswrap"><div class="progressbar" style="width:${pct}%; background:${accent}"></div></div>
+  <div class="qbox">${q.q}</div>
+  <div id="options">
+    ${q.o.map((opt,idx)=>`<button class="option" data-action="answer" data-idx="${idx}">${opt}</button>`).join('')}
+  </div>
+  <div id="feedback"></div>
+  <div style="height:10px"></div>
+  <button class="block-btn stone" data-action="${isExam?'goHome':'openWorld'}" data-key="${state.worldKey}">✖ Salir</button>
+  `;
+}
+
+function answer(idx){
+  const q = state.questions[state.qIndex];
+  const opts = document.querySelectorAll('#options .option');
+  const isExam = state.mode==='exam';
+  opts.forEach(o=>o.classList.add('disabled'));
+
+  if(isExam){
+    // examen: un solo intento, avanza al confirmar
+    const correct = idx===q.a;
+    if(correct) state.examScore++;
+    state.examAnswers.push({...q, chosen:idx, correct});
+    opts[q.a].classList.add('correct');
+    if(!correct) opts[idx].classList.add('incorrect');
+    document.getElementById('feedback').innerHTML =
+      `<div class="explain ${correct?'':'bad'}">${correct?'✅ ¡Correcto! ':'❌ Incorrecto. '}${q.e}</div>
+       <button class="block-btn gold" data-action="nextExam">${state.qIndex===state.questions.length-1?'Ver resultados 🏆':'Siguiente →'}</button>`;
+  } else {
+    // práctica: reintentar hasta acertar
+    state.attempts++;
+    if(idx===q.a){
+      if(state.attempts===1){ state.gems+=10; state.correctFirstTry++; }
+      else { state.gems+=2; }
+      opts[idx].classList.add('correct');
+      document.getElementById('feedback').innerHTML =
+        `<div class="explain">✅ ¡Correcto! ${q.e}</div>
+         <button class="block-btn" style="background:${worldOf(state.worldKey).accent}" data-action="nextPractice">${state.qIndex===state.questions.length-1?'Ver resultados 🏆':'Siguiente →'}</button>`;
+    } else {
+      opts[idx].classList.add('incorrect');
+      opts.forEach(o=>o.classList.remove('disabled'));
+      opts[idx].classList.add('disabled');
+      document.getElementById('feedback').innerHTML =
+        `<div class="explain bad">❌ Intenta de nuevo. Pista: revisa bien las opciones restantes.</div>`;
+    }
+  }
+}
+function nextPractice(){
+  state.attempts=0;
+  if(state.qIndex < state.questions.length-1){ state.qIndex++; render(); }
+  else { state.screen='worldResult'; render(); }
+}
+function nextExam(){
+  if(state.qIndex < state.questions.length-1){ state.qIndex++; render(); }
+  else { state.screen='examResult'; render(); }
+}
+
+function renderWorldResult(){
+  const w=worldOf(state.worldKey);
+  const total=state.questions.length;
+  return `
+  <h1 class="title">🏆 ¡Mundo completado!</h1>
+  <div class="panel center">
+    <div class="score-big">💎 ${state.gems}</div>
+    <p>Gemas obtenidas en <b>${w.name}</b></p>
+    <p class="small">Aciertos al primer intento: ${state.correctFirstTry} / ${total}</p>
+  </div>
+  <button class="block-btn" style="background:${w.accent}" data-action="startPractice" data-key="${w.key}">🔁 Reintentar mundo</button>
+  <div style="height:10px"></div>
+  <button class="block-btn stone" data-action="goHome">🏠 Volver al mapa</button>
+  `;
+}
+
+function renderExamResult(){
+  const total=state.questions.length;
+  const score100=Math.round((state.examScore/total)*100);
+  let msg,color;
+  if(score100>=90){msg='¡Excelente! Dominas el I Periodo.'; color='#5cc95c';}
+  else if(score100>=80){msg='¡Muy bueno! Vas muy sólido.'; color='#9ccc65';}
+  else if(score100>=65){msg='Aprobado. Bien, pero repasa los temas fallados.'; color='#ffd700';}
+  else {msg='Necesitas repasar antes del examen real.'; color='#e13a2e';}
+
+  const byTopic={};
+  state.examAnswers.forEach(a=>{
+    byTopic[a.topic]=byTopic[a.topic]||{ok:0,total:0};
+    byTopic[a.topic].total++;
+    if(a.correct) byTopic[a.topic].ok++;
+  });
+
+  return `
+  <h1 class="title">🐉 Resultado del Examen Final</h1>
+  <div class="panel center">
+    <div class="score-big" style="color:${color}">${score100} / 100</div>
+    <p style="color:${color}">${msg}</p>
+    <p class="small">${state.examScore} de ${total} preguntas correctas</p>
+  </div>
+  <div class="panel">
+    <p class="pixel-font" style="font-size:11px; color:#ffd700; margin-bottom:10px;">DESGLOSE POR MUNDO</p>
+    ${Object.keys(byTopic).map(k=>{
+      const w=worldOf(k); const b=byTopic[k]; const p=Math.round((b.ok/b.total)*100);
+      return `<div class="small" style="margin-bottom:8px;">${w.emoji} ${w.name}: ${b.ok}/${b.total} (${p}%)
+        <div class="progresswrap" style="height:10px;"><div class="progressbar" style="width:${p}%; background:${w.accent}"></div></div></div>`;
+    }).join('')}
+  </div>
+  <button class="block-btn gold" data-action="showReview">📋 Ver repaso de respuestas</button>
+  <div style="height:10px"></div>
+  <button class="block-btn" data-action="startFinal">🔁 Repetir examen final</button>
+  <div style="height:10px"></div>
+  <button class="block-btn stone" data-action="goHome">🏠 Volver al mapa</button>
+  <div id="reviewArea"></div>
+  `;
+}
+
+function showReview(){
+  const area=document.getElementById('reviewArea');
+  area.innerHTML = `<div class="panel mt"><p class="pixel-font" style="font-size:11px;color:#ffd700;margin-bottom:10px;">REPASO</p>` +
+    state.examAnswers.map((a,i)=>`
+      <div class="review-item ${a.correct?'right':'wrong'}">
+        <span class="tag">${worldOf(a.topic).name}</span>
+        <p><b>${i+1}. ${a.q}</b></p>
+        <p>Tu respuesta: ${a.o[a.chosen]} ${a.correct?'✅':'❌'}</p>
+        ${!a.correct?`<p>Correcta: ${a.o[a.a]}</p>`:''}
+        <p class="small">${a.e}</p>
+      </div>
+    `).join('') + `</div>`;
+}
+
+function goExamIntro(){
+  document.getElementById('root').innerHTML = `
+  <h1 class="title">🐉 Examen Final</h1>
+  <div class="panel">
+    <p>Este es el jefe final del I Periodo: <b>40 preguntas</b> tomadas de los 6 mundos, con la misma proporción que un examen real del MEP.</p>
+    <p class="small">Cada pregunta tiene un solo intento. Al final verás tu nota sobre 100, el desglose por tema y el repaso completo de respuestas.</p>
+  </div>
+  <button class="block-btn gold" data-action="startFinal">⚔️ Comenzar Examen Final</button>
+  <div style="height:10px"></div>
+  <button class="block-btn stone" data-action="goHome">🏠 Volver al mapa</button>
+  `;
+}
+
+/* ================= EVENTOS ================= */
+document.getElementById('root').addEventListener('click', (e)=>{
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const action = el.dataset.action;
+  const key = el.dataset.key;
+  const idx = el.dataset.idx;
+  if(action==='openWorld') openWorld(key);
+  else if(action==='goHome') goHome();
+  else if(action==='startStudy') startStudy(key);
+  else if(action==='startPractice') startPractice(key);
+  else if(action==='studyNext') studyNext();
+  else if(action==='studyPrev') studyPrev();
+  else if(action==='answer') answer(parseInt(idx));
+  else if(action==='nextPractice') nextPractice();
+  else if(action==='nextExam') nextExam();
+  else if(action==='goExamIntro') goExamIntro();
+  else if(action==='startFinal') startFinal();
+  else if(action==='showReview') showReview();
+});
+
+render();
+</script>
+</body>
+</html>

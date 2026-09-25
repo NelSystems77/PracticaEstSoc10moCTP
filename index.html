@@ -815,7 +815,72 @@ const BANK = [
 
 { lv:'k', t:'T8', type:'short', q:'¿Cómo se llamaban las leyes que imponían la segregación racial en el sur de EE. UU.?', acc:['jim crow','jimcrow'], ans:'Leyes Jim Crow.' },
 
+{ lv:'k', t:'T1', type:'mcq', q:'¿Qué concepto corresponde a “conjunto de personas e instituciones que dirigen y administran un Estado”?',
+  o:[ {x:'Gobierno', ok:true, fb:'Correcto. El gobierno puede ser democrático o dictatorial según cómo llega y ejerce el poder.'},
+      {x:'Ideología', fb:'La ideología es un sistema de ideas, no las instituciones que dirigen el Estado.'},
+      {x:'Conflicto', fb:'Un conflicto es una situación de oposición o enfrentamiento.'},
+      {x:'Genocidio', fb:'El genocidio es un crimen contra un grupo humano.'} ] },
+
+{ lv:'k', t:'T1', type:'match', q:'Relacione cada concepto con su definición.',
+  pairs:[ ['Conflicto','Oposición o enfrentamiento entre personas, grupos o Estados por intereses, valores o recursos.'],
+          ['Gobierno','Conjunto de personas e instituciones que dirigen y administran un Estado.'],
+          ['Ideología','Conjunto de ideas y valores que orientan la acción política.'],
+          ['Democracia','Sistema en que el pueblo elige a sus gobernantes en elecciones libres.'],
+          ['Dictadura','Régimen que concentra el poder y suprime las libertades.'] ] },
+
+{ lv:'k', t:'T1', type:'tf', q:'Un conflicto siempre implica el uso de armas entre dos países.', ans:false,
+  exp:'Falso. Un conflicto es cualquier oposición de intereses o valores; puede ser armado o no armado. La Guerra Fría fue sobre todo un conflicto no armado entre las superpotencias.' },
+
+{ lv:'k', t:'T4', type:'mcq', q:'¿Cuál fue la principal causa de la participación de EE. UU. en la Guerra de Vietnam?',
+  o:[ {x:'Evitar que Vietnam del Sur cayera bajo el comunismo, según la política de contención y la “teoría del dominó”.', ok:true, fb:'Correcto: EE. UU. temía que si un país caía, sus vecinos lo seguirían.'},
+      {x:'Recuperar una colonia estadounidense en Asia.', fb:'Vietnam fue colonia de Francia, no de EE. UU.'},
+      {x:'Apoyar a la URSS contra China.', fb:'EE. UU. y la URSS apoyaban a bandos opuestos.'},
+      {x:'Controlar el petróleo de la región.', fb:'La motivación central fue ideológica: contener el comunismo.'} ] },
+
+{ lv:'k', t:'T4', type:'match', q:'Relacione cada conflicto de la Guerra Fría con su consecuencia.',
+  pairs:[ ['Bloqueo de Berlín (1948-1949)','Puente aéreo occidental y división de Alemania en RFA y RDA.'],
+          ['Guerra de Corea (1950-1953)','Armisticio; la península sigue dividida en el paralelo 38.'],
+          ['Crisis de los misiles (1962)','Retiro de misiles soviéticos de Cuba y creación del “teléfono rojo”.'],
+          ['Guerra de Vietnam (1955-1975)','Derrota de EE. UU. y unificación del país bajo un gobierno comunista.'],
+          ['Invasión de Afganistán (1979-1989)','Retirada soviética y fuerte desgaste económico de la URSS.'] ],
+  tip:'Todos fueron conflictos indirectos o crisis: las superpotencias nunca combatieron entre sí.' },
+
+{ lv:'k', t:'T6', type:'mcq', q:'¿Qué caracterizó al movimiento anticomunista durante la Guerra Fría?',
+  o:[ {x:'La persecución de supuestos comunistas (macartismo en EE. UU.) y el apoyo a gobiernos, incluso dictaduras, que combatieran el comunismo.', ok:true, fb:'Correcto: en América Latina esto se expresó en el apoyo a regímenes militares anticomunistas.'},
+      {x:'La defensa de la planificación estatal de la economía.', fb:'Eso es propio del socialismo, al que se oponía.'},
+      {x:'La oposición a la carrera armamentista de EE. UU.', fb:'Esa era la postura del movimiento antinuclear.'},
+      {x:'La promoción de la vida en comunas y el rechazo al consumo.', fb:'Eso describe al movimiento hippie.'} ] },
+
+{ lv:'k', t:'T3', type:'mcq', q:'¿Qué eran los Países No Alineados?',
+  o:[ {x:'Estados, muchos recién descolonizados, que no se unieron a ninguno de los dos bloques.', ok:true, fb:'Correcto: el movimiento se formó en 1961, tras la Conferencia de Bandung (1955).'},
+      {x:'Los miembros del Pacto de Varsovia.', fb:'Esos formaban el bloque socialista.'},
+      {x:'Los fundadores de la OTAN.', fb:'Esos formaban el bloque capitalista.'},
+      {x:'Las repúblicas surgidas de la URSS en 1991.', fb:'Surgieron al final de la Guerra Fría, no como movimiento.'} ] },
+
+{ lv:'k', t:'T3', type:'tf', q:'Tras el fin de la Guerra Fría, varios países de Europa del Este adoptaron democracias multipartidistas y economías de mercado.', ans:true,
+  exp:'Verdadero. Es una de las repercusiones políticas del fin del conflicto, junto con la reunificación alemana y la disolución de la URSS.' },
+
 /* ---------------- NIVEL 2 · APLICACIÓN ---------------- */
+{ lv:'a', t:'T1', type:'mcq', q:'Dos países se disputan una frontera. Sin llegar a la guerra, rompen relaciones, se imponen sanciones y se acusan en los medios. ¿Qué concepto describe esta situación?',
+  o:[ {x:'Conflicto (no armado)', ok:true, fb:'Correcto: hay oposición de intereses sin enfrentamiento militar, igual que en la Guerra Fría entre las superpotencias.'},
+      {x:'Convención internacional', fb:'Una convención sería un acuerdo; aquí hay enfrentamiento.'},
+      {x:'Genocidio', fb:'No hay intención de destruir a un grupo humano.'},
+      {x:'Liberalismo', fb:'Es una doctrina política y económica, no una situación de enfrentamiento.'} ] },
+
+{ lv:'a', t:'T4', type:'mcq', src:{tag:'Caso', text:'Entre 1979 y 1989, la URSS mantuvo más de 100 000 soldados en Afganistán, mientras EE. UU. enviaba armas a los guerrilleros muyahidines. Miles de soldados soviéticos murieron y el gasto militar se disparó.', cite:'Síntesis de hechos'},
+  q:'¿Qué consecuencia tuvo este conflicto para la URSS?',
+  o:[ {x:'Contribuyó al desgaste económico y al descontento interno que precedieron al colapso soviético.', ok:true, fb:'Correcto: a menudo se le llama “el Vietnam soviético”.'},
+      {x:'Le permitió ganar la Guerra Fría.', fb:'La URSS se retiró sin lograr sus objetivos y se disolvió en 1991.'},
+      {x:'Provocó la creación del Pacto de Varsovia.', fb:'El Pacto es de 1955.'},
+      {x:'Inició la carrera espacial.', fb:'La carrera espacial comenzó en 1957.'} ],
+  exp:'Es un ejemplo de “guerra indirecta”: EE. UU. y la URSS apoyaban a bandos opuestos sin enfrentarse directamente.' },
+
+{ lv:'a', t:'T3', type:'mcq', q:'Un estudiante afirma: “Con el fin de la Guerra Fría el mundo dejó de ser bipolar”. ¿Qué hecho respalda su afirmación?',
+  o:[ {x:'La disolución de la URSS en 1991 dejó a EE. UU. como única superpotencia.', ok:true, fb:'Correcto: desapareció uno de los dos polos.'},
+      {x:'La creación de la OTAN en 1949.', fb:'La OTAN reforzó la bipolaridad en sus inicios.'},
+      {x:'La Crisis de los misiles en Cuba.', fb:'Fue un momento de máxima tensión bipolar.'},
+      {x:'La construcción del Muro de Berlín.', fb:'Simbolizó la división bipolar, no su fin.'} ] },
+
 { lv:'a', t:'T2', type:'mcq', src:{tag:'Fuente primaria', text:'“Desde Stettin, en el Báltico, hasta Trieste, en el Adriático, ha caído sobre el continente un telón de acero.”', cite:'Winston Churchill, discurso en Fulton (EE. UU.), 1946'},
   q:'¿Qué situación describe Churchill en esta fuente?',
   o:[ {x:'La división de Europa entre la zona de influencia soviética y la occidental.', ok:true, fb:'Correcto: el “telón de acero” es una metáfora de la frontera ideológica y política.'},

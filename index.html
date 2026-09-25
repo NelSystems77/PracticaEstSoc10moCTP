@@ -2,560 +2,1703 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>CraftHistoria: La Aventura del I Periodo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruta 100 · Estudios Sociales</title>
+<meta name="description" content="Práctica interactiva de 0 a 100 para el I examen del II periodo de Estudios Sociales, décimo año (CTP): Guerra Fría, descolonización y movimientos sociales.">
+<meta name="theme-color" content="#0a0f24">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
 <style>
+/* =========================================================
+   TOKENS · Psicología del color
+   Cian = claridad (Guía) · Azul = concentración (Conocimiento)
+   Verde = crecimiento (Aplicación) · Violeta = pensamiento profundo (Análisis)
+   Ámbar = logro y motivación (Simulacro) · Coral suave = error sin ansiedad
+   ========================================================= */
 :root{
-  --grass:#5d9c41; --grass-d:#3f6f2b; --dirt:#8b5a2b; --dirt-d:#5c3a1a;
-  --stone:#8b8b8b; --stone-d:#5a5a5a; --obsidian:#16121f; --gold:#ffd700;
-  --diamond:#4fd8e0; --redstone:#e13a2e; --ink:#1c1c1c; --paper:#e8dcc4;
-  --ok:#5cc95c; --bad:#e13a2e;
+  --fs:1;
+  --bg:#f3f6fd; --solid:#ffffff; --surface:rgba(255,255,255,.80); --surface-2:#eef2fb;
+  --border:rgba(30,41,99,.13); --text:#161d3b; --muted:#525c86;
+  --lv0:#0e7490; --lv1:#1d4ed8; --lv2:#047857; --lv3:#6d28d9; --exam:#b45309;
+  --on-c:#ffffff;
+  --ok:#047857; --ok-bg:#dcfce7; --bad:#be123c; --bad-bg:#ffe4e6; --part:#a16207; --part-bg:#fef3c7;
+  --focus:#f59e0b; --aurora-op:.20;
+  --shadow:0 12px 32px -16px rgba(30,41,99,.35);
+  --radius:20px;
+  color-scheme:light;
 }
-*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-html,body{margin:0;padding:0;height:100%;}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0f24; --solid:#141b3b; --surface:rgba(22,30,66,.72); --surface-2:rgba(255,255,255,.06);
+    --border:rgba(255,255,255,.12); --text:#ecf1ff; --muted:#a7b1d6;
+    --lv0:#22d3ee; --lv1:#7cb2ff; --lv2:#34d399; --lv3:#b69cff; --exam:#fbbf24;
+    --on-c:#0a0f24;
+    --ok:#4ade80; --ok-bg:rgba(74,222,128,.13); --bad:#fb7185; --bad-bg:rgba(251,113,133,.14); --part:#fbbf24; --part-bg:rgba(251,191,36,.13);
+    --aurora-op:.34; --shadow:0 20px 44px -20px rgba(0,0,0,.75);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0f24; --solid:#141b3b; --surface:rgba(22,30,66,.72); --surface-2:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.12); --text:#ecf1ff; --muted:#a7b1d6;
+  --lv0:#22d3ee; --lv1:#7cb2ff; --lv2:#34d399; --lv3:#b69cff; --exam:#fbbf24;
+  --on-c:#0a0f24;
+  --ok:#4ade80; --ok-bg:rgba(74,222,128,.13); --bad:#fb7185; --bad-bg:rgba(251,113,133,.14); --part:#fbbf24; --part-bg:rgba(251,191,36,.13);
+  --aurora-op:.34; --shadow:0 20px 44px -20px rgba(0,0,0,.75);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{font-size:calc(106.25% * var(--fs)); -webkit-text-size-adjust:100%}
 body{
-  font-family:'VT323', monospace; font-size:22px; color:var(--paper);
-  background:
-    linear-gradient(180deg, #2b2140 0%, #16121f 55%, #0c0a13 100%);
-  min-height:100vh; overflow-x:hidden;
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  line-height:1.6; min-height:100vh; overflow-x:hidden;
 }
-.pixel-font{ font-family:'Press Start 2P', monospace; }
-#root{ max-width:720px; margin:0 auto; min-height:100vh; padding:14px; padding-bottom:40px; position:relative; }
+h1,h2,h3{font-family:'Fraunces', Georgia, serif; line-height:1.2; margin:0 0 .5em; letter-spacing:-.01em}
+h1{font-size:clamp(1.7rem, 5vw, 2.6rem); font-weight:800}
+h2{font-size:clamp(1.35rem, 3.6vw, 1.8rem)}
+h3{font-size:1.15rem}
+p{margin:.4em 0 .8em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus); outline-offset:3px; border-radius:8px}
+h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;background:var(--solid);color:var(--text);padding:10px 14px;border-radius:10px;z-index:50;box-shadow:var(--shadow)}
+.skip:focus{top:12px}
 
-/* ---------- generic block components ---------- */
-.block-btn{
-  font-family:'Press Start 2P', monospace; font-size:12px; color:#fff; text-align:center;
-  background:var(--grass); border:none; padding:16px 10px;
-  box-shadow: inset -4px -6px 0 rgba(0,0,0,.35), inset 4px 4px 0 rgba(255,255,255,.18), 4px 4px 0 #000;
-  cursor:pointer; width:100%; line-height:1.5; letter-spacing:.5px;
-  image-rendering:pixelated; transition:transform .05s ease;
+/* ---------- Fondo inmersivo ---------- */
+.aurora{position:fixed; inset:0; z-index:-1; overflow:hidden; background:var(--bg); pointer-events:none}
+.aurora span{position:absolute; border-radius:50%; filter:blur(90px); opacity:var(--aurora-op); animation:drift 38s ease-in-out infinite alternate}
+.aurora .a1{width:62vmax;height:62vmax;background:var(--lv1);top:-24vmax;left:-18vmax}
+.aurora .a2{width:58vmax;height:58vmax;background:var(--lv2);bottom:-28vmax;right:-22vmax;animation-delay:-12s}
+.aurora .a3{width:40vmax;height:40vmax;background:var(--lv3);top:35%;left:45%;animation-delay:-24s;opacity:calc(var(--aurora-op)*.7)}
+.aurora::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.35) 1px, transparent 1.4px);background-size:46px 46px;opacity:.06}
+@keyframes drift{to{transform:translate(6vmax,4vmax) scale(1.12)}}
+
+/* ---------- Layout ---------- */
+.topbar{position:sticky; top:0; z-index:20; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); background:color-mix(in srgb, var(--bg) 72%, transparent); border-bottom:1px solid var(--border)}
+.topbar .in{max-width:980px; margin:0 auto; display:flex; align-items:center; gap:10px; padding:10px 16px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; font-weight:700; margin-right:auto; min-width:0}
+.brand .logo{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--lv1),var(--lv3));color:#fff;font-family:'Fraunces',serif;font-weight:800;font-size:.95rem;flex:none}
+.brand small{display:block;color:var(--muted);font-weight:400;font-size:.78rem;line-height:1.2}
+.brand .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{min-width:44px;height:44px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-weight:700;cursor:pointer;display:inline-grid;place-items:center;padding:0 10px}
+.iconbtn:hover{background:var(--surface-2)}
+@media (max-width:420px){.topbar .in{gap:6px;padding:8px 12px}.iconbtn{min-width:40px;height:40px;padding:0 6px}.brand small{display:none}}
+main{max-width:980px; margin:0 auto; padding:22px 16px 80px}
+main:focus{outline:none}
+footer{max-width:980px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:.85rem;text-align:center}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:22px}
+.grid{display:grid; gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.muted{color:var(--muted)}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;font-weight:700;color:var(--muted)}
+.stack>*+*{margin-top:14px}
+
+/* ---------- Buttons ---------- */
+.btn{--c:var(--lv1); display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 20px;border-radius:14px;border:2px solid transparent;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .15s, box-shadow .15s, background .15s}
+.btn.primary{background:var(--c);color:var(--on-c);box-shadow:0 8px 20px -10px var(--c)}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 12px 24px -10px var(--c)}
+.btn.ghost{background:transparent;border-color:var(--border);color:var(--text)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.sm{min-height:40px;padding:6px 14px;font-size:.92rem;border-radius:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row.end{justify-content:flex-end}
+.row.between{justify-content:space-between}
+
+/* ---------- Hero ---------- */
+.hero{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:28px}
+.hero h1 span{background:linear-gradient(90deg,var(--lv1),var(--lv3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ring{--p:0;--c:var(--lv2);width:168px;height:168px;position:relative;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .track{stroke:var(--surface-2);stroke-width:12;fill:none}
+.ring .val{stroke:var(--c);stroke-width:12;fill:none;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.ring .lbl{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .lbl b{font-family:'Fraunces',serif;font-size:2.6rem;line-height:1;display:block}
+.ring .lbl small{color:var(--muted);font-size:.8rem}
+@media (max-width:640px){ .hero{grid-template-columns:1fr;text-align:center;padding:22px} .hero .ring{margin:0 auto;order:-1;width:150px;height:150px} .hero .row{justify-content:center} }
+
+/* ---------- Route ---------- */
+.route{position:relative;display:grid;gap:12px}
+.step{--c:var(--lv1);display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;text-decoration:none;padding:16px 18px;border-left:5px solid var(--c);transition:transform .15s}
+.step:hover{transform:translateX(3px)}
+.step .ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:1.6rem;background:color-mix(in srgb,var(--c) 16%,transparent)}
+.step h3{margin:0 0 2px}
+.step p{margin:0;color:var(--muted);font-size:.92rem}
+.step .score{text-align:right;font-weight:700;color:var(--c);font-size:1.05rem;white-space:nowrap}
+.step .score small{display:block;color:var(--muted);font-weight:400;font-size:.75rem}
+.minibar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:8px}
+.minibar span{display:block;height:100%;background:var(--c,var(--lv2));border-radius:99px;transition:width .8s}
+@media (max-width:520px){ .step{grid-template-columns:46px 1fr;padding:14px} .step .ico{width:46px;height:46px;font-size:1.3rem} .step .score{grid-column:2;text-align:left} }
+
+.tool{text-decoration:none;display:flex;gap:12px;align-items:flex-start;padding:16px}
+.tool .ico{font-size:1.6rem;line-height:1}
+.tool h3{margin:0 0 2px;font-size:1.05rem}
+.tool p{margin:0;font-size:.9rem;color:var(--muted)}
+
+.mastery{display:grid;gap:10px}
+.mastery .m{display:grid;grid-template-columns:minmax(0,1fr) 52px;gap:4px 12px;align-items:center;text-decoration:none}
+.mastery .m .n{font-size:.95rem}
+.mastery .m .v{font-weight:700;text-align:right;font-size:.9rem}
+.mastery .m .minibar{grid-column:1/-1;margin:0}
+
+/* ---------- Chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{--c:var(--lv1);display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:99px;font-size:.8rem;font-weight:700;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.chip.neutral{--c:var(--muted)}
+
+/* ---------- Guide ---------- */
+.topic-head{--c:var(--lv0);border-top:6px solid var(--c)}
+.guide h3{margin-top:1.4em;color:var(--text)}
+.guide ul{padding-left:1.2em;margin:.3em 0 .9em}
+.guide li{margin:.25em 0}
+.callout{border-radius:14px;padding:14px 16px;margin:14px 0;border:1px solid var(--border);background:var(--surface-2)}
+.callout b.t{display:block;margin-bottom:4px}
+.callout.key{border-left:5px solid var(--lv1)}
+.callout.trick{border-left:5px solid var(--exam)}
+.callout.link{border-left:5px solid var(--lv3)}
+.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:14px;border:1px solid var(--border)}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:520px}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}
+th{background:var(--surface-2);font-weight:700}
+tr:last-child td{border-bottom:0}
+.concepts{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:12px 0}
+.concepts div{background:var(--surface-2);border-radius:14px;padding:12px 14px;border:1px solid var(--border)}
+.concepts b{display:block;color:var(--lv1)}
+.topic-list .tool{border-left:5px solid var(--lv0)}
+.done-badge{color:var(--ok);font-weight:700;font-size:.85rem}
+
+/* ---------- Quiz ---------- */
+.quiz-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.qprog{flex:1}
+.qprog .minibar{height:10px;margin:0 0 4px}
+.qprog small{color:var(--muted)}
+.pill{padding:6px 12px;border-radius:99px;background:var(--surface);border:1px solid var(--border);font-weight:700;white-space:nowrap;font-size:.9rem}
+.part-head{--c:var(--exam);margin:0 0 14px;padding:14px 18px;border-left:5px solid var(--c)}
+.part-head h2{font-size:1.2rem;margin:0}
+.part-head p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.qcard{--c:var(--lv1);border-top:6px solid var(--c)}
+.q{font-size:1.14rem;font-weight:700;margin:0 0 14px;line-height:1.45}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0;float:left;width:100%}
+legend + *{clear:both}
+.source{margin:0 0 16px;padding:14px 18px;border-radius:14px;background:var(--surface-2);border-left:5px solid var(--lv3);font-style:italic}
+.source cite{display:block;margin-top:6px;font-style:normal;font-size:.85rem;color:var(--muted)}
+.source .tag{font-style:normal;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--lv3);display:block;margin-bottom:4px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:14px;border:2px solid var(--border);background:var(--solid);cursor:pointer;transition:border-color .15s, background .15s}
+.opt:hover{border-color:color-mix(in srgb,var(--c) 55%,transparent)}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .letter{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;border:2px solid var(--border);font-size:.9rem}
+.opt:has(input:checked){border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--solid))}
+.opt:has(input:checked) .letter{background:var(--c);color:var(--on-c);border-color:var(--c)}
+.opt:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.opt.is-ok{border-color:var(--ok)!important;background:var(--ok-bg)!important}
+.opt.is-ok .letter{background:var(--ok)!important;border-color:var(--ok)!important;color:var(--on-c)!important}
+.opt.is-bad{border-color:var(--bad)!important;background:var(--bad-bg)!important}
+.opt.is-bad .letter{background:var(--bad)!important;border-color:var(--bad)!important;color:var(--on-c)!important}
+.locked .opt{cursor:default}
+
+.match{display:grid;gap:18px;grid-template-columns:1fr 1fr}
+@media (max-width:720px){.match{grid-template-columns:1fr}}
+.match h4{margin:0 0 8px;font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.match ol,.match ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:1fr;gap:6px;padding:10px 12px;border-radius:12px;border:2px solid var(--border);background:var(--solid)}
+.mrow label{font-weight:700}
+.colB li{padding:8px 12px;border-radius:12px;background:var(--surface-2);font-size:.95rem}
+.colB li b{color:var(--c);margin-right:6px}
+select,input[type=text],textarea{font:inherit;color:var(--text);background:var(--solid);border:2px solid var(--border);border-radius:12px;padding:10px 12px;width:100%;min-height:46px}
+select:focus,input[type=text]:focus,textarea:focus{border-color:var(--c);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 30%,transparent)}
+textarea{min-height:170px;resize:vertical;line-height:1.55}
+.is-ok-row{border-color:var(--ok)!important;background:var(--ok-bg)!important}
+.is-bad-row{border-color:var(--bad)!important;background:var(--bad-bg)!important}
+
+.olist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.oitem{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:2px solid var(--border);background:var(--solid)}
+.oitem .num{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c)}
+.oitem .mv{display:flex;gap:6px}
+.oitem .mv button{width:44px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:1.1rem;cursor:pointer}
+.oitem .mv button:disabled{opacity:.3;cursor:default}
+.oitem.flash{animation:flash .5s}
+@keyframes flash{from{background:color-mix(in srgb,var(--c) 22%,var(--solid))}}
+
+.crow{padding:12px 14px;border-radius:14px;border:2px solid var(--border);background:var(--solid)}
+.crow .ct{font-weight:700;margin-bottom:8px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0}
+.seg span{display:inline-block;padding:8px 14px;border-radius:99px;border:2px solid var(--border);cursor:pointer;font-size:.92rem;font-weight:700;min-height:40px}
+.seg input:checked + span{background:var(--c);border-color:var(--c);color:var(--on-c)}
+.seg input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.clist{display:grid;gap:8px}
+
+.counter{font-size:.82rem;color:var(--muted);text-align:right;margin-top:4px}
+
+/* ---------- Feedback ---------- */
+.feedback:empty{display:none}
+.feedback{margin-top:18px}
+.feedback:focus{outline:none}
+.fb{border-radius:16px;padding:16px 18px;border:2px solid;animation:rise .35s ease}
+.fb.ok{border-color:var(--ok);background:var(--ok-bg)}
+.fb.bad{border-color:var(--bad);background:var(--bad-bg)}
+.fb.partial{border-color:var(--part);background:var(--part-bg)}
+.fb-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.fb-head strong{font-size:1.08rem}
+.fb-icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--on-c)}
+.fb.ok .fb-icon{background:var(--ok)} .fb.bad .fb-icon{background:var(--bad)} .fb.partial .fb-icon{background:var(--part)}
+.fb-pts{margin-left:auto;font-weight:700;font-size:.9rem}
+.fb p{margin:.35em 0}
+.fb .why{padding-left:12px;border-left:3px solid var(--border)}
+.fb-exp,.fb-tip,.model{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--solid);border:1px solid var(--border)}
+.fb ul{margin:.3em 0;padding-left:1.2em}
+.fb li.okc::marker{content:"✓  ";color:var(--ok)}
+.fb li.badc::marker{content:"✗  ";color:var(--bad)}
+.yours{white-space:pre-wrap;padding:10px 12px;border-radius:12px;background:var(--surface-2);font-size:.95rem;margin:6px 0}
+.rubric{display:grid;gap:8px;margin:8px 0}
+.rubric label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--solid);border:1px solid var(--border);cursor:pointer}
+.rubric input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--ok)}
+.level-tag{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:700;font-size:.85rem;background:var(--solid);border:1px solid var(--border)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.actions{margin-top:18px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
+
+/* ---------- Results ---------- */
+.res-head{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:600px){.res-head{grid-template-columns:1fr;text-align:center}.res-head .ring{margin:0 auto}}
+.review details{border:1px solid var(--border);border-radius:14px;background:var(--solid);margin-bottom:8px}
+.review summary{cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;list-style:none}
+.review summary::-webkit-details-marker{display:none}
+.review summary .st{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--on-c);font-size:.85rem}
+.st.ok{background:var(--ok)} .st.bad{background:var(--bad)} .st.partial{background:var(--part)}
+.review summary .sq{flex:1;font-size:.95rem}
+.review summary .sp{font-weight:700;white-space:nowrap;font-size:.9rem}
+.review .body{padding:0 14px 14px}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.confetti i{position:absolute;top:-12px;width:10px;height:14px;border-radius:3px;animation:fall 2.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.2}}
+
+/* ---------- Flashcards ---------- */
+.flash-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.fc{perspective:1000px;min-height:190px;border:0;background:none;padding:0;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.fc .inner{position:relative;width:100%;height:100%;min-height:190px;transition:transform .55s;transform-style:preserve-3d}
+.fc[aria-pressed="true"] .inner{transform:rotateY(180deg)}
+.fc .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:16px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border);box-shadow:var(--shadow)}
+.fc .front{background:linear-gradient(145deg,color-mix(in srgb,var(--c) 22%,var(--solid)),var(--solid));}
+.fc .front b{font-family:'Fraunces',serif;font-size:1.3rem}
+.fc .front small{color:var(--muted);margin-top:8px}
+.fc .back{background:var(--solid);transform:rotateY(180deg);font-size:.95rem;overflow:auto}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.filters button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:99px;padding:6px 14px;font:inherit;font-size:.88rem;cursor:pointer;min-height:38px}
+.filters button[aria-pressed="true"]{background:var(--lv1);color:var(--on-c);border-color:var(--lv1)}
+
+/* ---------- Timeline ---------- */
+.tl{position:relative;margin:0;padding:0 0 0 26px;list-style:none}
+.tl::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:3px;border-radius:3px;background:linear-gradient(var(--lv1),var(--lv2),var(--lv3),var(--exam))}
+.tl li{position:relative;margin:0 0 12px}
+.tl li::before{content:"";position:absolute;left:-23px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--c);border:3px solid var(--bg)}
+.tl .ev{padding:12px 16px;border-left:4px solid var(--c)}
+.tl .yr{font-family:'Fraunces',serif;font-weight:800;font-size:1.2rem;color:var(--c);margin-right:8px}
+.phase-title{margin:22px 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.phase-title h2{margin:0;font-size:1.25rem}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--solid);color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow);padding:12px 18px;border-radius:14px;z-index:70;font-weight:700;animation:rise .3s}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .aurora span{animation:none}
+  .confetti{display:none}
 }
-.block-btn:active{ transform:translate(3px,3px); box-shadow: inset -4px -6px 0 rgba(0,0,0,.35), inset 4px 4px 0 rgba(255,255,255,.18), 1px 1px 0 #000; }
-.block-btn.dirt{ background:var(--dirt); }
-.block-btn.stone{ background:var(--stone-d); }
-.block-btn.gold{ background:#caa61f; color:#3a2b00; }
-.block-btn.redstone{ background:var(--redstone); }
-.block-btn.diamond{ background:#1b8f96; }
-.block-btn[disabled]{ opacity:.4; cursor:not-allowed; }
-
-.panel{
-  background:#2a2438; border:4px solid #000;
-  box-shadow: inset -6px -6px 0 rgba(0,0,0,.4), inset 6px 6px 0 rgba(255,255,255,.06);
-  padding:16px; margin-bottom:14px;
-}
-
-.topbar{
-  display:flex; align-items:center; justify-content:space-between; gap:8px;
-  background:#000; border:3px solid #000; padding:8px 12px; margin-bottom:14px;
-  font-family:'Press Start 2P', monospace; font-size:10px;
-}
-.badge{ display:flex; align-items:center; gap:6px; }
-.progresswrap{ background:#000; border:3px solid #000; height:16px; width:100%; margin:10px 0 16px; }
-.progressbar{ height:100%; background:linear-gradient(90deg,var(--gold),#ffb300); transition:width .3s ease; }
-
-h1.title{ font-family:'Press Start 2P', monospace; font-size:clamp(16px,5vw,24px); text-align:center; color:var(--gold); text-shadow:3px 3px 0 #000; line-height:1.6; margin:6px 0 4px;}
-p.subtitle{ text-align:center; color:var(--diamond); font-size:20px; margin:0 0 18px;}
-
-.world-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
-@media(min-width:520px){ .world-grid{grid-template-columns:1fr 1fr;} }
-
-.world-card{
-  border:4px solid #000; padding:14px; cursor:pointer; position:relative;
-  box-shadow: inset -6px -6px 0 rgba(0,0,0,.35), inset 6px 6px 0 rgba(255,255,255,.1), 5px 5px 0 #000;
-}
-.world-card:active{ transform:translate(2px,2px); box-shadow:2px 2px 0 #000; }
-.world-card .emoji{ font-size:34px; }
-.world-card h3{ font-family:'Press Start 2P',monospace; font-size:12px; margin:8px 0 6px; line-height:1.5; color:#fff; text-shadow:2px 2px 0 #000;}
-.world-card p{ margin:0; font-size:18px; color:#eee; }
-.world-card .stat{ margin-top:8px; font-size:16px; color:var(--gold); }
-
-.card-actions{ display:flex; gap:8px; margin-top:12px; }
-
-/* answer options */
-.option{
-  display:block; width:100%; text-align:left; font-family:'VT323',monospace; font-size:22px;
-  background:#3a3450; color:#fff; border:3px solid #000; padding:14px 12px; margin-bottom:10px;
-  box-shadow: inset -4px -4px 0 rgba(0,0,0,.3), inset 4px 4px 0 rgba(255,255,255,.08), 4px 4px 0 #000;
-  cursor:pointer;
-}
-.option:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 #000; }
-.option.correct{ background:var(--ok) !important; color:#04270b; }
-.option.incorrect{ background:var(--bad) !important; color:#2a0000; animation:shake .3s; }
-.option.disabled{ pointer-events:none; opacity:.85; }
-@keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
-
-.qbox{ font-size:24px; line-height:1.5; margin-bottom:16px; background:#000; padding:14px; border:3px solid #000;}
-.explain{ background:#1c3a1c; border:3px solid #000; padding:12px; margin:10px 0 16px; font-size:19px; color:#d4ffd4;}
-.explain.bad{ background:#3a1c1c; color:#ffd4d4; }
-
-.flash{ background:var(--paper); color:#2a2213; border:4px solid #000; padding:18px; font-size:22px; line-height:1.5; margin-bottom:14px; box-shadow:5px 5px 0 #000;}
-.flash .n{ font-family:'Press Start 2P',monospace; font-size:11px; color:#7a5a1c; margin-bottom:8px; display:block;}
-
-.center{ text-align:center; }
-.small{ font-size:16px; opacity:.85; }
-.mt{ margin-top:16px; }
-.row{ display:flex; gap:10px; }
-.row > *{ flex:1; }
-
-.score-big{ font-family:'Press Start 2P',monospace; font-size:clamp(30px,10vw,48px); text-align:center; color:var(--gold); text-shadow:4px 4px 0 #000; margin:10px 0;}
-
-.review-item{ border:3px solid #000; padding:10px; margin-bottom:10px; font-size:18px; background:#241f33; }
-.review-item.wrong{ background:#3a1c1c; }
-.review-item.right{ background:#1c3a1c; }
-.review-item .tag{ font-family:'Press Start 2P',monospace; font-size:9px; color:var(--gold); }
-
-::-webkit-scrollbar{ width:10px; }
-::-webkit-scrollbar-thumb{ background:#555; }
-
-.footer-nav{ position:sticky; bottom:0; margin-top:20px; }
+@media print{.aurora,.topbar,.actions,footer{display:none}.card{box-shadow:none;backdrop-filter:none}}
 </style>
 </head>
 <body>
-<div id="root"></div>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<header class="topbar">
+  <div class="in">
+    <a class="brand" href="#/" aria-label="Ruta 100, ir al inicio">
+      <span class="logo" aria-hidden="true">100</span>
+      <span class="t">Ruta 100<small>Estudios Sociales · 10.° CTP</small></span>
+    </a>
+    <button class="iconbtn" id="fsDown" aria-label="Reducir tamaño de letra">A−</button>
+    <button class="iconbtn" id="fsUp" aria-label="Aumentar tamaño de letra">A+</button>
+    <button class="iconbtn" id="themeBtn" aria-label="Cambiar tema de color">◐</button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+<div id="live" class="sr-only" aria-live="polite"></div>
+
+<footer>
+  Práctica de estudio basada en el temario oficial del I examen del II periodo · Estudios Sociales, décimo año.<br>
+  Tu progreso se guarda solo en este dispositivo.
+</footer>
+
+<noscript><p style="padding:20px;text-align:center">Esta práctica necesita JavaScript activado para funcionar.</p></noscript>
 
 <script>
-/* ================= CONTENIDO PEDAGÓGICO ================= */
-/* Cobertura 100% del temario: Revolución Rusa, Crisis 1929, Segunda Guerra Mundial */
+'use strict';
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = (a, n) => shuffle(a).slice(0, n);
+const uid = () => Math.random().toString(36).slice(2, 8);
+const fmt = n => (Math.round(n * 10) / 10).toString().replace('.', ',');
+const hash = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) | 0; return (h >>> 0).toString(36); };
+const announce = msg => { const l = $('#live'); l.textContent = ''; setTimeout(() => l.textContent = msg, 30); };
+function toast(msg){ const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role','status'); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2400); }
 
-const STUDY = {
-rusia:[
- "Antecedentes: Rusia era gobernada por el zar Nicolás II bajo una autocracia. La Duma (parlamento) tenía poder muy limitado y el descontento social crecía.",
- "El Domingo Sangriento (1905) y la derrota en la guerra ruso-japonesa mostraron la debilidad del régimen zarista años antes de 1917.",
- "Causas: atraso económico e industrial, fuerte desigualdad social entre nobleza y campesinado, y el desgaste que produjo la Primera Guerra Mundial (hambre, derrotas, descontento).",
- "Revolución de Febrero de 1917: el zar abdica. Se forma un Gobierno Provisional (Kerensky) que convive en 'doble poder' con los Soviets (consejos de obreros y soldados).",
- "Revolución de Octubre de 1917: los bolcheviques, liderados por Lenin, toman el poder con la consigna 'Paz, Pan y Tierra' y decretan el fin de la propiedad privada de la tierra.",
- "Guerra Civil Rusa (1918-1921): el Ejército Rojo (bolchevique, organizado por Trotsky) derrota al Ejército Blanco (contrarrevolucionario, apoyado por potencias extranjeras).",
- "Durante la guerra civil se aplicó el 'comunismo de guerra' (control total y requisición estatal). Tras la victoria bolchevique, en 1922 se crea la URSS.",
- "Transformaciones: nacionalización de tierras e industrias, fin de la nobleza como clase privilegiada, y en 1921 la NEP (Nueva Política Económica) para reactivar la economía."
-],
-crisis29:[
- "Antecedentes: los 'felices años veinte' en EE.UU. trajeron auge bursátil, producción en cadena (fordismo) y un fuerte aumento del consumo a crédito.",
- "Factores de la prosperidad previa: nuevas tecnologías (automóvil, electrodomésticos), producción en masa y el papel de Estados Unidos como principal acreedor mundial tras la Primera Guerra Mundial.",
- "Características del modelo: sobreproducción industrial y agrícola, especulación bursátil desmedida y una distribución muy desigual de la riqueza.",
- "Causas: la especulación en la Bolsa de Nueva York y la compra de acciones a crédito generaron una burbuja que estalló el Jueves Negro, 24 de octubre de 1929.",
- "La caída bursátil provocó quiebras masivas de bancos y empresas, arrastrando a toda la economía mundial a una profunda depresión.",
- "Consecuencias: desempleo masivo, pobreza generalizada, caída del comercio internacional y adopción de políticas proteccionistas (más aranceles).",
- "Medidas para enfrentar la crisis: el New Deal de Franklin D. Roosevelt aplicó intervención estatal, obras públicas y regulación bancaria, siguiendo ideas keynesianas."
-],
-wwiiAnte:[
- "El fascismo (Italia, Mussolini) y el nazismo (Alemania, Hitler) fueron movimientos totalitarios: antidemocráticos, anticomunistas, de partido único y con culto a la violencia y el expansionismo.",
- "Mussolini llegó al poder tras la Marcha sobre Roma (1922) y en 1925 impuso la dictadura de partido único, conocido como 'el Duce'.",
- "El Partido Nacionalsocialista Alemán nació en 1920 sobre la base del Partido Obrero Alemán. Entre 1933-1934 Hitler llegó al poder con apoyo de las clases dirigentes y milicias como las SS y SA.",
- "El nazismo defendía una supuesta superioridad de la 'raza aria' y difundía un antisemitismo abierto, culpando a los judíos de los problemas económicos y sociales de Alemania.",
- "Las leyes antisemitas nazis (más de 400 decretos, 1933-1938) separaron legalmente a los judíos de la sociedad: exclusión laboral, educativa y, en 1935, las Leyes Raciales de Núremberg les quitaron la ciudadanía.",
- "El Holocausto: sistema de campos de concentración y exterminio (Auschwitz, Treblinka, entre otros) donde murieron cerca de 5.7 millones de judíos entre 1941 y 1945.",
- "Además de los judíos, fueron perseguidos sistemáticamente los gitanos, los eslavos, personas con discapacidad, homosexuales y opositores políticos."
-],
-wwiiCausas:[
- "Causas mediatas: el ascenso de los totalitarismos en Europa, las rivalidades imperialistas por motivos económicos y la política expansionista de Japón sobre el Pacífico.",
- "El Tratado de Versalles (que puso fin a la Primera Guerra Mundial) humilló y limitó a Alemania; muchos historiadores lo señalan como causa de fondo de la Segunda Guerra Mundial.",
- "Causas inmediatas: el Pacto de no agresión entre Alemania y la URSS (23 de agosto de 1939) y la invasión alemana a Polonia (1 de setiembre de 1939).",
- "Sistema de alianzas: el Eje (Alemania, Italia y Japón, Pacto Tripartito Berlín-Roma-Tokio) contra los Aliados (Francia, Gran Bretaña y la URSS, a los que luego se sumó Estados Unidos)."
-],
-wwiiFases:[
- "Fase 1 (set. 1939 - dic. 1940): invasión a Polonia, la 'Guerra Fingida', y luego la ocupación de Dinamarca, Noruega y Francia mediante la Guerra Relámpago (Blitzkrieg).",
- "Las Batallas de Gran Bretaña (jul-set 1940) frustraron los intentos alemanes de doblegar a los ingleses por vía aérea.",
- "Fase 2 (1941-1942): Alemania invade la URSS (junio 1941), rompiendo el pacto de no agresión; Japón ataca Pearl Harbor (dic. 1941), lo que suma a EE.UU. a la guerra.",
- "Fase 3 (verano 1942 - verano 1943): batallas clave de Midway, El Alamein y Stalingrado (el ejército alemán es rodeado y se rinde), que cambian el curso de la guerra a favor de los Aliados.",
- "Fase 4 (jun. 1943 - ago. 1945): desembarco aliado en Normandía (junio 1944), avance soviético desde el este, rendición de Alemania (mayo 1945) y de Japón (agosto 1945) tras las bombas atómicas."
-],
-wwiiConf:[
- "Conferencia de Bretton Woods (1944): buscó restablecer el orden económico mundial; creó el Fondo Monetario Internacional (FMI) y el Banco Mundial.",
- "Conferencia de Yalta (feb. 1945): Roosevelt, Churchill y Stalin decidieron la eliminación del régimen nazi y la división de Alemania en zonas de influencia.",
- "Conferencia de Potsdam (jul-ago 1945): Truman, Attlee y Stalin acordaron desmantelar la industria militar nazi y castigar a los principales líderes nazis.",
- "Conferencia de San Francisco (jun. 1945): culminó con la creación de la Organización de las Naciones Unidas (ONU), que sustituyó a la Sociedad de las Naciones.",
- "Conferencia de París (nov-dic 1945): se elaboraron los tratados de paz y las indemnizaciones de guerra para los aliados de Alemania.",
- "Consecuencias: cerca de 60 millones de muertos, el Holocausto judío, la Guerra Fría entre EE.UU. y la URSS, la división de Alemania, y un fuerte impulso a la descolonización de África y Asia.",
- "Nuevo orden mundial: nace la ONU para mantener la paz, y se organiza un nuevo sistema económico internacional (FMI, Banco Mundial, y luego la OMC como sucesora del GATT)."
-]
+/* =========================================================
+   ESTADO (localStorage, con respaldo en memoria)
+   ========================================================= */
+const KEY = 'ruta100-es10-guerrafria-v1';
+const defaults = () => ({ read: [], best: { k: 0, a: 0, r: 0, exam: 0 }, tries: { k: 0, a: 0, r: 0, exam: 0 }, topic: {}, missed: [], theme: 'auto', fs: 1 });
+function load(){
+  try {
+    const d = JSON.parse(localStorage.getItem(KEY));
+    if (d && typeof d === 'object') {
+      const b = defaults();
+      return Object.assign(b, d, { best: Object.assign(b.best, d.best || {}), tries: Object.assign(b.tries, d.tries || {}) });
+    }
+  } catch (e) {}
+  return defaults();
+}
+let S = load();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+/* =========================================================
+   CONFIGURACIÓN PEDAGÓGICA
+   ========================================================= */
+const LEVELS = {
+  k: { name: 'Nivel 1 · Conocimiento', short: 'Conocimiento', c: 'var(--lv1)', icon: '🧭',
+       desc: 'Recordar e identificar conceptos, hechos, fechas, alianzas y personajes.', n: 15 },
+  a: { name: 'Nivel 2 · Aplicación', short: 'Aplicación', c: 'var(--lv2)', icon: '🛠️',
+       desc: 'Usar lo aprendido para interpretar fuentes, propaganda y situaciones de la vida cotidiana.', n: 12 },
+  r: { name: 'Nivel 3 · Análisis y resolución de problemas', short: 'Análisis', c: 'var(--lv3)', icon: '🧠',
+       desc: 'Relacionar causas y consecuencias, comparar procesos y argumentar por escrito.', n: 10 }
 };
+const TYPE_LABEL = { mcq: 'Selección única', tf: 'Falso o verdadero', match: 'Pareo', order: 'Ordenamiento cronológico', classify: 'Clasificación', short: 'Respuesta corta', essay: 'Desarrollo' };
+const AE = [
+  'Identifique los motivos que propiciaron el desarrollo del conflicto denominado “Guerra Fría” en la segunda mitad del siglo XX.',
+  'Describa, a través de diversas fuentes, la propaganda de los medios de comunicación creada en torno a las “bondades y peligros” de los sistemas capitalista y socialista.',
+  'Reconozca las repercusiones en la vida cotidiana del ser humano y sus condiciones de vida de los diferentes modelos económicos capitalistas y socialistas (así como sus crisis) durante la segunda mitad del siglo XX.'
+];
+const levelOf = p => p >= 90 ? { n: 'Avanzado', d: 'Dominas el tema: puedes explicarlo y aplicarlo con seguridad.' }
+                   : p >= 70 ? { n: 'Intermedio', d: 'Vas bien y alcanzas la nota de aprobación (70). Refuerza los temas marcados.' }
+                   : p >= 50 ? { n: 'En proceso', d: 'Tienes bases, pero aún hay vacíos. Repasa la guía de los temas señalados.' }
+                   : { n: 'Inicial', d: 'Es el punto de partida perfecto. Empieza por la guía y vuelve a intentarlo.' };
 
-const QB = {
-rusia:[
-{q:"¿Quién era el zar de Rusia al inicio del siglo XX, cuyo gobierno autocrático generó gran descontento social?",o:["Nicolás II","Alejandro III","Pedro el Grande","Iván el Terrible"],a:0,e:"Nicolás II gobernaba con poder absoluto (autocracia), sin ceder poder real a la Duma."},
-{q:"¿Qué hecho de 1905 mostró el descontento popular contra el zarismo antes de la revolución de 1917?",o:["El Domingo Sangriento","La Toma de la Bastilla","El Motín de Kronstadt de 1921","La Marcha sobre Roma"],a:0,e:"El Domingo Sangriento de 1905 fue una masacre de manifestantes pacíficos que debilitó al régimen zarista."},
-{q:"¿Cuál de las siguientes NO fue una causa de la Revolución Rusa?",o:["La industrialización acelerada y el bienestar generalizado del campesinado","El atraso económico e industrial de Rusia","La desigualdad social entre nobleza y campesinado","El desgaste producido por la Primera Guerra Mundial"],a:0,e:"Rusia sufría atraso económico y fuerte desigualdad social; no existía tal bienestar generalizado."},
-{q:"¿Qué consigna utilizaron Lenin y los bolcheviques para ganar apoyo popular en 1917?",o:["Paz, Pan y Tierra","Libertad, Igualdad, Fraternidad","Sangre y Honor","Trabajo, Familia, Patria"],a:0,e:"Esta consigna respondía a las principales demandas populares: fin de la guerra, alimento y reparto de tierras."},
-{q:"¿En qué mes de 1917 abdicó el zar Nicolás II, dando paso a un Gobierno Provisional?",o:["Febrero","Octubre","Enero","Diciembre"],a:0,e:"La Revolución de Febrero de 1917 forzó la abdicación del zar."},
-{q:"¿Quién encabezó el Gobierno Provisional ruso tras la abdicación del zar?",o:["Aleksandr Kerensky","Vladimir Lenin","León Trotsky","Iósif Stalin"],a:0,e:"Kerensky lideró el Gobierno Provisional hasta que fue derrocado en la Revolución de Octubre."},
-{q:"¿Qué fenómeno de poder compartido se dio entre febrero y octubre de 1917 en Rusia?",o:["El doble poder entre el Gobierno Provisional y los Soviets","La diarquía zarista","El triunvirato bolchevique","La coalición aliada"],a:0,e:"El Gobierno Provisional convivió con los Soviets (consejos de obreros y soldados) en una situación de poder dual."},
-{q:"¿Qué grupo político tomó el poder en la Revolución de Octubre de 1917?",o:["Los bolcheviques liderados por Lenin","Los mencheviques","Los zaristas","Los kadetes"],a:0,e:"Los bolcheviques, dirigidos por Lenin, tomaron el poder en octubre de 1917."},
-{q:"¿Qué bando se enfrentó al Ejército Rojo durante la Guerra Civil Rusa (1918-1921)?",o:["El Ejército Blanco, contrarrevolucionario","La Wehrmacht alemana","Las tropas de asalto (SA)","El ejército del Eje"],a:0,e:"El Ejército Blanco agrupaba a fuerzas contrarrevolucionarias opuestas a los bolcheviques."},
-{q:"¿Quién organizó y dirigió militarmente al Ejército Rojo durante la Guerra Civil Rusa?",o:["León Trotsky","José Stalin","Nicolás II","Kerensky"],a:0,e:"Trotsky organizó y comandó al Ejército Rojo durante la guerra civil."},
-{q:"¿Qué potencias apoyaron al Ejército Blanco durante la Guerra Civil Rusa?",o:["Varias potencias extranjeras, como Francia, Reino Unido y EE.UU.","Solo Alemania y Japón","Solo China","Ninguna, fue un conflicto exclusivamente interno"],a:0,e:"Potencias extranjeras intervinieron apoyando a los contrarrevolucionarios, temerosas del avance comunista."},
-{q:"¿Cómo se conoce la política económica bolchevique durante la guerra civil, basada en la requisición estatal de alimentos y el control total de la producción?",o:["El comunismo de guerra","La NEP","El Plan Quinquenal","El Gosplan"],a:0,e:"El comunismo de guerra centralizó la economía para sostener el esfuerzo bélico bolchevique."},
-{q:"¿Qué política económica implementó Lenin en 1921 para reactivar la economía tras la guerra civil?",o:["La Nueva Política Económica (NEP)","El comunismo de guerra","El New Deal","El Gran Salto Adelante"],a:0,e:"La NEP permitió cierto comercio privado y flexibilizó la economía tras el desgaste de la guerra civil."},
-{q:"¿En qué año se formó oficialmente la Unión de Repúblicas Socialistas Soviéticas (URSS)?",o:["1922","1917","1905","1929"],a:0,e:"La URSS se constituyó formalmente en 1922, tras el triunfo bolchevique en la guerra civil."},
-{q:"¿Cuál fue una de las principales transformaciones sociales impulsadas por la Revolución Rusa?",o:["La nacionalización de tierras e industrias y el fin de la nobleza como clase privilegiada","El fortalecimiento de la Iglesia Ortodoxa como poder de Estado","La restauración de la monarquía constitucional","La expansión del sistema zarista a otras naciones"],a:0,e:"Los bolcheviques nacionalizaron la propiedad y eliminaron los privilegios de la antigua nobleza."}
-],
-crisis29:[
-{q:"¿Cómo se conoce popularmente a la década de 1920 en Estados Unidos, marcada por el auge económico previo a la crisis?",o:["Los felices años veinte","La Belle Époque","La Edad Dorada Victoriana","El Gran Despertar"],a:0,e:"Los 'felices años veinte' fueron una época de auge bursátil y consumismo antes del colapso de 1929."},
-{q:"¿Qué día se produjo el colapso bursátil en la Bolsa de Nueva York que dio inicio a la crisis de 1929?",o:["El Jueves Negro, 24 de octubre de 1929","El Lunes Negro, 1 de mayo de 1929","El Viernes Negro, 25 de diciembre de 1929","El Miércoles Negro, 1 de enero de 1930"],a:0,e:"El Jueves Negro marcó el inicio del desplome bursátil que desató la Gran Depresión."},
-{q:"¿Qué factor productivo caracterizó la prosperidad de los años 20 previa a la crisis?",o:["La producción en cadena (fordismo) y el auge del automóvil y los electrodomésticos","La reforma agraria colectivizada","El monopolio estatal de la producción","La desindustrialización acelerada"],a:0,e:"La producción en masa y las nuevas tecnologías impulsaron el consumo y la prosperidad previa."},
-{q:"¿Qué práctica financiera de los años 20 incrementó el riesgo especulativo antes de la crisis?",o:["La compra de acciones a crédito (a margen)","La eliminación total del sistema bancario","La prohibición de las bolsas de valores","El regreso al patrón oro puro sin bancos"],a:0,e:"Comprar acciones a crédito infló artificialmente los precios bursátiles, alimentando la burbuja especulativa."},
-{q:"¿Cuál de las siguientes es una causa directa de la Crisis de 1929?",o:["La sobreproducción industrial y agrícola no absorbida por el consumo","El exceso de regulación estatal sobre la banca","La abolición del capitalismo en Estados Unidos","La firma del Tratado de Versalles"],a:0,e:"La sobreproducción generó excedentes que no encontraban compradores, deprimiendo precios y ganancias."},
-{q:"¿Qué caracterizó al modelo económico previo a 1929, contribuyendo a gestar la crisis?",o:["Sobreproducción, especulación bursátil y desigual distribución de la riqueza","Planificación centralizada estatal","Control absoluto de precios por el gobierno","Ausencia total de industria"],a:0,e:"Estos tres factores combinados generaron una economía frágil y vulnerable al colapso."},
-{q:"¿Cuál fue una consecuencia social inmediata de la Crisis de 1929?",o:["Desempleo masivo y quiebra de bancos y empresas","Pleno empleo generalizado","Aumento sostenido de salarios","Reducción de la pobreza mundial"],a:0,e:"El desempleo y las quiebras se dispararon en Estados Unidos y se extendieron globalmente."},
-{q:"¿Cómo afectó la crisis de 1929 al comercio internacional?",o:["Provocó una fuerte caída del comercio internacional","Lo hizo crecer aceleradamente","No tuvo ningún efecto","Solo afectó a Asia"],a:0,e:"El colapso económico y el proteccionismo redujeron drásticamente los intercambios comerciales mundiales."},
-{q:"¿Qué política implementó Franklin D. Roosevelt para enfrentar la crisis en Estados Unidos?",o:["El New Deal","La NEP","El Plan Marshall","El comunismo de guerra"],a:0,e:"El New Deal fue el conjunto de reformas de Roosevelt para reactivar la economía estadounidense."},
-{q:"¿Qué elementos incluyó el New Deal como medida frente a la crisis?",o:["Intervención estatal, obras públicas y regulación bancaria y de seguridad social","La privatización total de la banca","La abolición de la Bolsa de Nueva York","El retorno al laissez-faire puro"],a:0,e:"El New Deal combinó gasto público, regulación financiera y programas sociales."},
-{q:"¿Qué corriente económica respaldó teóricamente la intervención estatal frente a crisis como la de 1929?",o:["El keynesianismo","El liberalismo clásico puro","El anarquismo económico","El feudalismo"],a:0,e:"John Maynard Keynes defendía que el Estado debía intervenir activamente para reactivar la economía."},
-{q:"¿Qué medida comercial adoptaron muchos países durante la crisis, agravando la caída del comercio mundial?",o:["El proteccionismo (aumento de aranceles)","El libre comercio total","La eliminación de aduanas","La unión monetaria mundial"],a:0,e:"El aumento de aranceles buscaba proteger la producción nacional, pero redujo aún más el comercio mundial."},
-{q:"¿Qué papel jugó Estados Unidos como principal acreedor mundial tras la Primera Guerra Mundial en la gestación de la crisis?",o:["Concentró gran parte del capital y crédito mundial, alimentando la especulación","Fue irrelevante para la crisis","Impidió cualquier posibilidad de crisis","Generó una economía completamente cerrada"],a:0,e:"El flujo masivo de capital y crédito estadounidense alimentó la burbuja bursátil previa al colapso."},
-{q:"¿La Crisis de 1929 tuvo impacto únicamente en Estados Unidos?",o:["Falso, se extendió a Europa y América Latina, entre otras regiones","Verdadero, fue un fenómeno exclusivamente estadounidense","Solo afectó a Asia","Solo afectó a los países comunistas"],a:0,e:"La crisis se propagó globalmente por los vínculos comerciales y financieros internacionales."},
-{q:"¿Cuál de estas NO fue una medida para enfrentar la crisis de 1929?",o:["La abolición completa del dinero y el comercio","La intervención estatal en la economía","Las obras públicas para generar empleo","La regulación del sistema financiero"],a:0,e:"Ningún país abolió el dinero; las medidas reales apuntaron a intervención estatal, obras públicas y regulación."}
-],
-wwiiAnte:[
-{q:"¿Qué características comparten el fascismo y el nazismo como movimientos totalitarios?",o:["Ser antidemocráticos, anticomunistas, de partido único y con culto a la violencia y el expansionismo","Ser regímenes parlamentarios multipartidistas","Defender la propiedad colectiva y el fin del Estado","Promover la integración religiosa universal"],a:0,e:"Ambos movimientos compartían una estructura totalitaria, antidemocrática y expansionista."},
-{q:"¿Quién fundó y lideró el Partido Nacional Fascista en Italia?",o:["Benito Mussolini","Adolf Hitler","Francisco Franco","Josef Stalin"],a:0,e:"Mussolini fundó el Partido Fascista y gobernó Italia como 'el Duce'."},
-{q:"¿En qué año llegó Mussolini al poder en Italia tras la 'Marcha sobre Roma'?",o:["1922","1933","1917","1939"],a:0,e:"En octubre de 1922 los fascistas marcharon sobre Roma y Mussolini fue nombrado jefe de Gobierno."},
-{q:"¿Cómo se conocía a Mussolini como líder de Italia?",o:["El Duce","El Führer","El Caudillo","El Zar"],a:0,e:"'Il Duce' (el caudillo, en italiano) era el título con que se conocía a Mussolini."},
-{q:"¿Sobre qué base se formó el Partido Nacionalsocialista Alemán en 1920?",o:["El Partido Obrero Alemán","El Partido Comunista Alemán","La Liga Espartaquista","El Partido Socialdemócrata"],a:0,e:"El partido nazi surgió a partir del recién formado Partido Obrero Alemán."},
-{q:"¿Entre qué años llegó el partido nazi al poder en Alemania?",o:["1933-1934","1917-1918","1939-1940","1945-1946"],a:0,e:"Entre 1933 y 1934 Hitler consolidó el poder mediante violencia, elecciones favorables y apoyo de las élites."},
-{q:"¿Qué grupos paramilitares destacaron en el ascenso nazi al poder?",o:["Las SS y las SA","El Ejército Rojo","La Gestapo únicamente","La Wehrmacht regular"],a:0,e:"Las SS (fuerzas privadas de Hitler) y las SA (tropas de asalto) fueron claves en la consolidación nazi."},
-{q:"¿Qué teoría sostenía el nazismo sobre la 'raza aria'?",o:["Que los arios estaban destinados a gobernar el mundo frente a otras razas","Que todas las razas eran iguales ante la ley","Que la superioridad dependía únicamente de la riqueza","Que no existían diferencias raciales relevantes"],a:0,e:"El nazismo difundía una falsa teoría biológica de superioridad racial aria."},
-{q:"¿Qué establecieron las Leyes Raciales de Núremberg de 1935?",o:["Despojaron a los judíos de la ciudadanía alemana y prohibieron matrimonios con 'arios'","Otorgaron plenos derechos civiles a los judíos","Crearon el Estado de Israel","Establecieron la libertad religiosa plena"],a:0,e:"Estas leyes normalizaron legalmente la segregación racial contra la población judía."},
-{q:"¿Qué medida de 1933 excluyó a judíos y opositores políticos de los empleos estatales en Alemania?",o:["La Ley para la Restauración de la Función Pública Profesional","El Tratado de Versalles","El Pacto de no agresión","La Conferencia de Yalta"],a:0,e:"Esta ley de abril de 1933 fue una de las primeras medidas de exclusión contra los judíos."},
-{q:"¿A qué grupos, además de los judíos, persiguió sistemáticamente el régimen nazi?",o:["Gitanos, eslavos, personas con discapacidad y homosexuales, entre otros","Únicamente a los católicos practicantes","Solo a los ciudadanos alemanes de clase alta","Solo a los prisioneros de guerra franceses"],a:0,e:"La persecución nazi alcanzó a múltiples grupos considerados 'inferiores' o enemigos del régimen."},
-{q:"¿Qué prohibieron las restricciones nazis de 1938 contra los judíos?",o:["Asistir a escuelas, universidades, cines y ciertos espacios públicos","Nada, ese año se ampliaron sus derechos","Practicar cualquier religión","Vivir en cualquier país de Europa"],a:0,e:"En 1938 se profundizó el aislamiento social y legal de la población judía en Alemania."},
-{q:"¿Aproximadamente cuántos judíos se estima que murieron en los campos nazis entre 1941 y 1945?",o:["Cerca de 5.7 millones","Cerca de 500 mil","Cerca de 20 millones","Cerca de 1 millón únicamente"],a:0,e:"Se calcula que murieron cerca de 5.7 millones de judíos en los campos de concentración y exterminio."},
-{q:"¿Qué grupos étnicos fueron víctimas, junto a los judíos, de la destrucción sistemática nazi en los campos de concentración?",o:["Judíos, gitanos y eslavos","Solo alemanes disidentes","Solo prisioneros de guerra italianos","Solo ciudadanos franceses"],a:0,e:"El régimen nazi buscó la destrucción sistemática de judíos, gitanos y eslavos, entre otros grupos."},
-{q:"¿Qué fue el programa Lebensborn implementado por el régimen nazi?",o:["Un programa que reclutaba mujeres en territorios eslavos para tener hijos considerados de 'raza aria'","Un programa de ayuda humanitaria a refugiados judíos","Una alianza militar germano-soviética","Un plan de reconstrucción económica de posguerra"],a:0,e:"Lebensborn buscaba 'mejorar' la supuesta raza aria mediante la selección y adopción forzada de niños."}
-],
-wwiiCausas:[
-{q:"¿Cuál de las siguientes es una causa mediata de la Segunda Guerra Mundial?",o:["El ascenso de los totalitarismos en Europa","El ataque a Pearl Harbor","La invasión a Polonia","El pacto de no agresión germano-soviético"],a:0,e:"El auge de los totalitarismos fue una causa de fondo (mediata), previa a los hechos que detonaron la guerra."},
-{q:"¿Qué tratado es señalado por historiadores como una de las principales causas de fondo de la guerra, por humillar y limitar a Alemania?",o:["El Tratado de Versalles","El Tratado de Yalta","El Pacto de Bretton Woods","El Tratado de Núremberg"],a:0,e:"El Tratado de Versalles impuso duras condiciones a Alemania tras la Primera Guerra Mundial."},
-{q:"¿Qué rivalidad ideológica se identifica como causa mediata de la guerra?",o:["La rivalidad entre el nazismo/fascismo y las democracias junto con el comunismo","La rivalidad entre budismo e hinduismo","La rivalidad entre monarquías absolutas europeas","La rivalidad comercial entre España y Portugal"],a:0,e:"El choque ideológico entre totalitarismos, democracias liberales y comunismo tensionó a Europa."},
-{q:"¿Qué pacto de agosto de 1939 convirtió temporalmente a Alemania y la URSS en aliadas?",o:["El Pacto de no agresión germano-soviético","El Pacto Tripartito","El Tratado de Versalles","La Conferencia de Múnich"],a:0,e:"Firmado el 23 de agosto de 1939, este pacto sorprendió al mundo al unir a dos potencias rivales."},
-{q:"¿Qué hecho del 1 de setiembre de 1939 se considera el inicio inmediato de la guerra en Europa?",o:["La invasión alemana a Polonia","El ataque a Pearl Harbor","La invasión a la URSS","La caída de Francia"],a:0,e:"La invasión a Polonia precipitó la entrada de Gran Bretaña y Francia a la guerra días después."},
-{q:"¿Qué países formaron el Eje Berlín-Roma-Tokio?",o:["Alemania, Italia y Japón","Alemania, Francia y Reino Unido","Italia, España y Portugal","Japón, China y Corea"],a:0,e:"El Pacto Tripartito unió a Alemania, Italia y Japón como potencias del Eje."},
-{q:"¿Qué países integraron originalmente el bloque Aliado antes de sumarse Estados Unidos?",o:["Francia, Gran Bretaña y la URSS","Alemania, Italia y Japón","China, India y Australia","México, Brasil y Argentina"],a:0,e:"Estos tres países conformaron el núcleo original de los Aliados frente al Eje."},
-{q:"¿En qué momento se sumó Estados Unidos formalmente a los Aliados?",o:["Tras el ataque japonés a Pearl Harbor en diciembre de 1941","Desde el inicio de la guerra en 1939","Tras la caída de Berlín en 1945","Nunca se unió oficialmente"],a:0,e:"El ataque a Pearl Harbor obligó a Estados Unidos a entrar de lleno en el conflicto."},
-{q:"¿Qué política expansionista impulsada por Hitler desde 1939 buscaba someter y dominar Europa?",o:["La política expansionista alemana","El aislacionismo alemán","La neutralidad armada","El pacifismo del Tercer Reich"],a:0,e:"Hitler buscaba expandir el territorio alemán conquistando y dominando gran parte de Europa."},
-{q:"¿Qué papel jugó la política expansionista de Japón como causa mediata de la guerra?",o:["Buscaba un amplio dominio sobre el Pacífico","Buscaba la independencia total de su territorio sin expansión","Se limitaba a alianzas comerciales pacíficas","No tuvo relación con el conflicto"],a:0,e:"Japón perseguía el control territorial y económico de amplias zonas del Océano Pacífico."}
-],
-wwiiFases:[
-{q:"¿Qué caracterizó la Fase 1 de la guerra (setiembre 1939 - diciembre 1940)?",o:["La invasión a Polonia, la 'Guerra Fingida' y la ocupación alemana de gran parte de Europa occidental","La rendición incondicional de Japón","El desembarco en Normandía","El lanzamiento de la bomba atómica"],a:0,e:"En esta primera fase Alemania invadió Polonia y luego avanzó sobre Dinamarca, Noruega y Francia."},
-{q:"¿Cómo se conoció la táctica militar alemana que permitió derrotar rápidamente a Francia en 1940?",o:["La Guerra Relámpago (Blitzkrieg)","La Guerra de Trincheras","La Guerra Fría","La Guerra de Guerrillas"],a:0,e:"La Blitzkrieg combinaba velocidad, tanques y aviación para lograr victorias rápidas."},
-{q:"¿Qué batallas de 1940 frustraron los intentos alemanes de doblegar a Gran Bretaña por vía aérea?",o:["Las Batallas de Gran Bretaña (julio-setiembre de 1940)","La Batalla de Stalingrado","La Batalla de Midway","La Batalla de El Alamein"],a:0,e:"Los bombardeos alemanes no lograron doblegar a los británicos en estas batallas aéreas."},
-{q:"¿Qué evento de junio de 1941 marcó el inicio de la Fase 2 y rompió el pacto de no agresión germano-soviético?",o:["La invasión alemana a la Unión Soviética","El ataque a Pearl Harbor","El desembarco de Normandía","La rendición de Italia"],a:0,e:"Hitler invadió la URSS en junio de 1941, rompiendo el pacto firmado en 1939."},
-{q:"¿Qué ataque de diciembre de 1941 obligó a Estados Unidos a entrar en la guerra?",o:["El ataque japonés a Pearl Harbor","La invasión alemana a Polonia","El bombardeo de Londres","La invasión a Grecia"],a:0,e:"Japón atacó la base naval de Pearl Harbor, arrastrando a EE.UU. al conflicto mundial."},
-{q:"¿Cuáles batallas definieron el rumbo de la guerra durante la Fase 3 (verano 1942-verano 1943)?",o:["Midway, El Alamein y Stalingrado","Waterloo, Trafalgar y Austerlitz","Verdún, el Somme y Ypres","Gettysburg, Bull Run y Antietam"],a:0,e:"Estas tres grandes batallas marcaron el giro de la guerra a favor de los Aliados."},
-{q:"¿Qué ocurrió en la Batalla de Stalingrado, punto de quiebre de la guerra?",o:["El ejército alemán fue rodeado y obligado a rendirse ante la resistencia soviética","Alemania logró una victoria decisiva y definitiva","Japón se rindió incondicionalmente","Estados Unidos perdió el control del Pacífico"],a:0,e:"La derrota alemana en Stalingrado (febrero de 1943) fue un golpe decisivo para el Eje."},
-{q:"¿Qué desembarco de junio de 1944 ayudó a la liberación de Francia, Bélgica y Holanda?",o:["El desembarco de Normandía","El desembarco en Sicilia","El desembarco en Okinawa","El desembarco en Guadalcanal"],a:0,e:"El desembarco angloestadounidense en Normandía abrió el frente occidental decisivo."},
-{q:"¿En qué mes y año se rindió Alemania, poniendo fin a la guerra en Europa?",o:["Mayo de 1945","Agosto de 1945","Setiembre de 1939","Diciembre de 1941"],a:0,e:"Alemania se rindió en mayo de 1945, ante el avance aliado desde el oeste y soviético desde el este."},
-{q:"¿Qué general estadounidense comandó las fuerzas aliadas que avanzaron por el oeste europeo hasta Alemania?",o:["Dwight Eisenhower","Douglas MacArthur","George Patton únicamente","Erwin Rommel"],a:0,e:"Eisenhower comandó las fuerzas aliadas en el frente occidental europeo."}
-],
-wwiiConf:[
-{q:"¿Qué arma nueva usó Estados Unidos contra Japón en agosto de 1945, provocando su rendición incondicional?",o:["La bomba atómica","Armas químicas","Misiles balísticos intercontinentales","Armas biológicas"],a:0,e:"El uso de la bomba atómica forzó la rendición incondicional de Japón."},
-{q:"¿En qué ciudades japonesas se lanzaron las bombas atómicas en agosto de 1945?",o:["Hiroshima y Nagasaki","Tokio y Osaka","Kioto y Yokohama","Nagoya y Kobe"],a:0,e:"Hiroshima (6 de agosto) y Nagasaki (9 de agosto) de 1945 sufrieron los ataques atómicos."},
-{q:"¿Qué conferencia de 1944 buscó restablecer el orden económico mundial y creó el FMI y el Banco Mundial?",o:["La Conferencia de Bretton Woods","La Conferencia de Yalta","La Conferencia de Potsdam","La Conferencia de San Francisco"],a:0,e:"Bretton Woods sentó las bases del nuevo orden económico internacional de posguerra."},
-{q:"¿Qué líderes se reunieron en la Conferencia de Potsdam para decidir el desmantelamiento de la industria militar nazi?",o:["Truman, Attlee y Stalin","Roosevelt, Churchill y Stalin","Hitler, Mussolini e Hirohito","Lenin, Trotsky y Stalin"],a:0,e:"En Potsdam (jul-ago 1945) estos líderes acordaron el desarme y castigo de los jerarcas nazis."},
-{q:"¿Qué se decidió en la Conferencia de Yalta (febrero de 1945)?",o:["La eliminación del régimen nazi y la división de Alemania en zonas de influencia","La creación de la Unión Europea","El fin de la Guerra Fría","La independencia de la India"],a:0,e:"En Yalta, los Aliados definieron el futuro reparto de influencia sobre Alemania y Europa."},
-{q:"¿Qué organización internacional se creó tras la Conferencia de San Francisco, sustituyendo a la Sociedad de las Naciones?",o:["La Organización de las Naciones Unidas (ONU)","La OTAN","La Unión Europea","El FMI"],a:0,e:"La ONU se fundó el 25 de junio de 1945 para mantener la paz y la seguridad mundial."},
-{q:"¿Qué se estableció en la Conferencia de París (nov-dic 1945)?",o:["Los tratados de paz y las indemnizaciones de guerra para los aliados de Alemania","La creación de la ONU","El inicio de la Guerra Fría","La rendición de Japón"],a:0,e:"En París se definieron los tratados de paz y las reparaciones de guerra."},
-{q:"¿Aproximadamente cuántas personas murieron en total durante la Segunda Guerra Mundial?",o:["Cerca de 60 millones","Cerca de 1 millón","Cerca de 10 millones","Cerca de 200 millones"],a:0,e:"Se estima que la Segunda Guerra Mundial causó cerca de 60 millones de muertes."},
-{q:"¿Qué rivalidad de posguerra surgió entre Estados Unidos y la URSS como consecuencia directa del conflicto?",o:["La Guerra Fría","La Guerra de Corea únicamente","La Guerra de los Cien Años","La Guerra Franco-Prusiana"],a:0,e:"La rivalidad ideológica y de poder entre ambas potencias dio origen a la Guerra Fría."},
-{q:"¿Cómo quedó dividida Alemania tras la guerra?",o:["En la República Federal de Alemania y la República Democrática de Alemania (bajo dominio soviético)","Se mantuvo unificada bajo un gobierno único","Fue anexada completamente por Francia","Desapareció como Estado"],a:0,e:"Alemania se dividió entre las zonas administradas por potencias occidentales y la zona soviética."},
-{q:"¿Qué proceso mundial se aceleró tras la Segunda Guerra Mundial, duplicando el número de naciones en menos de 20 años?",o:["La descolonización de África y Asia","La reunificación de los imperios coloniales","La expansión del sistema zarista","La desaparición de las fronteras nacionales"],a:0,e:"La descolonización transformó el mapa mundial tras el debilitamiento de las potencias europeas."},
-{q:"¿Qué organismo económico internacional, sucesor del GATT, regula el comercio internacional en el nuevo orden de posguerra?",o:["La Organización Mundial del Comercio (OMC)","El Banco Mundial","La ONU","La OTAN"],a:0,e:"La OMC sucedió al GATT como plataforma de negociación comercial internacional."}
-]
+/* =========================================================
+   GUÍA DE ESTUDIO POR TEMA
+   ========================================================= */
+const TOPICS = {
+T1: { short: 'Conceptos clave', title: 'Conceptos clave y el concepto de Guerra Fría', icon: '🧩', ae: 1, html: `
+<p>La <b>Guerra Fría</b> fue el enfrentamiento <b>político, ideológico, económico, tecnológico y cultural</b> entre <b>Estados Unidos</b> (capitalismo, democracia liberal) y la <b>Unión Soviética – URSS</b> (socialismo/comunismo, partido único), desde el fin de la Segunda Guerra Mundial (1945-1947) hasta la disolución de la URSS (1991).</p>
+<div class="callout key"><b class="t">¿Por qué “fría”?</b>Porque las dos superpotencias <b>nunca se enfrentaron militarmente de forma directa</b>: el miedo a una guerra nuclear lo impidió. Compitieron mediante alianzas, propaganda, carrera armamentista y espacial, y <b>conflictos indirectos</b> (guerras en otros países como Corea, Vietnam o Afganistán).</div>
+<p>El mundo quedó <b>bipolar</b>: el poder se concentró en dos polos, cada uno con su área de influencia (bloque occidental o capitalista y bloque oriental o socialista).</p>
+<h3>Conceptos que debes dominar</h3>
+<div class="concepts">
+<div><b>Conflicto</b>Oposición o enfrentamiento entre personas, grupos o Estados por intereses, valores o recursos. Puede ser armado o no armado.</div>
+<div><b>Democracia</b>Sistema en que el poder reside en el pueblo, que elige a sus gobernantes en elecciones libres; respeta derechos y la división de poderes.</div>
+<div><b>Gobierno</b>Conjunto de personas e instituciones que dirigen y administran un Estado.</div>
+<div><b>Convención internacional</b>Acuerdo o tratado entre Estados que crea obligaciones jurídicas. Ej.: Convención para la Prevención y la Sanción del Delito de Genocidio (ONU, 1948).</div>
+<div><b>Dictadura</b>Régimen en que el poder se concentra en una persona o grupo, sin control ciudadano; suele censurar y perseguir a la oposición.</div>
+<div><b>Ideología</b>Conjunto de ideas, creencias y valores que explican la sociedad y orientan la acción política (capitalismo liberal vs. comunismo).</div>
+<div><b>Imperialismo</b>Política de expansión y dominio de un Estado sobre otros territorios (político, económico, militar o cultural). Cada bloque acusaba al otro de imperialista.</div>
+<div><b>Liberalismo</b>Doctrina que defiende las libertades individuales, la propiedad privada, el libre mercado y los límites al poder del Estado. Base del bloque occidental.</div>
+<div><b>Genocidio</b>Actos cometidos con la intención de destruir, total o parcialmente, a un grupo nacional, étnico, racial o religioso. Término creado por Raphael Lemkin (1944).</div>
+</div>
+<div class="callout trick"><b class="t">Truco para recordar</b>Democracia ↔ Dictadura son opuestos en <i>cómo se ejerce el poder</i>; Liberalismo ↔ Comunismo son opuestos en <i>ideología económica</i>.</div>` },
+
+T2: { short: 'Causas y bloques militares', title: 'Causas de la Guerra Fría y bloques militares', icon: '🛡️', ae: 1, html: `
+<h3>Causas principales</h3>
+<ul>
+<li><b>Diferencias ideológicas irreconciliables:</b> capitalismo y democracia liberal (EE. UU.) frente a socialismo con partido único (URSS).</li>
+<li><b>Vacío de poder tras la Segunda Guerra Mundial:</b> Europa quedó destruida y surgieron dos superpotencias.</li>
+<li><b>Desacuerdos en Yalta y Potsdam (1945)</b> sobre el futuro de Alemania y Europa del Este.</li>
+<li><b>Expansión soviética en Europa del Este</b> (“democracias populares”). Churchill habló en 1946 de un <b>“telón de acero”</b> que dividía Europa.</li>
+<li><b>Doctrina Truman (1947):</b> política de <b>contención</b> del comunismo. <b>Plan Marshall (1947):</b> ayuda económica para reconstruir Europa occidental. La URSS respondió con el Kominform (1947) y el <b>COMECON</b> (1949).</li>
+<li><b>Bloqueo de Berlín (1948-1949)</b> y división de Alemania en RFA (occidental) y RDA (socialista) en 1949.</li>
+<li><b>Carrera nuclear:</b> EE. UU. tuvo el monopolio atómico hasta 1949, cuando la URSS probó su bomba.</li>
+</ul>
+<h3>Bloques militares</h3>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Alianza</th><th>Año</th><th>Bloque</th><th>Miembros principales</th><th>Objetivo</th></tr></thead>
+<tbody>
+<tr><td><b>OTAN</b></td><td>1949</td><td>Capitalista</td><td>EE. UU., Canadá, Reino Unido, Francia, Italia, Bélgica, Países Bajos, Luxemburgo, Portugal, Noruega, Dinamarca, Islandia</td><td>Defensa colectiva: un ataque a un miembro es un ataque a todos (art. 5).</td></tr>
+<tr><td><b>SEATO / OTASE</b></td><td>1954</td><td>Capitalista</td><td>EE. UU., Reino Unido, Francia, Australia, Nueva Zelanda, Filipinas, Tailandia, Pakistán</td><td>Frenar el comunismo en el Sudeste Asiático (“teoría del dominó”). Disuelta en 1977.</td></tr>
+<tr><td><b>Pacto de Bagdad</b></td><td>1955</td><td>Capitalista</td><td>Turquía, Irak, Irán, Pakistán, Reino Unido (EE. UU. lo apoyaba)</td><td>Contener a la URSS en Medio Oriente. En 1959, tras salir Irak, pasó a llamarse CENTO.</td></tr>
+<tr><td><b>Pacto de Varsovia</b></td><td>1955</td><td>Socialista</td><td>URSS, Polonia, RDA, Checoslovaquia, Hungría, Rumania, Bulgaria, Albania</td><td>Respuesta al ingreso de la RFA en la OTAN. Disuelto en 1991.</td></tr>
+</tbody></table></div>
+<div class="callout trick"><b class="t">Truco para recordar</b>EE. UU. construyó un “cinturón” alrededor de la URSS: <b>OTAN</b> (Europa) → <b>Bagdad</b> (Medio Oriente) → <b>SEATO</b> (Asia). Pakistán estuvo en Bagdad y en SEATO.</div>` },
+
+T3: { short: 'Fases de la Guerra Fría', title: 'Fases de la Guerra Fría y su fin', icon: '⏳', ae: 1, html: `
+<p class="muted">Los libros de texto pueden variar levemente las fechas; lo importante es reconocer la lógica de cada etapa.</p>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Fase</th><th>Años</th><th>Hechos clave</th></tr></thead>
+<tbody>
+<tr><td><b>1. Formación de bloques</b></td><td>1945-1953</td><td>Doctrina Truman, Plan Marshall, bloqueo de Berlín, OTAN, bomba atómica soviética y Revolución China (1949), Guerra de Corea (1950-1953).</td></tr>
+<tr><td><b>2. Coexistencia pacífica</b></td><td>1953-1962</td><td>Muerte de Stalin; Jruschov acepta que ambos sistemas “coexistan”, pero hay crisis: Hungría (1956), Sputnik (1957), Revolución Cubana (1959), Muro de Berlín (1961) y Crisis de los misiles (1962).</td></tr>
+<tr><td><b>3. Distensión</b></td><td>1962-1979</td><td>“Teléfono rojo” (1963), Tratado de No Proliferación Nuclear (1968), SALT I (1972), Acta de Helsinki (1975). Aun así: Vietnam (hasta 1975) y Primavera de Praga (1968).</td></tr>
+<tr><td><b>4. Nueva Guerra Fría</b></td><td>1979-1985</td><td>Invasión soviética de Afganistán (1979), Reagan y la “Guerra de las galaxias” (1983), boicots olímpicos de 1980 y 1984.</td></tr>
+<tr><td><b>5. Fin del conflicto</b></td><td>1985-1991</td><td>Gorbachov: <b>perestroika</b> (reestructuración económica) y <b>glasnost</b> (transparencia). Caída del Muro de Berlín (9 nov. 1989), reunificación alemana (1990), disolución del Pacto de Varsovia y de la URSS (1991).</td></tr>
+</tbody></table></div>
+<h3>Bloques capitalista y socialista</h3>
+<p><b>Capitalista (occidental):</b> EE. UU., Europa occidental, Canadá, Japón y aliados. <b>Socialista (oriental):</b> URSS, Europa del Este, China (hasta su ruptura con la URSS en los años 60), Corea del Norte, Cuba, Vietnam del Norte. Muchos países recién independizados formaron el <b>Movimiento de Países No Alineados</b> (1961).</p>
+<h3>Repercusiones políticas del fin</h3>
+<ul>
+<li>Fin del mundo bipolar: EE. UU. queda como única superpotencia.</li>
+<li>La URSS se divide en <b>15 repúblicas independientes</b> (Rusia, Ucrania, Bielorrusia, los países bálticos, etc.).</li>
+<li>Europa del Este pasa a democracias multipartidistas y economías de mercado; varios países ingresan después a la OTAN y a la Unión Europea.</li>
+<li>Se acelera la <b>globalización</b> económica.</li>
+</ul>
+<div class="callout trick"><b class="t">Truco para recordar</b>“<b>F</b>ormar, <b>C</b>onvivir, <b>D</b>istender, <b>R</b>ebrotar, <b>T</b>erminar” → F-C-D-R-T.</div>` },
+
+T4: { short: 'Rivalidad geopolítica', title: 'Expresiones de la rivalidad: armas, conflictos, propaganda y espacio', icon: '🚀', ae: 2, html: `
+<h3>Carrera armamentista y amenaza nuclear</h3>
+<ul>
+<li>Bomba atómica: EE. UU. (1945) y URSS (1949). Bomba de hidrógeno: EE. UU. (1952) y URSS (1953). Luego, misiles intercontinentales y submarinos nucleares.</li>
+<li><b>Destrucción Mutua Asegurada (MAD):</b> si uno atacaba, el otro respondía y ambos serían destruidos; esto <b>disuadía</b> el ataque (“equilibrio del terror”).</li>
+<li>Vida cotidiana con miedo: refugios antinucleares y simulacros escolares “<i>Duck and Cover</i>” (agacharse y cubrirse) en EE. UU.</li>
+<li><b>Crisis de los misiles en Cuba (octubre 1962):</b> EE. UU. descubrió misiles soviéticos en Cuba. Tras 13 días de tensión, la URSS los retiró a cambio de que EE. UU. no invadiera Cuba (y retirara en secreto sus misiles de Turquía). Fue el momento más cercano a una guerra nuclear.</li>
+</ul>
+<h3>Conflictos durante la Guerra Fría</h3>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Conflicto</th><th>Causas</th><th>Consecuencias</th></tr></thead>
+<tbody>
+<tr><td><b>Guerra de Corea</b> (1950-1953)</td><td>Corea del Norte (apoyo soviético y chino) invade a Corea del Sur (apoyo de EE. UU. y la ONU).</td><td>Armisticio; la península sigue dividida en el paralelo 38.</td></tr>
+<tr><td><b>Guerra de Vietnam</b> (1955-1975)</td><td>Vietnam del Norte comunista busca unificar el país; EE. UU. apoya al Sur para contener el comunismo.</td><td>Derrota de EE. UU. y unificación comunista (1975); fuertes protestas pacifistas.</td></tr>
+<tr><td><b>Afganistán</b> (1979-1989)</td><td>La URSS invade para sostener un gobierno aliado; EE. UU. arma a los muyahidines.</td><td>Retirada soviética; desgaste económico de la URSS.</td></tr>
+</tbody></table></div>
+<h3>Propaganda en los medios de comunicación</h3>
+<div class="tbl-wrap"><table>
+<thead><tr><th></th><th>Propaganda de EE. UU. (capitalista)</th><th>Propaganda de la URSS (socialista)</th></tr></thead>
+<tbody>
+<tr><td><b>“Bondades” propias</b></td><td>Libertad individual, democracia, prosperidad y consumo: el “<i>American way of life</i>” (auto, televisión, electrodomésticos).</td><td>Igualdad, trabajo para todos, dignidad del obrero y el campesino, logros científicos y espaciales.</td></tr>
+<tr><td><b>“Peligros” del rival</b></td><td>El comunismo como amenaza que quita la libertad, invade países y se infiltra (“Temor Rojo”).</td><td>El capitalismo como explotador, desigual, racista e imperialista.</td></tr>
+<tr><td><b>Medios</b></td><td>Películas de Hollywood, cómics, radio (Voice of America, Radio Free Europe), televisión.</td><td>Carteles, cine, radio (Radio Moscú), prensa oficial (<i>Pravda</i>), deporte y ajedrez.</td></tr>
+</tbody></table></div>
+<p>El <b>macartismo</b> (senador Joseph McCarthy, década de 1950) fue una “caza de brujas” contra personas acusadas de comunistas, con listas negras en Hollywood.</p>
+<h3>Avances en la exploración espacial</h3>
+<ul>
+<li><b>1957:</b> la URSS lanza el <b>Sputnik 1</b>, primer satélite artificial; luego la perra <b>Laika</b>, primer ser vivo en órbita. EE. UU. crea la <b>NASA</b> (1958).</li>
+<li><b>1961:</b> <b>Yuri Gagarin</b> (URSS), primer ser humano en el espacio. <b>1963:</b> <b>Valentina Tereshkova</b>, primera mujer.</li>
+<li><b>1969:</b> <b>Apolo 11</b> (EE. UU.): Neil Armstrong y Buzz Aldrin, primeros humanos en la Luna.</li>
+<li><b>1975:</b> misión conjunta Apolo-Soyuz, símbolo de la distensión.</li>
+</ul>
+<div class="callout link"><b class="t">Conexión clave</b>Los cohetes que llevaban satélites también podían llevar bombas nucleares: la carrera espacial era también <b>militar y propagandística</b>.</div>` },
+
+T5: { short: 'Capitalismo vs. socialismo', title: 'Modelos económicos, vida cotidiana y sus crisis', icon: '⚖️', ae: 3, html: `
+<div class="tbl-wrap"><table>
+<thead><tr><th>Aspecto</th><th>Capitalismo (bloque occidental)</th><th>Socialismo (bloque soviético)</th></tr></thead>
+<tbody>
+<tr><td><b>Propiedad</b></td><td>Privada de los medios de producción.</td><td>Estatal o colectiva.</td></tr>
+<tr><td><b>Economía</b></td><td>Libre mercado, competencia, oferta y demanda.</td><td>Planificada centralmente por el Estado (planes quinquenales).</td></tr>
+<tr><td><b>Política</b></td><td>Pluripartidismo y elecciones (con excepciones en dictaduras aliadas).</td><td>Partido único (Partido Comunista).</td></tr>
+<tr><td><b>Vida cotidiana: ventajas</b></td><td>Sociedad de consumo (autos, TV, electrodomésticos), libertades de expresión y de viaje; en Europa occidental, <b>Estado de bienestar</b> (salud, educación, pensiones).</td><td>Empleo, educación, salud y vivienda garantizados y baratos; alta alfabetización.</td></tr>
+<tr><td><b>Vida cotidiana: problemas</b></td><td>Desigualdad, desempleo, pobreza en algunos sectores, discriminación.</td><td>Escasez de bienes de consumo, largas filas, baja calidad, censura, policía política (KGB, Stasi) y restricciones para viajar.</td></tr>
+<tr><td><b>Crisis</b></td><td><b>Crisis del petróleo (1973):</b> la OPEP embargó el petróleo y los precios se dispararon → <b>estanflación</b> (inflación + estancamiento y desempleo). Respuesta: neoliberalismo (Reagan, Thatcher).</td><td><b>Estancamiento</b> (era Brézhnev), ineficiencia, enorme gasto militar, rebeliones (Hungría 1956, Praga 1968, Solidaridad en Polonia 1980) → colapso entre 1989 y 1991.</td></tr>
+</tbody></table></div>
+<div class="callout key"><b class="t">Idea central para el examen</b>Cada modelo prometía bienestar, pero ambos tuvieron costos: el capitalismo ofrecía libertad y consumo con desigualdad; el socialismo ofrecía seguridad social con escasez y falta de libertades.</div>` },
+
+T6: { short: 'Movimientos sociales y contracultura', title: 'Luchas sociales y contracultura en la Guerra Fría', icon: '✊', ae: 3, html: `
+<p><b>Contracultura:</b> movimientos que rechazan los valores dominantes de su sociedad (consumismo, autoritarismo, guerra, discriminación) y proponen formas de vida alternativas.</p>
+<div class="concepts">
+<div><b>Movimiento hippie</b>Años 60, EE. UU. (San Francisco). Pacifismo contra la Guerra de Vietnam (“<i>Haz el amor, no la guerra</i>”), rechazo al consumismo, vida en comunas, música rock y folk. Hitos: Verano del Amor (1967) y Woodstock (1969).</div>
+<div><b>Ecologista</b>Rachel Carson denuncia los pesticidas (DDT) en <i>Primavera silenciosa</i> (1962). Primer Día de la Tierra (1970). Greenpeace (1971) nace protestando contra pruebas nucleares.</div>
+<div><b>Anticomunista</b>Macartismo en EE. UU. (1950-1954); en América Latina, apoyo a gobiernos y dictaduras anticomunistas.</div>
+<div><b>Antinuclear / pacifista</b>Campaña por el Desarme Nuclear (CND, Reino Unido, 1958), cuyo emblema es el actual <b>símbolo de la paz</b>; marchas contra las pruebas atómicas.</div>
+<div><b>Liberación de la mujer</b>“Segunda ola” feminista: Simone de Beauvoir (<i>El segundo sexo</i>, 1949) y Betty Friedan (<i>La mística de la feminidad</i>, 1963). Luchas por igualdad salarial, educación, empleo y derechos reproductivos.</div>
+<div><b>Movimiento gay (LGBT)</b>Disturbios de <b>Stonewall</b> (Nueva York, 28 de junio de 1969) contra redadas policiales; origen de las marchas del <b>Orgullo</b> (1970).</div>
+<div><b>Antiglobalización</b>Critica el poder de las multinacionales y organismos como la OMC y el FMI. Protestas de <b>Seattle (1999)</b> y Foro Social Mundial (2001): “<i>Otro mundo es posible</i>”.</div>
+</div>
+<div class="callout link"><b class="t">Relación con la Guerra Fría</b>La amenaza nuclear, la guerra de Vietnam y la sociedad de consumo fueron el “combustible” de estos movimientos juveniles de protesta.</div>` },
+
+T7: { short: 'Descolonización y Primavera Árabe', title: 'Descolonización en África y Asia, Primavera Árabe e India-Pakistán hoy', icon: '🌍', ae: 1, html: `
+<p><b>Descolonización:</b> proceso por el cual las colonias de Asia y África obtuvieron su independencia, principalmente entre 1945 y 1975.</p>
+<h3>Causas</h3>
+<ul>
+<li>Debilitamiento de las potencias europeas tras la Segunda Guerra Mundial.</li>
+<li>Crecimiento de los nacionalismos y líderes independentistas.</li>
+<li>La ONU defendió la <b>autodeterminación de los pueblos</b>; EE. UU. y la URSS apoyaban la independencia buscando nuevos aliados.</li>
+<li>Conferencia de Bandung (1955) → <b>Movimiento de Países No Alineados</b> (1961): el “Tercer Mundo”.</li>
+</ul>
+<div class="tbl-wrap"><table>
+<thead><tr><th>País</th><th>Metrópoli</th><th>Independencia</th><th>Claves</th></tr></thead>
+<tbody>
+<tr><td><b>India</b></td><td>Reino Unido</td><td>1947</td><td><b>Gandhi</b>: resistencia no violenta y desobediencia civil (Marcha de la Sal, 1930). <b>Nehru</b>, primer ministro.</td></tr>
+<tr><td><b>Pakistán</b></td><td>Reino Unido</td><td>1947</td><td><b>Jinnah</b> (Liga Musulmana). Partición: India de mayoría hindú y Pakistán de mayoría musulmana; más de 10 millones de desplazados y enorme violencia. En 1971 Pakistán Oriental se convierte en <b>Bangladesh</b>.</td></tr>
+<tr><td><b>Siria</b></td><td>Francia (mandato)</td><td>1946</td><td>Las tropas francesas se retiran en abril de 1946.</td></tr>
+<tr><td><b>Libia</b></td><td>Italia</td><td>1951</td><td>Tras la guerra la administraron británicos y franceses; la ONU impulsó su independencia como reino (Idris I). En 1969, golpe de Muamar el Gadafi.</td></tr>
+<tr><td><b>Túnez</b></td><td>Francia (protectorado)</td><td>1956</td><td>Liderada por <b>Habib Burguiba</b>.</td></tr>
+</tbody></table></div>
+<h3>La Primavera Árabe (2010-2012)</h3>
+<ul>
+<li><b>Qué fue:</b> ola de protestas en países árabes contra regímenes autoritarios.</li>
+<li><b>Causas:</b> autoritarismo, corrupción, desempleo juvenil, pobreza y falta de libertades.</li>
+<li><b>Detonante:</b> el vendedor tunecino <b>Mohamed Bouazizi</b> se inmoló el 17 de diciembre de 2010. Las redes sociales difundieron las protestas.</li>
+<li><b>Resultados:</b> caen Ben Alí (Túnez, 2011), Mubarak (Egipto, 2011) y Gadafi (Libia, 2011). En <b>Siria</b> y Yemen se desataron guerras civiles. Túnez tuvo la transición más democrática, aunque con retrocesos posteriores.</li>
+</ul>
+<h3>Tensiones entre India y Pakistán en la actualidad</h3>
+<ul>
+<li>Raíz: la disputa por <b>Cachemira</b>, sin resolver desde la partición de 1947.</li>
+<li>Guerras en 1947, 1965, 1971 y el conflicto de Kargil (1999).</li>
+<li>Ambos son <b>potencias nucleares</b> desde 1998, lo que hace cualquier crisis muy peligrosa.</li>
+<li>2019: atentado de Pulwama, ataques aéreos y fin de la autonomía especial de la Cachemira india. 2025: tras un atentado en Pahalgam hubo nuevos ataques militares mutuos y luego un alto al fuego.</li>
+</ul>` },
+
+T8: { short: 'Derechos civiles en EE. UU.', title: 'Lucha por los derechos civiles de la población afroamericana (años 60)', icon: '🕊️', ae: 3, html: `
+<p><b>Contexto:</b> en el sur de EE. UU. regían las <b>leyes Jim Crow</b> (“separados pero iguales”): segregación en escuelas, buses y restaurantes, trabas para votar y violencia de grupos como el Ku Klux Klan.</p>
+<h3>Hechos importantes</h3>
+<div class="tbl-wrap"><table>
+<thead><tr><th>Año</th><th>Hecho</th></tr></thead>
+<tbody>
+<tr><td>1954</td><td>Caso <b>Brown vs. Junta de Educación</b>: la Corte Suprema declara inconstitucional la segregación escolar.</td></tr>
+<tr><td>1955-1956</td><td><b>Rosa Parks</b> se niega a ceder su asiento a un blanco → <b>boicot de autobuses de Montgomery</b> (381 días), liderado por Martin Luther King.</td></tr>
+<tr><td>1957</td><td>Los “Nueve de Little Rock” integran una escuela bajo protección federal.</td></tr>
+<tr><td>1960-1961</td><td>Sentadas de Greensboro y “Viajeros de la Libertad”.</td></tr>
+<tr><td>1963</td><td><b>Marcha sobre Washington</b>: discurso “<i>Tengo un sueño</i>”.</td></tr>
+<tr><td>1964</td><td><b>Ley de Derechos Civiles</b>: prohíbe la discriminación por raza, color, religión, sexo u origen nacional. King recibe el Nobel de la Paz.</td></tr>
+<tr><td>1965</td><td>Marchas de Selma a Montgomery y <b>Ley de Derecho al Voto</b>. Asesinato de Malcolm X.</td></tr>
+<tr><td>1968</td><td>Asesinato de <b>Martin Luther King</b> en Memphis (4 de abril).</td></tr>
+</tbody></table></div>
+<h3>Personajes destacados</h3>
+<div class="concepts">
+<div><b>Martin Luther King Jr.</b>Pastor bautista; lucha <b>no violenta</b> y desobediencia civil. Nobel de la Paz 1964.</div>
+<div><b>Rosa Parks</b>Costurera y activista; su resistencia inició el boicot de Montgomery.</div>
+<div><b>Malcolm X</b>Postura más radical: orgullo negro, nacionalismo y derecho a la autodefensa.</div>
+<div><b>Panteras Negras</b>Organización fundada en 1966 (Huey Newton y Bobby Seale); autodefensa y programas comunitarios.</div>
+<div><b>Lyndon B. Johnson</b>Presidente que firmó las leyes de 1964 y 1965.</div>
+<div><b>Thurgood Marshall</b>Abogado del caso Brown; primer juez afroamericano de la Corte Suprema (1967).</div>
+</div>
+<div class="callout link"><b class="t">Relación con la Guerra Fría</b>La URSS usaba la segregación como propaganda: ¿cómo podía EE. UU. llamarse “defensor de la libertad” si discriminaba a sus propios ciudadanos? Esto presionó al gobierno a aprobar reformas.</div>` }
 };
+const TOPIC_IDS = Object.keys(TOPICS);
 
-const WORLDS = [
- {key:'rusia', name:'Aldea Rusa 1917', emoji:'🌾', bg:'linear-gradient(160deg,#4a1414,#1c0505)', accent:'#c62828', desc:'Revolución Rusa: causas, octubre 1917 y guerra civil.'},
- {key:'crisis29', name:'El Gran Colapso', emoji:'📉', bg:'linear-gradient(160deg,#4a4034,#241f18)', accent:'#c9a227', desc:'La Crisis de 1929 y la Gran Depresión.'},
- {key:'wwiiAnte', name:'Sombra Totalitaria', emoji:'⛓️', bg:'linear-gradient(160deg,#241125,#0d0710)', accent:'#8b0000', desc:'Fascismo, nazismo, antisemitismo y el Holocausto.'},
- {key:'wwiiCausas', name:'Alianzas en Guerra', emoji:'⚔️', bg:'linear-gradient(160deg,#1c2b33,#0c1418)', accent:'#546e7a', desc:'Causas mediatas, inmediatas y sistema de alianzas.'},
- {key:'wwiiFases', name:'Campo de Batalla', emoji:'💥', bg:'linear-gradient(160deg,#3b220e,#190d04)', accent:'#ff6f00', desc:'Las 4 fases de la Segunda Guerra Mundial.'},
- {key:'wwiiConf', name:'Templo de la Paz', emoji:'🕊️', bg:'linear-gradient(160deg,#0d3b4f,#052029)', accent:'#4fc3f7', desc:'Conferencias, fin de la guerra y consecuencias.'}
+/* =========================================================
+   BANCO DE ÍTEMS
+   lv: k=conocimiento, a=aplicación, r=análisis
+   ========================================================= */
+const BANK = [
+/* ---------------- NIVEL 1 · CONOCIMIENTO ---------------- */
+{ lv:'k', t:'T1', type:'mcq', q:'El conflicto entre EE. UU. y la URSS se denomina Guerra “Fría” porque…',
+  o:[ {x:'las superpotencias nunca se enfrentaron militarmente de forma directa, sino mediante tensiones y conflictos indirectos.', ok:true, fb:'¡Exacto! El temor a una guerra nuclear evitó el choque directo; compitieron en otros terrenos.'},
+      {x:'se desarrolló principalmente en regiones polares como Siberia y Alaska.', fb:'El nombre es una metáfora, no una referencia geográfica.'},
+      {x:'fue un enfrentamiento breve que no afectó a la población mundial.', fb:'Duró casi medio siglo (1945-1991) y marcó la vida de millones de personas.'},
+      {x:'ambos países compartían la misma ideología y solo discutían por comercio.', fb:'Al contrario: la raíz fue la oposición ideológica capitalismo vs. socialismo.'} ],
+  exp:'Guerra Fría: enfrentamiento ideológico, político, económico, tecnológico y cultural entre EE. UU. y la URSS (1945-1991) sin guerra directa entre ellos.' },
+
+{ lv:'k', t:'T1', type:'mcq', q:'¿Qué concepto se define como “conjunto de ideas, creencias y valores que explican la sociedad y orientan la acción política”?',
+  o:[ {x:'Ideología', ok:true, fb:'Correcto. Capitalismo liberal y comunismo fueron las ideologías enfrentadas.'},
+      {x:'Imperialismo', fb:'Imperialismo es la expansión y el dominio de un Estado sobre otros territorios.'},
+      {x:'Gobierno', fb:'Gobierno es el conjunto de personas e instituciones que dirigen un Estado.'},
+      {x:'Convención internacional', fb:'Una convención es un acuerdo jurídico entre Estados.'} ] },
+
+{ lv:'k', t:'T1', type:'match', q:'Relacione cada concepto de la columna A con su definición en la columna B.',
+  pairs:[ ['Democracia','El poder reside en el pueblo, que elige a sus gobernantes en elecciones libres.'],
+          ['Dictadura','El poder se concentra en una persona o grupo, sin control ciudadano y con supresión de libertades.'],
+          ['Imperialismo','Política de expansión y dominio de un Estado sobre otros territorios.'],
+          ['Liberalismo','Defiende las libertades individuales, la propiedad privada y el libre mercado.'],
+          ['Genocidio','Actos para destruir total o parcialmente a un grupo nacional, étnico, racial o religioso.'],
+          ['Convención internacional','Acuerdo jurídico entre Estados que genera obligaciones.'] ],
+  exp:'Dominar estos conceptos es la base del tema: aparecen en casi todos los ítems del examen.' },
+
+{ lv:'k', t:'T1', type:'mcq', q:'¿Cuál es un ejemplo de convención internacional?',
+  o:[ {x:'La Convención para la Prevención y la Sanción del Delito de Genocidio (ONU, 1948).', ok:true, fb:'Correcto: es un tratado entre Estados que los obliga a prevenir y castigar el genocidio.'},
+      {x:'El Plan Marshall.', fb:'Fue un programa de ayuda económica de EE. UU. a Europa, no una convención.'},
+      {x:'La perestroika.', fb:'Fue una política interna de reformas de Gorbachov en la URSS.'},
+      {x:'El macartismo.', fb:'Fue una campaña de persecución anticomunista dentro de EE. UU.'} ] },
+
+{ lv:'k', t:'T1', type:'tf', q:'En un mundo bipolar, el poder internacional se concentra en dos superpotencias que tienen sus respectivas áreas de influencia.', ans:true,
+  exp:'Verdadero. Durante la Guerra Fría los polos fueron EE. UU. (bloque capitalista) y la URSS (bloque socialista).' },
+
+{ lv:'k', t:'T1', type:'short', q:'¿Qué término describe un orden mundial dominado por dos superpotencias?', acc:['bipolar','bipolaridad'], ans:'Mundo bipolar (bipolaridad).' },
+
+{ lv:'k', t:'T2', type:'mcq', q:'La OTAN, fundada en 1949, tenía como propósito principal…',
+  o:[ {x:'establecer una defensa colectiva del bloque occidental ante una posible agresión soviética.', ok:true, fb:'Correcto: su artículo 5 dice que un ataque contra un miembro es un ataque contra todos.'},
+      {x:'integrar económicamente a los países socialistas.', fb:'Eso corresponde al COMECON (1949), del bloque soviético.'},
+      {x:'impulsar la independencia de las colonias africanas.', fb:'La OTAN era una alianza militar; varios de sus miembros eran potencias coloniales.'},
+      {x:'reemplazar a la Organización de las Naciones Unidas.', fb:'La ONU siguió existiendo; la OTAN es una alianza militar regional.'} ] },
+
+{ lv:'k', t:'T2', type:'mcq', q:'El Pacto de Varsovia (1955) surgió como respuesta directa a…',
+  o:[ {x:'el ingreso de la República Federal de Alemania (RFA) en la OTAN.', ok:true, fb:'Exacto: la URSS vio el rearme de Alemania occidental como una amenaza.'},
+      {x:'la caída del Muro de Berlín.', fb:'Eso ocurrió en 1989, casi al final del Pacto (disuelto en 1991).'},
+      {x:'la Crisis de los misiles en Cuba.', fb:'La crisis fue en 1962, siete años después.'},
+      {x:'la Primavera Árabe.', fb:'La Primavera Árabe inició en 2010, mucho después de la Guerra Fría.'} ] },
+
+{ lv:'k', t:'T2', type:'match', q:'Relacione cada bloque militar con su descripción.',
+  pairs:[ ['OTAN (1949)','Alianza militar del Atlántico Norte liderada por EE. UU.'],
+          ['Pacto de Varsovia (1955)','Alianza militar de la URSS y las democracias populares de Europa del Este.'],
+          ['Pacto de Bagdad (1955)','Alianza para contener a la URSS en Medio Oriente (Turquía, Irak, Irán, Pakistán y Reino Unido).'],
+          ['SEATO (1954)','Alianza para frenar el avance del comunismo en el Sudeste Asiático.'],
+          ['COMECON (1949)','Organización de cooperación económica del bloque socialista.'] ],
+  tip:'OTAN, Bagdad y SEATO formaban un “cinturón” de contención alrededor de la URSS.' },
+
+{ lv:'k', t:'T2', type:'classify', q:'Clasifique cada país según el bloque militar al que perteneció durante la Guerra Fría.',
+  cats:['Bloque capitalista (OTAN)','Bloque socialista (Pacto de Varsovia)'],
+  items:[ ['Estados Unidos',0], ['Polonia',1], ['Reino Unido',0], ['Hungría',1], ['Canadá',0], ['República Democrática Alemana',1], ['Francia',0], ['Checoslovaquia',1] ],
+  exp:'La República Democrática Alemana (RDA) era la Alemania socialista; la República Federal (RFA) era la occidental y entró a la OTAN en 1955.' },
+
+{ lv:'k', t:'T2', type:'mcq', q:'La Doctrina Truman (1947) planteaba…',
+  o:[ {x:'contener la expansión del comunismo apoyando a los pueblos que resistieran su influencia.', ok:true, fb:'Correcto: es la política de “contención”.'},
+      {x:'crear una economía planificada en Europa occidental.', fb:'La planificación central era propia del modelo soviético.'},
+      {x:'que EE. UU. se aislara de los asuntos europeos.', fb:'Fue lo contrario: EE. UU. se comprometió activamente en Europa.'},
+      {x:'compartir la tecnología nuclear con la URSS.', fb:'No; EE. UU. buscaba mantener su ventaja nuclear.'} ] },
+
+{ lv:'k', t:'T2', type:'mcq', q:'El Plan Marshall consistió en…',
+  o:[ {x:'ayuda económica de EE. UU. para reconstruir Europa occidental y frenar el avance del comunismo.', ok:true, fb:'Correcto: la pobreza de la posguerra se veía como terreno fértil para el comunismo.'},
+      {x:'un programa soviético de industrialización de Europa del Este.', fb:'La respuesta soviética fue el COMECON (1949).'},
+      {x:'un tratado de desarme nuclear entre las superpotencias.', fb:'Los tratados de control de armas llegaron después (1963, 1968, 1972).'},
+      {x:'la división de Alemania en cuatro zonas de ocupación.', fb:'Eso se acordó en las conferencias de Yalta y Potsdam (1945).'} ] },
+
+{ lv:'k', t:'T2', type:'tf', q:'La SEATO fue una alianza del bloque socialista creada para expandir el comunismo en Asia.', ans:false,
+  exp:'Falso. La SEATO (1954) era pro-occidental: EE. UU., Reino Unido, Francia, Australia, Nueva Zelanda, Filipinas, Tailandia y Pakistán se unieron para frenar el comunismo en el Sudeste Asiático.' },
+
+{ lv:'k', t:'T2', type:'short', q:'Escriba el nombre o la sigla de la alianza militar occidental creada en 1949.', acc:['otan','nato','tratado del atlantico norte'], ans:'OTAN (Organización del Tratado del Atlántico Norte).' },
+
+{ lv:'k', t:'T3', type:'order', q:'Ordene las fases de la Guerra Fría de la más antigua a la más reciente.',
+  items:[ ['Formación de los bloques','1945-1953'], ['Coexistencia pacífica','1953-1962'], ['Distensión','1962-1979'], ['Nueva Guerra Fría (rebrote)','1979-1985'], ['Fin del conflicto y disolución de la URSS','1985-1991'] ],
+  tip:'F-C-D-R-T: Formar, Convivir, Distender, Rebrotar, Terminar.' },
+
+{ lv:'k', t:'T3', type:'order', q:'Ordene cronológicamente los siguientes acontecimientos.',
+  items:[ ['Plan Marshall','1947'], ['Creación de la OTAN','1949'], ['Firma del Pacto de Varsovia','1955'], ['Construcción del Muro de Berlín','1961'], ['Crisis de los misiles en Cuba','1962'], ['Caída del Muro de Berlín','1989'] ] },
+
+{ lv:'k', t:'T3', type:'mcq', q:'La perestroika y la glasnost, impulsadas por Mijaíl Gorbachov, buscaban…',
+  o:[ {x:'reestructurar la economía soviética y dar mayor transparencia y apertura política.', ok:true, fb:'Correcto: perestroika = reestructuración; glasnost = transparencia.'},
+      {x:'reforzar el control de la policía política sobre la población.', fb:'Fue lo contrario: se ampliaron las libertades de expresión.'},
+      {x:'expandir militarmente la URSS hacia Europa occidental.', fb:'Gorbachov redujo el gasto militar y retiró tropas de Afganistán.'},
+      {x:'aislar a la URSS del comercio mundial.', fb:'Buscaba abrir y modernizar la economía.'} ] },
+
+{ lv:'k', t:'T3', type:'mcq', q:'¿Qué acontecimiento del 9 de noviembre de 1989 simboliza el fin de la división de Europa?',
+  o:[ {x:'La caída del Muro de Berlín.', ok:true, fb:'Correcto: abrió paso a la reunificación alemana en 1990.'},
+      {x:'La Revolución Cubana.', fb:'Ocurrió en 1959.'},
+      {x:'El armisticio de la Guerra de Corea.', fb:'Se firmó en 1953.'},
+      {x:'La firma del tratado SALT I.', fb:'Fue en 1972, durante la distensión.'} ] },
+
+{ lv:'k', t:'T3', type:'mcq', q:'Una repercusión política del fin de la Guerra Fría fue…',
+  o:[ {x:'la disolución de la URSS en 15 repúblicas independientes y el fin del mundo bipolar.', ok:true, fb:'Correcto: EE. UU. quedó como única superpotencia.'},
+      {x:'la creación del Pacto de Varsovia.', fb:'El Pacto se creó en 1955 y se disolvió en 1991.'},
+      {x:'el inicio de la carrera espacial.', fb:'La carrera espacial comenzó en 1957 con el Sputnik.'},
+      {x:'la división de Alemania en dos Estados.', fb:'Eso ocurrió en 1949; en 1990 Alemania se reunificó.'} ] },
+
+{ lv:'k', t:'T3', type:'short', q:'¿Cómo se llamó la política de “transparencia” impulsada por Gorbachov?', acc:['glasnost','glastnost','glasnot'], ans:'Glasnost.' },
+
+{ lv:'k', t:'T4', type:'mcq', q:'¿Qué país lanzó el Sputnik 1, primer satélite artificial, en 1957?',
+  o:[ {x:'La Unión Soviética', ok:true, fb:'Correcto: fue un golpe propagandístico que sorprendió a EE. UU.'},
+      {x:'Estados Unidos', fb:'EE. UU. reaccionó creando la NASA en 1958.'},
+      {x:'China', fb:'China no participó en esta etapa de la carrera espacial.'},
+      {x:'Reino Unido', fb:'El Reino Unido no lideró la carrera espacial.'} ] },
+
+{ lv:'k', t:'T4', type:'match', q:'Relacione cada hito espacial con su importancia.',
+  pairs:[ ['Sputnik 1 (1957)','Primer satélite artificial.'],
+          ['Laika (1957)','Primer ser vivo en orbitar la Tierra.'],
+          ['Yuri Gagarin (1961)','Primer ser humano en viajar al espacio.'],
+          ['Valentina Tereshkova (1963)','Primera mujer en el espacio.'],
+          ['Apolo 11 (1969)','Primeros seres humanos en pisar la Luna.'] ],
+  tip:'La URSS ganó los “primeros” iniciales; EE. UU. ganó la meta más simbólica: la Luna.' },
+
+{ lv:'k', t:'T4', type:'mcq', q:'La doctrina de la “Destrucción Mutua Asegurada” (MAD) se basaba en la idea de que…',
+  o:[ {x:'un ataque nuclear sería suicida porque el rival respondería con igual poder destructivo, lo que disuadía a ambos.', ok:true, fb:'Correcto: el “equilibrio del terror” evitó la guerra directa.'},
+      {x:'solo EE. UU. poseía armas nucleares.', fb:'La URSS tuvo la bomba desde 1949.'},
+      {x:'las armas nucleares debían usarse en guerras pequeñas.', fb:'La idea era justamente no usarlas.'},
+      {x:'el desarme total fue obligatorio desde 1945.', fb:'No hubo desarme total; la carrera armamentista continuó.'} ] },
+
+{ lv:'k', t:'T4', type:'mcq', q:'La Crisis de los misiles de octubre de 1962 se originó cuando…',
+  o:[ {x:'EE. UU. descubrió la instalación de misiles nucleares soviéticos en Cuba.', ok:true, fb:'Correcto: fue el momento más cercano a una guerra nuclear.'},
+      {x:'la URSS bloqueó los accesos terrestres a Berlín occidental.', fb:'Ese fue el bloqueo de Berlín (1948-1949).'},
+      {x:'Corea del Norte invadió a Corea del Sur.', fb:'Eso inició la Guerra de Corea en 1950.'},
+      {x:'EE. UU. invadió Afganistán.', fb:'Fue la URSS la que invadió Afganistán, en 1979.'} ] },
+
+{ lv:'k', t:'T4', type:'tf', q:'La Guerra de Corea (1950-1953) terminó con la reunificación de la península bajo un gobierno comunista.', ans:false,
+  exp:'Falso. Terminó con un armisticio en 1953 y Corea sigue dividida en el paralelo 38: Corea del Norte (comunista) y Corea del Sur (capitalista).' },
+
+{ lv:'k', t:'T4', type:'mcq', q:'El macartismo en EE. UU. (década de 1950) fue…',
+  o:[ {x:'una campaña de persecución contra personas acusadas de ser comunistas o simpatizantes.', ok:true, fb:'Correcto: se le llamó “caza de brujas” y creó listas negras en Hollywood.'},
+      {x:'un movimiento pacifista contra la Guerra de Vietnam.', fb:'Ese fue el movimiento hippie y estudiantil de los años 60.'},
+      {x:'un plan de ayuda económica a Europa.', fb:'Ese fue el Plan Marshall.'},
+      {x:'una corriente artística soviética.', fb:'Fue un fenómeno político estadounidense, liderado por el senador Joseph McCarthy.'} ] },
+
+{ lv:'k', t:'T4', type:'short', q:'¿Cómo se llamó el primer ser humano en viajar al espacio (1961)?', acc:['gagarin'], ans:'Yuri Gagarin (URSS).' },
+
+{ lv:'k', t:'T5', type:'mcq', q:'Una característica del modelo económico socialista soviético fue…',
+  o:[ {x:'la economía planificada centralmente por el Estado mediante planes quinquenales.', ok:true, fb:'Correcto: el Estado decidía qué, cuánto y cómo producir.'},
+      {x:'la libre competencia entre empresas privadas.', fb:'Eso es propio del capitalismo.'},
+      {x:'el pluripartidismo con elecciones competitivas.', fb:'En la URSS existía un partido único.'},
+      {x:'la abundancia de bienes de consumo y publicidad.', fb:'Al contrario, era común la escasez de bienes de consumo.'} ] },
+
+{ lv:'k', t:'T5', type:'classify', q:'Clasifique cada característica según el modelo económico al que corresponde.',
+  cats:['Capitalismo','Socialismo'],
+  items:[ ['Propiedad privada de los medios de producción',0], ['Planes quinquenales',1], ['Sociedad de consumo y publicidad',0], ['Partido único',1], ['Libre mercado y competencia',0], ['Escasez y largas filas para comprar',1], ['Estado de bienestar en Europa occidental',0], ['Empleo, salud y vivienda garantizados por el Estado',1] ] },
+
+{ lv:'k', t:'T5', type:'mcq', q:'La crisis del petróleo de 1973 afectó al bloque capitalista y provocó…',
+  o:[ {x:'estanflación: inflación alta combinada con estancamiento económico y desempleo.', ok:true, fb:'Correcto: fue el fin de la “edad de oro” del crecimiento occidental.'},
+      {x:'la caída inmediata del Muro de Berlín.', fb:'El Muro cayó en 1989.'},
+      {x:'la creación del COMECON.', fb:'El COMECON se creó en 1949.'},
+      {x:'una fuerte baja en el precio de la gasolina.', fb:'Fue al revés: los precios se dispararon por el embargo de la OPEP.'} ] },
+
+{ lv:'k', t:'T6', type:'mcq', q:'¿Qué lema identifica al movimiento hippie?',
+  o:[ {x:'“Haz el amor, no la guerra.”', ok:true, fb:'Correcto: resume su pacifismo frente a la Guerra de Vietnam.'},
+      {x:'“Proletarios de todos los países, uníos.”', fb:'Es un lema del comunismo (Marx y Engels).'},
+      {x:'“Otro mundo es posible.”', fb:'Es el lema del movimiento antiglobalización.'},
+      {x:'“Tengo un sueño.”', fb:'Es el discurso de Martin Luther King (1963).'} ] },
+
+{ lv:'k', t:'T6', type:'match', q:'Relacione cada hecho con el movimiento social que representa.',
+  pairs:[ ['Disturbios de Stonewall (1969)','Origen del movimiento por los derechos LGBT y las marchas del Orgullo.'],
+          ['“Primavera silenciosa”, de Rachel Carson (1962)','Denuncia del daño de los pesticidas; impulso del ecologismo.'],
+          ['Festival de Woodstock (1969)','Evento emblemático de la contracultura hippie.'],
+          ['Protestas de Seattle (1999)','Movimiento antiglobalización contra la OMC.'],
+          ['“La mística de la feminidad”, de Betty Friedan (1963)','Obra clave de la segunda ola feminista.'],
+          ['Campaña por el Desarme Nuclear (1958)','Movimiento antinuclear británico que creó el símbolo de la paz.'] ] },
+
+{ lv:'k', t:'T6', type:'tf', q:'El movimiento de liberación de la mujer de los años 60 luchó por la igualdad salarial, el acceso a la educación y al empleo, y los derechos reproductivos.', ans:true,
+  exp:'Verdadero. Es la llamada “segunda ola” del feminismo, con referentes como Betty Friedan y Simone de Beauvoir.' },
+
+{ lv:'k', t:'T7', type:'mcq', q:'¿Quién lideró la independencia de la India mediante la resistencia no violenta y la desobediencia civil?',
+  o:[ {x:'Mahatma Gandhi', ok:true, fb:'Correcto: la Marcha de la Sal (1930) es su acción más famosa.'},
+      {x:'Jawaharlal Nehru', fb:'Nehru fue aliado de Gandhi y primer ministro de la India independiente, pero el símbolo de la no violencia es Gandhi.'},
+      {x:'Muhammad Ali Jinnah', fb:'Jinnah lideró la Liga Musulmana y fundó Pakistán.'},
+      {x:'Habib Burguiba', fb:'Burguiba lideró la independencia de Túnez (1956).'} ] },
+
+{ lv:'k', t:'T7', type:'mcq', q:'En 1947, la independencia de la India británica provocó su partición en dos Estados:',
+  o:[ {x:'India, de mayoría hindú, y Pakistán, de mayoría musulmana.', ok:true, fb:'Correcto: la división por religión causó enormes migraciones y violencia.'},
+      {x:'India y Bangladesh.', fb:'Bangladesh surgió en 1971, cuando Pakistán Oriental se independizó de Pakistán.'},
+      {x:'Pakistán y Afganistán.', fb:'Afganistán no formaba parte de la India británica.'},
+      {x:'India y Sri Lanka.', fb:'Sri Lanka (Ceilán) se independizó por separado en 1948.'} ] },
+
+{ lv:'k', t:'T7', type:'match', q:'Relacione cada país con su proceso de independencia.',
+  pairs:[ ['Túnez','Protectorado francés; independencia en 1956 con Habib Burguiba.'],
+          ['Libia','Excolonia italiana; independencia en 1951 como reino bajo Idris I.'],
+          ['Siria','Mandato francés; independencia en 1946.'],
+          ['India','Independencia del Reino Unido en 1947, liderada por Gandhi y Nehru.'],
+          ['Pakistán','Estado de mayoría musulmana creado en 1947, fundado por Jinnah.'] ] },
+
+{ lv:'k', t:'T7', type:'mcq', q:'La Primavera Árabe inició en diciembre de 2010 en…',
+  o:[ {x:'Túnez', ok:true, fb:'Correcto: tras la inmolación de Mohamed Bouazizi; Ben Alí huyó en enero de 2011.'},
+      {x:'Egipto', fb:'En Egipto las protestas (plaza Tahrir) comenzaron en enero de 2011, inspiradas en Túnez.'},
+      {x:'Siria', fb:'En Siria las protestas iniciaron en 2011 y derivaron en guerra civil.'},
+      {x:'Libia', fb:'En Libia la revuelta contra Gadafi empezó en febrero de 2011.'} ] },
+
+{ lv:'k', t:'T7', type:'mcq', q:'La principal causa de las tensiones actuales entre India y Pakistán es…',
+  o:[ {x:'la disputa por el territorio de Cachemira, reclamado por ambos desde 1947.', ok:true, fb:'Correcto: ha provocado varias guerras y crisis, la más reciente en 2025.'},
+      {x:'la competencia por el control de Libia.', fb:'Libia no tiene relación con este conflicto.'},
+      {x:'el control del canal de Suez.', fb:'El canal de Suez está en Egipto y no es parte de esta disputa.'},
+      {x:'su pertenencia al Pacto de Varsovia.', fb:'Ninguno perteneció al Pacto de Varsovia.'} ] },
+
+{ lv:'k', t:'T7', type:'short', q:'¿Qué territorio disputan India y Pakistán desde 1947?', acc:['cachemira','kashmir','cachemir','kachemira'], ans:'Cachemira.' },
+
+{ lv:'k', t:'T8', type:'mcq', q:'El boicot de autobuses de Montgomery (1955-1956) inició cuando…',
+  o:[ {x:'Rosa Parks se negó a ceder su asiento a un pasajero blanco.', ok:true, fb:'Correcto: fue arrestada y la comunidad afroamericana dejó de usar los buses durante 381 días.'},
+      {x:'Martin Luther King fue asesinado.', fb:'King fue asesinado en 1968; de hecho, él lideró el boicot.'},
+      {x:'se aprobó la Ley de Derechos Civiles.', fb:'La ley es de 1964; fue un resultado de la lucha, no su inicio.'},
+      {x:'Malcolm X fundó las Panteras Negras.', fb:'Las Panteras Negras las fundaron Huey Newton y Bobby Seale en 1966.'} ] },
+
+{ lv:'k', t:'T8', type:'match', q:'Relacione cada personaje con su aporte a la lucha por los derechos civiles.',
+  pairs:[ ['Martin Luther King Jr.','Pastor que lideró la lucha no violenta; discurso “Tengo un sueño” (1963).'],
+          ['Rosa Parks','Su acto de resistencia en un autobús desató el boicot de Montgomery.'],
+          ['Malcolm X','Defendía el orgullo negro y la autodefensa, con una postura más radical.'],
+          ['Lyndon B. Johnson','Presidente que firmó la Ley de Derechos Civiles (1964) y la Ley de Derecho al Voto (1965).'],
+          ['Thurgood Marshall','Abogado del caso Brown (1954) y primer juez afroamericano de la Corte Suprema.'] ] },
+
+{ lv:'k', t:'T8', type:'order', q:'Ordene cronológicamente los hechos de la lucha por los derechos civiles.',
+  items:[ ['Caso Brown vs. Junta de Educación','1954'], ['Boicot de autobuses de Montgomery','1955'], ['Marcha sobre Washington','1963'], ['Ley de Derechos Civiles','1964'], ['Marchas de Selma y Ley de Derecho al Voto','1965'], ['Asesinato de Martin Luther King','1968'] ] },
+
+{ lv:'k', t:'T8', type:'short', q:'¿Cómo se llamaban las leyes que imponían la segregación racial en el sur de EE. UU.?', acc:['jim crow','jimcrow'], ans:'Leyes Jim Crow.' },
+
+/* ---------------- NIVEL 2 · APLICACIÓN ---------------- */
+{ lv:'a', t:'T2', type:'mcq', src:{tag:'Fuente primaria', text:'“Desde Stettin, en el Báltico, hasta Trieste, en el Adriático, ha caído sobre el continente un telón de acero.”', cite:'Winston Churchill, discurso en Fulton (EE. UU.), 1946'},
+  q:'¿Qué situación describe Churchill en esta fuente?',
+  o:[ {x:'La división de Europa entre la zona de influencia soviética y la occidental.', ok:true, fb:'Correcto: el “telón de acero” es una metáfora de la frontera ideológica y política.'},
+      {x:'La construcción del Muro de Berlín.', fb:'El Muro se levantó en 1961, quince años después; aquí se trata de una metáfora.'},
+      {x:'La alianza entre EE. UU. y la URSS contra Alemania.', fb:'Esa alianza fue durante la Segunda Guerra Mundial; aquí Churchill advierte de su ruptura.'},
+      {x:'El inicio de la carrera espacial.', fb:'La carrera espacial comenzó en 1957.'} ],
+  exp:'Leer una fuente implica identificar autor, fecha e intención: Churchill alertaba sobre el control soviético en Europa del Este.' },
+
+{ lv:'a', t:'T2', type:'mcq', src:{tag:'Fuente primaria', text:'“Creo que la política de los Estados Unidos debe ser apoyar a los pueblos libres que están resistiendo intentos de sometimiento por minorías armadas o por presiones exteriores.”', cite:'Harry S. Truman, discurso ante el Congreso, 1947'},
+  q:'¿Qué política estadounidense expresa este fragmento?',
+  o:[ {x:'La contención del comunismo (Doctrina Truman).', ok:true, fb:'Correcto: EE. UU. se comprometía a frenar la expansión soviética.'},
+      {x:'La perestroika.', fb:'La perestroika fue una reforma soviética de los años 80.'},
+      {x:'La coexistencia pacífica.', fb:'La coexistencia pacífica la planteó Jruschov a partir de 1953-1956.'},
+      {x:'El aislacionismo.', fb:'El aislacionismo implicaba no intervenir; Truman propone lo contrario.'} ] },
+
+{ lv:'a', t:'T1', type:'mcq', q:'En un país, un grupo militar toma el poder, disuelve el Congreso, censura la prensa y prohíbe los partidos de oposición. ¿Qué concepto describe mejor esta forma de gobierno?',
+  o:[ {x:'Dictadura', ok:true, fb:'Correcto: concentración del poder sin control ciudadano y sin libertades.'},
+      {x:'Democracia', fb:'En una democracia hay elecciones libres, prensa libre y oposición.'},
+      {x:'Liberalismo', fb:'El liberalismo defiende justamente las libertades que aquí se suprimen.'},
+      {x:'Convención internacional', fb:'Una convención es un acuerdo entre Estados, no una forma de gobierno.'} ] },
+
+{ lv:'a', t:'T1', type:'mcq', q:'Una potencia ocupa territorios en otro continente para explotar sus recursos y controla su economía y su gobierno. Este caso es un ejemplo de…',
+  o:[ {x:'imperialismo.', ok:true, fb:'Correcto. Durante la Guerra Fría, cada bloque acusaba al otro de imperialista.'},
+      {x:'genocidio.', fb:'El genocidio busca destruir a un grupo humano; aquí se describe dominio y explotación.'},
+      {x:'ideología.', fb:'La ideología es un sistema de ideas, no una acción de dominio.'},
+      {x:'democracia.', fb:'La democracia es una forma de gobierno basada en la soberanía popular.'} ] },
+
+{ lv:'a', t:'T4', type:'mcq', src:{tag:'Análisis de propaganda', text:'Un cartel estadounidense de los años 50 muestra a una familia sonriente junto a un auto nuevo, un televisor y una refrigeradora, con el lema: “Así se vive en libertad”.', cite:'Descripción de cartel (recurso didáctico)'},
+  q:'¿Qué mensaje propagandístico transmite?',
+  o:[ {x:'Presenta al capitalismo como sinónimo de libertad y bienestar a través del consumo.', ok:true, fb:'Correcto: es el “American way of life”, las “bondades” del capitalismo.'},
+      {x:'Exalta la planificación estatal de la economía.', fb:'La planificación estatal era un rasgo soviético.'},
+      {x:'Denuncia los peligros de la sociedad de consumo.', fb:'El cartel celebra el consumo; la crítica vendría de la contracultura.'},
+      {x:'Promueve el desarme nuclear.', fb:'No hay alusión a armas nucleares.'} ] },
+
+{ lv:'a', t:'T4', type:'mcq', src:{tag:'Análisis de propaganda', text:'Un cartel soviético muestra a un obrero y una campesina, fuertes y sonrientes, mirando un cohete que despega. El lema dice: “¡Gloria al pueblo soviético, conquistador del cosmos!”.', cite:'Descripción de cartel (recurso didáctico)'},
+  q:'¿Cuál es la intención de este cartel?',
+  o:[ {x:'Mostrar los logros del socialismo (el trabajo colectivo y el éxito espacial) como prueba de su superioridad.', ok:true, fb:'Correcto: la URSS usó sus triunfos espaciales como propaganda.'},
+      {x:'Promover el consumo de bienes importados de Occidente.', fb:'La propaganda soviética criticaba el consumismo occidental.'},
+      {x:'Denunciar la pobreza de los trabajadores soviéticos.', fb:'La propaganda oficial nunca mostraba problemas propios.'},
+      {x:'Invitar a los ciudadanos a emigrar a EE. UU.', fb:'La URSS restringía la salida de sus ciudadanos.'} ] },
+
+{ lv:'a', t:'T4', type:'classify', q:'Clasifique cada hecho según la expresión de la rivalidad geopolítica que representa.',
+  cats:['Carrera armamentista','Carrera espacial','Conflicto indirecto'],
+  items:[ ['Prueba de la bomba de hidrógeno',0], ['Desarrollo de misiles intercontinentales',0], ['Lanzamiento del Sputnik 1',1], ['Llegada del Apolo 11 a la Luna',1], ['Guerra de Vietnam',2], ['Guerra de Corea',2], ['Invasión soviética de Afganistán',2], ['Vuelo de Yuri Gagarin',1] ] },
+
+{ lv:'a', t:'T4', type:'tf', q:'Los simulacros escolares “Duck and Cover” (agacharse y cubrirse) en EE. UU. evidencian cómo la amenaza nuclear afectó la vida cotidiana.', ans:true,
+  exp:'Verdadero. La amenaza nuclear no era solo un asunto de gobiernos: entró en escuelas y hogares, con refugios y simulacros.' },
+
+{ lv:'a', t:'T4', type:'short', q:'Un gobierno construye refugios antinucleares y realiza simulacros en las escuelas. ¿Qué expresión de la rivalidad geopolítica evidencia?', acc:['amenaza nuclear','miedo nuclear','guerra nuclear','peligro nuclear','nuclear'], ans:'La amenaza nuclear (derivada de la carrera armamentista).' },
+
+{ lv:'a', t:'T5', type:'mcq', q:'Una joven de Berlín Oriental en 1975 tiene empleo, vivienda barata y educación gratuita, pero debe esperar años para comprar un automóvil y no puede viajar libremente a Occidente. Esta situación refleja…',
+  o:[ {x:'las garantías sociales y las limitaciones (escasez y restricciones) del modelo socialista.', ok:true, fb:'Correcto: seguridad social con escasez de bienes y falta de libertades.'},
+      {x:'el funcionamiento del libre mercado capitalista.', fb:'En el libre mercado el acceso a bienes depende del dinero, no de listas de espera estatales.'},
+      {x:'los efectos de la Primavera Árabe.', fb:'La Primavera Árabe ocurrió en 2010-2012 en países árabes.'},
+      {x:'la crisis del petróleo en EE. UU.', fb:'La joven vive en la RDA, bajo el modelo socialista.'} ] },
+
+{ lv:'a', t:'T5', type:'mcq', q:'Una familia estadounidense en 1974 ve subir el precio de la gasolina y de los alimentos, mientras el padre pierde su empleo. ¿Qué fenómeno la afecta?',
+  o:[ {x:'La crisis del petróleo de 1973 y la estanflación.', ok:true, fb:'Correcto: inflación alta + desempleo = estanflación.'},
+      {x:'La planificación quinquenal.', fb:'Los planes quinquenales eran propios de la economía soviética.'},
+      {x:'El bloqueo de Berlín.', fb:'El bloqueo fue en 1948-1949 y afectó a Berlín.'},
+      {x:'La perestroika.', fb:'La perestroika fue una reforma soviética de los años 80.'} ] },
+
+{ lv:'a', t:'T5', type:'short', q:'¿Cómo se llama la situación económica que combina inflación alta con estancamiento y desempleo?', acc:['estanflacion'], ans:'Estanflación.' },
+
+{ lv:'a', t:'T6', type:'classify', q:'Clasifique cada acción según el movimiento social al que pertenece.',
+  cats:['Hippie','Ecologista','Antinuclear','Feminista'],
+  items:[ ['Rechazo al consumismo y vida en comunas',0], ['Festival de Woodstock',0], ['Denuncia del uso del pesticida DDT',1], ['Primer Día de la Tierra (1970)',1], ['Marchas contra las pruebas de bombas atómicas',2], ['Creación del símbolo de la paz por la Campaña por el Desarme Nuclear',2], ['Lucha por la igualdad salarial',3], ['Publicación de “La mística de la feminidad”',3] ] },
+
+{ lv:'a', t:'T6', type:'mcq', q:'¿Por qué el movimiento hippie se considera parte de la “contracultura”?',
+  o:[ {x:'Porque rechazaba valores dominantes como el consumismo, el militarismo y las normas sociales tradicionales.', ok:true, fb:'Correcto: “contra” la cultura dominante de su época.'},
+      {x:'Porque apoyaba la intervención de EE. UU. en Vietnam.', fb:'Al contrario, se oponía a esa guerra.'},
+      {x:'Porque era un movimiento creado y financiado por la URSS.', fb:'Fue un movimiento juvenil surgido en la sociedad estadounidense.'},
+      {x:'Porque defendía la segregación racial.', fb:'Los hippies promovían la paz y la igualdad.'} ] },
+
+{ lv:'a', t:'T7', type:'mcq', q:'Tras la Segunda Guerra Mundial, muchas colonias de Asia y África lograron su independencia. ¿Qué factor favoreció este proceso?',
+  o:[ {x:'El debilitamiento de las potencias europeas y el principio de autodeterminación de los pueblos defendido por la ONU.', ok:true, fb:'Correcto: las metrópolis ya no podían sostener sus imperios.'},
+      {x:'El fortalecimiento económico de Francia y el Reino Unido.', fb:'Ambos quedaron debilitados por la guerra.'},
+      {x:'El apoyo de la OTAN a mantener los imperios coloniales.', fb:'La OTAN no tenía ese objetivo; y EE. UU. presionaba por la descolonización.'},
+      {x:'La Primavera Árabe.', fb:'La Primavera Árabe ocurrió décadas después (2010).'} ] },
+
+{ lv:'a', t:'T7', type:'mcq', src:{tag:'Caso', text:'En diciembre de 2010, un joven vendedor ambulante tunecino se prendió fuego como protesta por el abuso policial y la falta de oportunidades. Su acción provocó protestas masivas que se difundieron por redes sociales.', cite:'Síntesis de hechos'},
+  q:'¿Qué causas de la Primavera Árabe evidencia este caso?',
+  o:[ {x:'Descontento por el autoritarismo, la corrupción, el desempleo y la falta de libertades.', ok:true, fb:'Correcto: el caso de Mohamed Bouazizi resume las causas del estallido.'},
+      {x:'El rechazo a la independencia de Túnez frente a Francia.', fb:'Túnez era independiente desde 1956.'},
+      {x:'La competencia de la carrera espacial.', fb:'No tiene relación con el caso.'},
+      {x:'El deseo de ingresar a la OTAN.', fb:'Las protestas se dirigían contra los gobiernos propios.'} ] },
+
+{ lv:'a', t:'T8', type:'mcq', src:{tag:'Fuente primaria', text:'“Tengo un sueño: que mis cuatro hijos pequeños vivirán un día en una nación donde no serán juzgados por el color de su piel, sino por el contenido de su carácter.”', cite:'Martin Luther King Jr., Marcha sobre Washington, 1963'},
+  q:'¿Qué principio defiende King en este fragmento?',
+  o:[ {x:'La igualdad racial y el fin de la discriminación.', ok:true, fb:'Correcto: juzgar a las personas por su carácter, no por su raza.'},
+      {x:'La separación pacífica de las razas.', fb:'Eso era la segregación, que King combatía.'},
+      {x:'La lucha armada contra el gobierno.', fb:'King defendía la no violencia.'},
+      {x:'La implantación del comunismo.', fb:'El discurso trata de derechos civiles, no de un sistema económico.'} ] },
+
+{ lv:'a', t:'T8', type:'mcq', q:'¿Por qué la segregación racial era un problema para EE. UU. en el contexto de la Guerra Fría?',
+  o:[ {x:'Porque la URSS la usaba como propaganda para cuestionar que EE. UU. fuera el “defensor de la libertad”.', ok:true, fb:'Correcto: dañaba la imagen de EE. UU. ante el mundo, sobre todo ante los países recién independizados.'},
+      {x:'Porque la OTAN exigía la segregación a sus miembros.', fb:'La OTAN no tenía ninguna disposición de ese tipo.'},
+      {x:'Porque la segregación había sido impuesta por la URSS.', fb:'Las leyes Jim Crow eran estadounidenses, desde el siglo XIX.'},
+      {x:'Porque impedía la carrera espacial.', fb:'No existía esa relación.'} ] },
+
+{ lv:'a', t:'T3', type:'classify', q:'Clasifique cada hecho según la fase de la Guerra Fría en que ocurrió.',
+  cats:['Coexistencia pacífica','Distensión','Nueva Guerra Fría'],
+  items:[ ['Muerte de Stalin y llegada de Jruschov',0], ['Construcción del Muro de Berlín (1961)',0], ['Tratado SALT I (1972)',1], ['Acta de Helsinki (1975)',1], ['Invasión soviética de Afganistán (1979)',2], ['“Guerra de las galaxias” de Reagan (1983)',2] ] },
+
+/* ---------------- NIVEL 3 · ANÁLISIS ---------------- */
+{ lv:'r', t:'T3', type:'mcq', q:'¿Por qué la Crisis de los misiles de 1962 marcó el paso hacia la distensión?',
+  o:[ {x:'Porque ambas potencias comprendieron el riesgo real de una guerra nuclear y crearon mecanismos de comunicación y control, como el “teléfono rojo” (1963).', ok:true, fb:'Correcto: el susto llevó al diálogo y a los primeros tratados de control de armas.'},
+      {x:'Porque la URSS ganó la crisis y EE. UU. se retiró de Europa.', fb:'Ninguno “ganó”: hubo un acuerdo negociado y EE. UU. siguió en Europa.'},
+      {x:'Porque se disolvió la OTAN.', fb:'La OTAN sigue existiendo.'},
+      {x:'Porque Cuba ingresó a la OTAN.', fb:'Cuba era aliada de la URSS.'} ],
+  exp:'Relación causa → consecuencia: el miedo compartido (causa) produjo la búsqueda de acuerdos (consecuencia).' },
+
+{ lv:'r', t:'T4', type:'mcq', q:'Resolución de problemas: en octubre de 1962 el mundo estaba al borde de la guerra nuclear. ¿Qué solución negociada se adoptó?',
+  o:[ {x:'La URSS retiró sus misiles de Cuba a cambio de que EE. UU. se comprometiera a no invadir la isla y retirara, en secreto, sus misiles de Turquía.', ok:true, fb:'Correcto: ambas partes cedieron algo, lo que evitó la catástrofe.'},
+      {x:'EE. UU. invadió Cuba y destruyó los misiles.', fb:'No hubo invasión; EE. UU. aplicó un bloqueo naval (“cuarentena”).'},
+      {x:'La ONU ocupó militarmente Cuba.', fb:'La ONU fue foro de diálogo, pero no ocupó Cuba.'},
+      {x:'La URSS instaló más misiles en Europa oriental como compensación.', fb:'El acuerdo buscaba reducir tensiones, no aumentarlas.'} ] },
+
+{ lv:'r', t:'T4', type:'mcq', q:'¿Cuál es la relación entre la carrera espacial y la carrera armamentista?',
+  o:[ {x:'La tecnología de los cohetes para lanzar satélites servía también para misiles intercontinentales, por lo que ambos avances tenían valor militar y propagandístico.', ok:true, fb:'Correcto: el Sputnik demostró que la URSS podía alcanzar EE. UU. con un misil.'},
+      {x:'No tenían relación: la carrera espacial fue solo científica.', fb:'Tenía fuertes motivos militares y de prestigio.'},
+      {x:'La carrera espacial fue un proyecto de cooperación desde 1957.', fb:'La cooperación simbólica llegó hasta 1975 (Apolo-Soyuz).'},
+      {x:'La carrera espacial comenzó cuando terminó la Guerra Fría.', fb:'Comenzó en 1957, en plena Guerra Fría.'} ] },
+
+{ lv:'r', t:'T5', type:'mcq', q:'¿Qué conjunto de factores contribuyó más directamente al colapso del modelo socialista soviético?',
+  o:[ {x:'El estancamiento económico, la ineficiencia de la planificación y el enorme gasto militar, sumados al deseo de libertades.', ok:true, fb:'Correcto: es un proceso multicausal, económico y político.'},
+      {x:'El exceso de bienes de consumo que saturó el mercado.', fb:'El problema era la escasez, no el exceso.'},
+      {x:'Su victoria en la carrera espacial.', fb:'Los logros espaciales no provocaron el colapso.'},
+      {x:'La Primavera Árabe.', fb:'Ocurrió en 2010, casi 20 años después.'} ] },
+
+{ lv:'r', t:'T7', type:'mcq', q:'¿Qué relación existe entre la partición de 1947 y las tensiones actuales entre India y Pakistán?',
+  o:[ {x:'La división por criterios religiosos dejó sin resolver la situación de Cachemira, lo que ha provocado guerras; hoy el riesgo es mayor porque ambos tienen armas nucleares.', ok:true, fb:'Correcto: un problema histórico no resuelto genera conflictos actuales.'},
+      {x:'Ninguna: el conflicto actual se originó por la Primavera Árabe.', fb:'La Primavera Árabe no afectó a India ni a Pakistán.'},
+      {x:'La partición resolvió todos los conflictos territoriales.', fb:'Dejó abierto el problema de Cachemira.'},
+      {x:'Ambos países pertenecieron a bloques militares enfrentados desde 1947 hasta hoy.', fb:'Pakistán se alió con Occidente (SEATO, Bagdad) e India fue no alineada, pero esa no es la raíz actual.'} ] },
+
+{ lv:'r', t:'T7', type:'mcq', q:'Al comparar los resultados de la Primavera Árabe, ¿qué afirmación es correcta?',
+  o:[ {x:'En Túnez hubo una transición con elecciones, mientras que en Siria y Libia las protestas derivaron en conflictos armados prolongados.', ok:true, fb:'Correcto: los resultados fueron muy distintos según cada país.'},
+      {x:'En todos los países se instauraron democracias estables.', fb:'Solo Túnez avanzó en esa dirección, y con retrocesos.'},
+      {x:'Ningún gobernante fue derrocado.', fb:'Cayeron Ben Alí, Mubarak y Gadafi.'},
+      {x:'La Primavera Árabe ocurrió durante la Guerra Fría.', fb:'Ocurrió en 2010-2012, después de la Guerra Fría.'} ] },
+
+{ lv:'r', t:'T6', type:'mcq', q:'¿Qué conclusión explica mejor el surgimiento de tantos movimientos sociales en los años 60?',
+  o:[ {x:'Una generación joven y educada cuestionó la guerra, la amenaza nuclear, la discriminación y el consumismo propios del contexto de la Guerra Fría.', ok:true, fb:'Correcto: el contexto histórico explica las demandas de los movimientos.'},
+      {x:'Los gobiernos de EE. UU. y la URSS organizaron estos movimientos para apoyar su política exterior.', fb:'Surgieron desde la sociedad civil, muchas veces en contra de sus gobiernos.'},
+      {x:'Fueron una consecuencia directa de la caída del Muro de Berlín.', fb:'El Muro cayó en 1989, décadas después.'},
+      {x:'Surgieron porque ya no existían problemas económicos ni políticos.', fb:'Precisamente surgieron para denunciar problemas.'} ] },
+
+{ lv:'r', t:'T8', type:'mcq', q:'Martin Luther King y Malcolm X compartían un objetivo pero diferían en la estrategia. ¿Qué afirmación lo explica?',
+  o:[ {x:'Ambos buscaban la dignidad y los derechos de la población afroamericana; King defendía la no violencia y la integración, y Malcolm X el orgullo negro y la autodefensa.', ok:true, fb:'Correcto: comparar exige señalar semejanzas y diferencias.'},
+      {x:'King apoyaba la segregación y Malcolm X la integración.', fb:'King luchaba contra la segregación.'},
+      {x:'Ambos defendían la lucha armada como única vía.', fb:'King era firme defensor de la no violencia.'},
+      {x:'No tenían relación con la lucha por los derechos civiles.', fb:'Ambos fueron figuras centrales de esa lucha.'} ] },
+
+{ lv:'r', t:'T2', type:'essay', q:'Explique dos causas que propiciaron el desarrollo de la Guerra Fría y relaciónelas con la formación de los bloques militares.',
+  keys:[ {c:'Menciona las diferencias ideológicas (capitalismo vs. socialismo/comunismo).', kw:['ideolog','capitalis','comunis','socialis']},
+         {c:'Menciona la expansión soviética en Europa del Este o el “telón de acero”.', kw:['europa del este','europa oriental','telon','expansion']},
+         {c:'Menciona la Doctrina Truman, el Plan Marshall o la política de contención.', kw:['truman','marshall','contencion','contener']},
+         {c:'Relaciona las causas con la OTAN, el Pacto de Varsovia u otros bloques.', kw:['otan','varsovia','bagdad','seato','bloque']} ],
+  model:'La Guerra Fría surgió, primero, por las diferencias ideológicas entre EE. UU. (capitalismo y democracia liberal) y la URSS (socialismo con partido único), que tras vencer juntos a Alemania quedaron como superpotencias rivales. Segundo, por la expansión soviética en Europa del Este (el “telón de acero”), a la que EE. UU. respondió con la Doctrina Truman y el Plan Marshall para contener el comunismo. Esta desconfianza llevó a formar alianzas militares: la OTAN (1949) en el bloque occidental y el Pacto de Varsovia (1955) en el socialista; además, EE. UU. rodeó a la URSS con el Pacto de Bagdad y la SEATO.' },
+
+{ lv:'r', t:'T4', type:'essay', src:{tag:'Dos fuentes', text:'Fuente A (EE. UU.): cómic en el que soldados comunistas invaden una ciudad estadounidense y queman libros. Fuente B (URSS): cartel en que un empresario gordo con sombrero de copa pisa a trabajadores de varias razas mientras cuenta dólares.', cite:'Descripción de fuentes (recurso didáctico)'},
+  q:'Compare cómo cada bloque presentaba las “bondades” propias y los “peligros” del sistema rival en su propaganda.',
+  keys:[ {c:'Identifica las “bondades” que exaltaba EE. UU. (libertad, democracia, consumo).', kw:['libertad','democracia','consumo','american way','bienestar']},
+         {c:'Identifica el “peligro” comunista según EE. UU. (invasión, pérdida de libertad, censura).', kw:['invasion','invadir','amenaza','perder','censura','quitar']},
+         {c:'Identifica las “bondades” que exaltaba la URSS (igualdad, trabajo, logros).', kw:['igualdad','obrero','trabajador','trabajo','logro','espacial']},
+         {c:'Identifica el “peligro” capitalista según la URSS (explotación, desigualdad, imperialismo, racismo).', kw:['explota','desigual','imperialis','racis','riqueza']} ],
+  model:'La propaganda de EE. UU. presentaba el capitalismo como sinónimo de libertad, democracia y bienestar por el consumo (“American way of life”), y mostraba el comunismo como una amenaza que invadiría su país y le quitaría la libertad, como en la Fuente A, donde se queman libros (censura). La propaganda soviética exaltaba la igualdad, la dignidad del trabajo y los logros científicos del socialismo, y mostraba el capitalismo como un sistema de explotación, desigualdad, racismo e imperialismo, como en la Fuente B. Ambas exageraban para generar miedo al rival y lealtad al propio sistema.' },
+
+{ lv:'r', t:'T5', type:'essay', q:'Analice cómo los modelos capitalista y socialista afectaron la vida cotidiana de las personas y mencione una crisis de cada modelo.',
+  keys:[ {c:'Describe la vida cotidiana en el capitalismo (consumo, libertades, Estado de bienestar o desigualdad).', kw:['consumo','libertad','bienestar','desigual','desempleo','propiedad privada']},
+         {c:'Describe la vida cotidiana en el socialismo (empleo/salud garantizados, escasez, filas, censura).', kw:['escasez','filas','garantiza','gratuit','censura','planific']},
+         {c:'Menciona una crisis del capitalismo (petróleo 1973, estanflación).', kw:['petroleo','1973','estanflacion','inflacion']},
+         {c:'Menciona una crisis del socialismo (estancamiento, colapso de 1989-1991, rebeliones).', kw:['estancamiento','colapso','1989','1991','disolucion','hungria','praga','solidaridad','caida']} ],
+  model:'En el capitalismo, muchas familias accedieron a la sociedad de consumo (autos, televisores, electrodomésticos) y gozaron de libertades políticas; en Europa occidental el Estado de bienestar garantizó salud y educación, aunque persistieron la desigualdad y el desempleo. Su gran crisis fue la del petróleo de 1973, que causó estanflación. En el socialismo, el Estado garantizaba empleo, salud, educación y vivienda baratos, pero la población sufría escasez, largas filas, censura y restricciones para viajar. Su crisis fue el estancamiento económico, que junto al gasto militar y el deseo de libertad llevó al colapso del bloque entre 1989 y 1991.' },
+
+{ lv:'r', t:'T8', type:'essay', q:'Explique por qué la lucha por los derechos civiles en EE. UU. logró cambios importantes. Mencione hechos, personajes y al menos un logro legal.',
+  keys:[ {c:'Menciona al menos un hecho (boicot de Montgomery, Marcha sobre Washington, Selma, caso Brown…).', kw:['montgomery','boicot','marcha','selma','brown','sentada','little rock']},
+         {c:'Menciona al menos un personaje (King, Parks, Malcolm X, Johnson, Marshall…).', kw:['king','parks','malcolm','johnson','marshall','panteras']},
+         {c:'Menciona un logro legal (Ley de Derechos Civiles 1964, Ley de Derecho al Voto 1965, fallo Brown).', kw:['ley de derechos civiles','derecho al voto','1964','1965','brown']},
+         {c:'Explica la estrategia o el contexto (no violencia, desobediencia civil, presión de la Guerra Fría).', kw:['no violen','pacific','desobediencia','guerra fria','propaganda','presion']} ],
+  model:'La lucha logró cambios porque combinó la movilización masiva con la estrategia de no violencia y desobediencia civil. Hechos como el boicot de autobuses de Montgomery (1955), iniciado por Rosa Parks, y la Marcha sobre Washington (1963), donde Martin Luther King pronunció “Tengo un sueño”, atrajeron la atención nacional e internacional. Además, en plena Guerra Fría la segregación dañaba la imagen de EE. UU. Esto presionó al presidente Lyndon B. Johnson a firmar la Ley de Derechos Civiles (1964) y la Ley de Derecho al Voto (1965).' },
+
+{ lv:'r', t:'T6', type:'essay', q:'Elija dos movimientos sociales de la Guerra Fría (hippie, ecologista, antinuclear, feminista, gay o antiglobalización) y explique qué denunciaban, cómo se relacionan con su contexto y qué legado tienen hoy.',
+  keys:[ {c:'Identifica dos movimientos correctamente.', kw:['hippie','ecolog','antinuclear','nuclear','feminis','mujer','gay','lgbt','stonewall','antiglobaliz']},
+         {c:'Explica qué denunciaban o qué exigían.', kw:['denuncia','exig','lucha','rechaz','igualdad','derecho','contra']},
+         {c:'Los relaciona con el contexto (Vietnam, amenaza nuclear, consumismo, discriminación).', kw:['vietnam','nuclear','guerra fria','consum','discrimin','contexto']},
+         {c:'Menciona un legado actual.', kw:['hoy','actual','legado','orgullo','ambiental','cambio climatico','ley','todavia']} ],
+  model:'El movimiento hippie denunció la Guerra de Vietnam y el consumismo; surgió en un contexto de amenaza nuclear y servicio militar obligatorio, y su legado es el pacifismo y la crítica al consumo. El movimiento ecologista, impulsado por “Primavera silenciosa” (1962), denunció la contaminación y las pruebas nucleares; su legado se ve hoy en la lucha contra el cambio climático y en leyes ambientales.' }
 ];
 
-const EXAM_PLAN = {rusia:6, crisis29:6, wwiiAnte:8, wwiiCausas:6, wwiiFases:6, wwiiConf:8};
+/* Preparar banco: ids estables y puntajes */
+BANK.forEach(it => {
+  it.id = it.lv + it.t + '-' + hash(it.q);
+  if (it.pts == null) it.pts = { mcq: 1, tf: 1, short: 2, essay: 8 }[it.type] ?? (it.pairs ? it.pairs.length : it.type === 'order' ? it.items.length : Math.ceil(it.items.length / 2));
+});
+const byId = Object.fromEntries(BANK.map(it => [it.id, it]));
 
-/* ================= ESTADO ================= */
-let state = {
-  screen:'home', worldKey:null, mode:null,
-  qIndex:0, questions:[], gems:0, correctFirstTry:0, attempts:0,
-  studyIndex:0,
-  examAnswers:[], examScore:0
+/* =========================================================
+   GLOSARIO (tarjetas) y LÍNEA DE TIEMPO
+   ========================================================= */
+const CARDS = [
+ ['Guerra Fría','Enfrentamiento ideológico, político, económico y cultural entre EE. UU. y la URSS (1945-1991) sin guerra directa entre ellos.','T1'],
+ ['Mundo bipolar','Orden internacional dominado por dos superpotencias con sus áreas de influencia.','T1'],
+ ['Conflicto','Oposición o enfrentamiento entre personas, grupos o Estados por intereses, valores o recursos.','T1'],
+ ['Democracia','El poder reside en el pueblo, que elige a sus gobernantes en elecciones libres.','T1'],
+ ['Gobierno','Conjunto de personas e instituciones que dirigen y administran un Estado.','T1'],
+ ['Convención internacional','Acuerdo o tratado entre Estados que crea obligaciones jurídicas.','T1'],
+ ['Dictadura','Poder concentrado en una persona o grupo, sin control ciudadano y con supresión de libertades.','T1'],
+ ['Ideología','Conjunto de ideas, creencias y valores que explican la sociedad y orientan la acción política.','T1'],
+ ['Imperialismo','Política de expansión y dominio de un Estado sobre otros territorios.','T1'],
+ ['Liberalismo','Doctrina que defiende libertades individuales, propiedad privada y libre mercado.','T1'],
+ ['Genocidio','Actos para destruir total o parcialmente a un grupo nacional, étnico, racial o religioso.','T1'],
+ ['Contención','Política de EE. UU. (Doctrina Truman, 1947) para frenar la expansión del comunismo.','T2'],
+ ['Telón de acero','Metáfora de Churchill (1946) sobre la división de Europa entre el bloque soviético y el occidental.','T2'],
+ ['OTAN','Alianza militar occidental (1949) liderada por EE. UU.; defensa colectiva.','T2'],
+ ['Pacto de Varsovia','Alianza militar del bloque soviético (1955-1991).','T2'],
+ ['Pacto de Bagdad','Alianza de 1955 (Turquía, Irak, Irán, Pakistán, Reino Unido) para contener a la URSS en Medio Oriente; luego CENTO.','T2'],
+ ['SEATO','Organización del Tratado del Sudeste Asiático (1954-1977) para frenar el comunismo en Asia.','T2'],
+ ['Coexistencia pacífica','Fase (1953-1962) en que ambos bloques aceptan convivir, aunque con crisis.','T3'],
+ ['Distensión','Fase (1962-1979) de diálogo y tratados de control de armas.','T3'],
+ ['Perestroika','“Reestructuración”: reformas económicas de Gorbachov.','T3'],
+ ['Glasnost','“Transparencia”: apertura política y libertad de expresión con Gorbachov.','T3'],
+ ['Destrucción Mutua Asegurada','Idea de que un ataque nuclear provocaría la destrucción de ambos, lo que disuadía la guerra.','T4'],
+ ['Macartismo','Persecución anticomunista en EE. UU. en los años 50 (“caza de brujas”).','T4'],
+ ['Guerra indirecta','Conflicto en un tercer país en el que las superpotencias apoyan a bandos opuestos (Corea, Vietnam, Afganistán).','T4'],
+ ['Economía planificada','El Estado decide qué, cuánto y cómo producir (planes quinquenales).','T5'],
+ ['Sociedad de consumo','Modelo en que el bienestar se asocia con la compra de bienes; típico del capitalismo occidental.','T5'],
+ ['Estado de bienestar','Estado que garantiza salud, educación, pensiones y protección social (Europa occidental).','T5'],
+ ['Estanflación','Inflación alta combinada con estancamiento económico y desempleo (crisis de 1973).','T5'],
+ ['Contracultura','Movimientos que rechazan los valores dominantes y proponen formas de vida alternativas.','T6'],
+ ['Descolonización','Proceso de independencia de las colonias de Asia y África después de 1945.','T7'],
+ ['Autodeterminación','Derecho de los pueblos a decidir su propio gobierno y destino.','T7'],
+ ['No Alineados','Países que no se unieron a ninguno de los dos bloques (Movimiento de 1961).','T7'],
+ ['Primavera Árabe','Ola de protestas (2010-2012) contra regímenes autoritarios en países árabes.','T7'],
+ ['Segregación','Separación legal de personas por su raza (leyes Jim Crow en EE. UU.).','T8'],
+ ['No violencia','Estrategia de lucha pacífica y desobediencia civil (Gandhi, Martin Luther King).','T8']
+];
+
+const PHASES = [
+ { n:'Formación de bloques', r:'1945–1953', c:'var(--lv1)' },
+ { n:'Coexistencia pacífica', r:'1953–1962', c:'var(--lv0)' },
+ { n:'Distensión', r:'1962–1979', c:'var(--lv2)' },
+ { n:'Nueva Guerra Fría', r:'1979–1985', c:'var(--bad)' },
+ { n:'Fin del conflicto', r:'1985–1991', c:'var(--lv3)' },
+ { n:'Después de la Guerra Fría', r:'1991–hoy', c:'var(--exam)' }
+];
+const EVENTS = [
+ [0,'1945','Conferencias de Yalta y Potsdam; bombas atómicas sobre Hiroshima y Nagasaki; fin de la Segunda Guerra Mundial.'],
+ [0,'1946','Discurso del “telón de acero” de Churchill; independencia de Siria.'],
+ [0,'1947','Doctrina Truman y Plan Marshall; independencia y partición de India y Pakistán.'],
+ [0,'1948','Bloqueo soviético de Berlín (hasta 1949).'],
+ [0,'1949','Nace la OTAN y el COMECON; la URSS prueba su bomba atómica; Revolución China; Alemania se divide en RFA y RDA.'],
+ [0,'1950','Inicia la Guerra de Corea (hasta 1953). Comienza el macartismo en EE. UU.'],
+ [0,'1951','Independencia de Libia.'],
+ [1,'1953','Muerte de Stalin; armisticio en Corea.'],
+ [1,'1954','Se crea la SEATO; fallo Brown vs. Junta de Educación.'],
+ [1,'1955','Pacto de Varsovia y Pacto de Bagdad; Conferencia de Bandung; inicia el boicot de Montgomery.'],
+ [1,'1956','Independencia de Túnez; la URSS aplasta la revolución húngara.'],
+ [1,'1957','Sputnik 1 y la perra Laika.'],
+ [1,'1959','Revolución Cubana.'],
+ [1,'1961','Yuri Gagarin viaja al espacio; se construye el Muro de Berlín; Movimiento de Países No Alineados.'],
+ [1,'1962','Crisis de los misiles en Cuba; “Primavera silenciosa” de Rachel Carson.'],
+ [2,'1963','“Teléfono rojo”; Marcha sobre Washington (“Tengo un sueño”); “La mística de la feminidad”.'],
+ [2,'1964','Ley de Derechos Civiles en EE. UU.'],
+ [2,'1965','Ley de Derecho al Voto; asesinato de Malcolm X; EE. UU. intensifica la guerra en Vietnam.'],
+ [2,'1968','Asesinato de Martin Luther King; Primavera de Praga; Tratado de No Proliferación Nuclear.'],
+ [2,'1969','Apolo 11 llega a la Luna; Woodstock; disturbios de Stonewall.'],
+ [2,'1971','Nace Bangladesh.'],
+ [2,'1972','Tratado SALT I.'],
+ [2,'1973','Crisis del petróleo.'],
+ [2,'1975','Fin de la Guerra de Vietnam; Acta de Helsinki; misión Apolo-Soyuz.'],
+ [3,'1979','Invasión soviética de Afganistán.'],
+ [3,'1983','Reagan anuncia la “Guerra de las galaxias”.'],
+ [4,'1985','Gorbachov llega al poder: perestroika y glasnost.'],
+ [4,'1989','Caída del Muro de Berlín (9 de noviembre).'],
+ [4,'1990','Reunificación de Alemania.'],
+ [4,'1991','Disolución del Pacto de Varsovia y de la URSS.'],
+ [5,'1999','Protestas antiglobalización en Seattle.'],
+ [5,'2010','Inicia la Primavera Árabe en Túnez.'],
+ [5,'2019','Crisis entre India y Pakistán tras el atentado de Pulwama.'],
+ [5,'2025','Nuevos ataques militares entre India y Pakistán tras un atentado en Cachemira, seguidos de un alto al fuego.']
+];
+
+/* =========================================================
+   PROGRESO 0 → 100
+   ========================================================= */
+function progress(){
+  const learn = Math.min(S.read.length, TOPIC_IDS.length) / TOPIC_IDS.length * 20;
+  return Math.round(learn + (S.best.k + S.best.a + S.best.r + S.best.exam) / 100 * 20);
+}
+function ringSVG(p, c, label, sub){
+  const R = 70, C = 2 * Math.PI * R;
+  return `<div class="ring" style="--c:${c}" role="img" aria-label="${esc(label)}: ${p} de 100">
+    <svg viewBox="0 0 168 168" aria-hidden="true"><circle class="track" cx="84" cy="84" r="${R}"/><circle class="val" cx="84" cy="84" r="${R}" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-off="${C * (1 - p / 100)}"/></svg>
+    <div class="lbl" aria-hidden="true"><div><b>${p}</b><small>${esc(sub)}</small></div></div></div>`;
+}
+function animateRings(){ requestAnimationFrame(() => requestAnimationFrame(() => $$('.ring .val').forEach(c => c.style.strokeDashoffset = c.dataset.off))); }
+function topicMastery(t){ const s = S.topic[t]; return s && s.tot ? Math.round(s.got / s.tot * 100) : null; }
+
+/* =========================================================
+   VISTAS
+   ========================================================= */
+const app = $('#main');
+let timer = null;
+function setView(html){ app.innerHTML = html; }
+function focusMain(){ const h = app.querySelector('h1, h2'); if (h) { h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); } }
+
+function nextStep(){
+  if (S.read.length < TOPIC_IDS.length) return { href:'#/guia', label:'Continuar con la guía' };
+  for (const k of ['k','a','r']) if (S.best[k] < 70) return { href:'#/nivel/' + k, label:'Ir a ' + LEVELS[k].short };
+  return { href:'#/examen', label: S.best.exam >= 70 ? 'Mejorar mi simulacro' : 'Hacer el simulacro' };
+}
+
+function home(){
+  const p = progress(), nx = nextStep();
+  const steps = [
+    { href:'#/guia', c:'var(--lv0)', icon:'📘', t:'Paso 1 · Aprende', d:'Guía visual de los 8 temas del examen.', v: Math.round(S.read.length / TOPIC_IDS.length * 100), sub:`${S.read.length}/${TOPIC_IDS.length} temas` },
+    ...['k','a','r'].map((k, i) => ({ href:'#/nivel/' + k, c:LEVELS[k].c, icon:LEVELS[k].icon, t:`Paso ${i + 2} · ${LEVELS[k].short}`, d:LEVELS[k].desc, v:S.best[k], sub: S.tries[k] ? 'mejor nota' : 'sin intentos' })),
+    { href:'#/examen', c:'var(--exam)', icon:'🏆', t:'Paso 5 · Simulacro de examen', d:'Prueba completa con partes como en el examen del MEP. Nota de 0 a 100.', v:S.best.exam, sub: S.tries.exam ? 'mejor nota' : 'sin intentos' }
+  ];
+  const mastery = TOPIC_IDS.map(t => { const m = topicMastery(t); return `<a class="m" href="#/tema/${t}" style="--c:${m == null ? 'var(--muted)' : m >= 70 ? 'var(--ok)' : m >= 50 ? 'var(--part)' : 'var(--bad)'}"><span class="n">${TOPICS[t].icon} ${esc(TOPICS[t].short)}</span><span class="v">${m == null ? '—' : m + '%'}</span><span class="minibar"><span style="width:${m || 0}%"></span></span></a>`; }).join('');
+  setView(`
+  <section class="card hero" aria-labelledby="h1">
+    <div>
+      <p class="eyebrow">I examen · II periodo · Décimo año · CTP</p>
+      <h1 id="h1">Guerra Fría y movimientos sociales: <span>de 0 a 100</span></h1>
+      <p class="muted">Avanza paso a paso: primero comprendes, luego aplicas y al final analizas. Cada respuesta trae una explicación para que aprendas también de los errores.</p>
+      <div class="row"><a class="btn primary" style="--c:var(--lv1)" href="${nx.href}">${esc(nx.label)} →</a><a class="btn ghost" href="#/examen">Ir al simulacro</a></div>
+    </div>
+    ${ringSVG(p, p >= 70 ? 'var(--ok)' : 'var(--lv1)', 'Progreso total', 'de 100')}
+  </section>
+
+  <h2 style="margin-top:28px">Tu ruta de aprendizaje</h2>
+  <nav class="route" aria-label="Pasos de la práctica">
+    ${steps.map(s => `<a class="card step" href="${s.href}" style="--c:${s.c}">
+      <span class="ico" aria-hidden="true">${s.icon}</span>
+      <span><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p><span class="minibar" style="--c:${s.c}"><span style="width:${s.v}%"></span></span></span>
+      <span class="score">${s.v}<small>${esc(s.sub)}</small></span></a>`).join('')}
+  </nav>
+
+  <div class="grid g2" style="margin-top:28px">
+    <section class="card" aria-labelledby="hm">
+      <h2 id="hm" style="font-size:1.25rem">Mapa de dominio por tema</h2>
+      <p class="muted" style="font-size:.9rem">Se calcula con todas tus respuestas. Verde ≥ 70 %.</p>
+      <div class="mastery">${mastery}</div>
+    </section>
+    <section aria-labelledby="ht">
+      <h2 id="ht" style="font-size:1.25rem">Herramientas de estudio</h2>
+      <div class="grid">
+        <a class="card tool" href="#/tarjetas"><span class="ico" aria-hidden="true">🃏</span><span><h3>Tarjetas de conceptos</h3><p>${CARDS.length} términos clave para memorizar.</p></span></a>
+        <a class="card tool" href="#/linea"><span class="ico" aria-hidden="true">🗓️</span><span><h3>Línea de tiempo</h3><p>De 1945 a hoy, organizada por fases.</p></span></a>
+        <a class="card tool" href="#/errores"><span class="ico" aria-hidden="true">🎯</span><span><h3>Reforzar mis errores</h3><p>${S.missed.length ? S.missed.length + ' ítems pendientes de dominar.' : 'Aquí aparecerán los ítems que falles.'}</p></span></a>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:28px" aria-labelledby="hae">
+    <h2 id="hae" style="font-size:1.25rem">Aprendizajes esperados que se evalúan</h2>
+    <ol>${AE.map(a => `<li>${esc(a)}</li>`).join('')}</ol>
+    <p class="muted" style="font-size:.9rem">Unidad: <i>Un mundo bipolar: transformaciones sociales, económicas y políticas de la Guerra Fría.</i></p>
+    <div class="row end"><button class="btn ghost sm" id="resetBtn">Reiniciar mi progreso</button></div>
+  </section>`);
+  animateRings();
+  $('#resetBtn').onclick = () => {
+    if (confirm('¿Seguro que quieres borrar todo tu progreso? Esta acción no se puede deshacer.')) {
+      const { theme, fs } = S; S = Object.assign(defaults(), { theme, fs }); save(); home(); toast('Progreso reiniciado');
+    }
+  };
+}
+
+function guideIndex(){
+  setView(`
+  <p><a class="btn ghost sm" href="#/">← Inicio</a></p>
+  <h1>Paso 1 · Guía de estudio</h1>
+  <p class="muted">Lee cada tema, revisa los trucos para recordar y márcalo como estudiado. Luego practica solo ese tema.</p>
+  <div class="grid g2 topic-list">
+    ${TOPIC_IDS.map((t, i) => `<a class="card tool" href="#/tema/${t}"><span class="ico" aria-hidden="true">${TOPICS[t].icon}</span><span><h3>${i + 1}. ${esc(TOPICS[t].title)}</h3><p>${S.read.includes(t) ? '<span class="done-badge">✓ Estudiado</span>' : 'Pendiente'}${topicMastery(t) != null ? ' · dominio ' + topicMastery(t) + '%' : ''}</p></span></a>`).join('')}
+  </div>`);
+}
+
+function topicView(t){
+  const T = TOPICS[t]; if (!T) return home();
+  const i = TOPIC_IDS.indexOf(t), prev = TOPIC_IDS[i - 1], next = TOPIC_IDS[i + 1];
+  const read = S.read.includes(t);
+  setView(`
+  <p><a class="btn ghost sm" href="#/guia">← Todos los temas</a></p>
+  <article class="card topic-head guide">
+    <div class="chips"><span class="chip" style="--c:var(--lv0)">Tema ${i + 1} de ${TOPIC_IDS.length}</span><span class="chip neutral">Aprendizaje esperado ${T.ae}</span></div>
+    <h1>${T.icon} ${esc(T.title)}</h1>
+    ${T.html}
+    <div class="actions" style="justify-content:space-between">
+      <button class="btn ${read ? 'ghost' : 'primary'}" style="--c:var(--ok)" id="readBtn" aria-pressed="${read}">${read ? '✓ Tema estudiado' : 'Marcar como estudiado'}</button>
+      <a class="btn primary" style="--c:var(--lv2)" href="#/practica/${t}">Practicar este tema →</a>
+    </div>
+  </article>
+  <div class="row between" style="margin-top:16px">
+    ${prev ? `<a class="btn ghost sm" href="#/tema/${prev}">← ${esc(TOPICS[prev].short)}</a>` : '<span></span>'}
+    ${next ? `<a class="btn ghost sm" href="#/tema/${next}">${esc(TOPICS[next].short)} →</a>` : '<a class="btn ghost sm" href="#/nivel/k">Ir al Nivel 1 →</a>'}
+  </div>`);
+  $('#readBtn').onclick = () => {
+    if (!S.read.includes(t)) { S.read.push(t); save(); toast('¡Tema estudiado! +' + (20 / TOPIC_IDS.length).toFixed(1).replace('.', ',') + ' puntos de progreso'); }
+    else { S.read = S.read.filter(x => x !== t); save(); }
+    topicView(t);
+    $('#readBtn').focus();
+  };
+}
+
+function levelIntro(k){
+  const L = LEVELS[k];
+  const pool = BANK.filter(it => it.lv === k);
+  const types = [...new Set(pool.map(it => TYPE_LABEL[it.type]))];
+  setView(`
+  <p><a class="btn ghost sm" href="#/">← Inicio</a></p>
+  <section class="card qcard" style="--c:${L.c}">
+    <div class="chips"><span class="chip" style="--c:${L.c}">${L.icon} ${esc(L.short)}</span><span class="chip neutral">${Math.min(L.n, pool.length)} ítems por ronda · banco de ${pool.length}</span></div>
+    <h1>${esc(L.name)}</h1>
+    <p>${esc(L.desc)}</p>
+    <h2 style="font-size:1.1rem">Tipos de ítem</h2>
+    <p>${types.map(x => `<span class="chip neutral" style="margin:0 4px 4px 0">${esc(x)}</span>`).join('')}</p>
+    <div class="callout key"><b class="t">Cómo funciona</b>Respondes, presionas <b>Comprobar</b> y recibes la explicación de inmediato. Cada ronda mezcla ítems distintos, así que puedes repetirla varias veces. Tu mejor nota cuenta para tu progreso.</div>
+    ${S.tries[k] ? `<p class="muted">Mejor nota: <b>${S.best[k]}</b> · Intentos: ${S.tries[k]}</p>` : ''}
+    <div class="actions"><button class="btn primary" style="--c:${L.c}" id="go">Comenzar →</button></div>
+  </section>`);
+  $('#go').onclick = () => {
+    let items;
+    if (k === 'r') { const es = pool.filter(x => x.type === 'essay'); items = shuffle([...pick(pool.filter(x => x.type !== 'essay'), L.n - 2), ...pick(es, 2)]); }
+    else items = pick(pool, L.n);
+    startQuiz({ mode:'practice', key:k, title:L.name, c:L.c, items });
+  };
+}
+
+function startTopicQuiz(t){
+  const T = TOPICS[t]; if (!T) return home();
+  const pool = BANK.filter(it => it.t === t);
+  const essays = pool.filter(x => x.type === 'essay');
+  const items = shuffle([...pick(pool.filter(x => x.type !== 'essay'), 7), ...pick(essays, 1)]);
+  startQuiz({ mode:'practice', key:null, title:'Práctica: ' + T.short, c:'var(--lv0)', items, back:'#/tema/' + t });
+}
+
+function startMissed(){
+  const items = S.missed.map(id => byId[id]).filter(Boolean);
+  if (!items.length) {
+    setView(`<p><a class="btn ghost sm" href="#/">← Inicio</a></p><section class="card"><h1>🎯 Reforzar mis errores</h1><p>¡No tienes ítems pendientes! Cuando falles un ítem en cualquier práctica, aparecerá aquí para que lo vuelvas a intentar hasta dominarlo.</p><div class="actions"><a class="btn primary" href="#/nivel/k">Practicar Nivel 1 →</a></div></section>`);
+    return;
+  }
+  startQuiz({ mode:'practice', key:null, title:'Reforzar mis errores', c:'var(--bad)', items: pick(items, 12) });
+}
+
+function examIntro(){
+  setView(`
+  <p><a class="btn ghost sm" href="#/">← Inicio</a></p>
+  <section class="card qcard" style="--c:var(--exam)">
+    <div class="chips"><span class="chip" style="--c:var(--exam)">🏆 Simulacro</span><span class="chip neutral">≈ 40 puntos · 7 partes</span></div>
+    <h1>Simulacro de examen</h1>
+    <p>Una prueba completa con la estructura habitual de las pruebas escritas del MEP. Mezcla ítems de conocimiento, aplicación y análisis de los 8 temas.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Parte</th><th>Tipo de ítem</th><th>Puntos</th></tr></thead>
+      <tbody>
+        <tr><td>I</td><td>Selección única (10 ítems)</td><td>10</td></tr>
+        <tr><td>II</td><td>Falso o verdadero (3 ítems)</td><td>3</td></tr>
+        <tr><td>III</td><td>Pareo</td><td>5–6</td></tr>
+        <tr><td>IV</td><td>Ordenamiento cronológico</td><td>5–6</td></tr>
+        <tr><td>V</td><td>Clasificación</td><td>3–4</td></tr>
+        <tr><td>VI</td><td>Respuesta corta (3 ítems)</td><td>6</td></tr>
+        <tr><td>VII</td><td>Desarrollo</td><td>8</td></tr>
+      </tbody></table></div>
+    <div class="callout trick"><b class="t">Condiciones de examen</b>No verás las respuestas hasta terminar. Al final obtendrás tu <b>nota de 0 a 100</b> (aprobación: 70), tu nivel de desempeño, el análisis por tema y la revisión de cada ítem. El desarrollo se califica de forma orientativa con los criterios de la rúbrica.</div>
+    ${S.tries.exam ? `<p class="muted">Mejor nota: <b>${S.best.exam}</b> · Intentos: ${S.tries.exam}</p>` : ''}
+    <div class="actions"><button class="btn primary" style="--c:var(--exam)" id="go">Iniciar simulacro →</button></div>
+  </section>`);
+  $('#go').onclick = startExam;
+}
+
+function startExam(){
+  const f = type => BANK.filter(it => it.type === type);
+  const parts = [
+    ['I Parte · Selección única', 'Marque con claridad la opción correcta.', pick(f('mcq'), 10)],
+    ['II Parte · Falso o verdadero', 'Indique si cada enunciado es falso o verdadero.', pick(f('tf'), 3)],
+    ['III Parte · Pareo', 'Relacione la columna A con la columna B.', pick(f('match'), 1)],
+    ['IV Parte · Ordenamiento cronológico', 'Ordene los hechos del más antiguo al más reciente.', pick(f('order'), 1)],
+    ['V Parte · Clasificación', 'Ubique cada elemento en la categoría correcta.', pick(f('classify'), 1)],
+    ['VI Parte · Respuesta corta', 'Responda de forma breve y precisa.', pick(f('short'), 3)],
+    ['VII Parte · Desarrollo', 'Responda de forma completa, con ideas claras y ejemplos.', pick(f('essay'), 1)]
+  ];
+  const items = [];
+  parts.forEach(([name, desc, list]) => list.forEach(it => items.push(Object.assign(Object.create(it), { part: name, partDesc: desc }))));
+  startQuiz({ mode:'exam', key:'exam', title:'Simulacro de examen', c:'var(--exam)', items, t0: Date.now() });
+}
+
+/* =========================================================
+   MOTOR DE PRÁCTICA
+   ========================================================= */
+let Q = null;
+const OK_MSGS = ['¡Correcto!', '¡Muy bien!', '¡Excelente!', '¡Así se hace!', '¡Lo dominas!'];
+
+function startQuiz(opts){
+  Q = Object.assign({ i: 0, results: [], streak: 0, bestStreak: 0 }, opts);
+  if (Q.mode === 'exam') {
+    timer = setInterval(() => { const el = $('#timer'); if (el) { const s = Math.floor((Date.now() - Q.t0) / 1000); el.textContent = '⏱ ' + String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); } }, 1000);
+  }
+  renderItem();
+}
+
+function renderItem(){
+  const it = Q.items[Q.i], n = Q.items.length, exam = Q.mode === 'exam';
+  const lv = LEVELS[it.lv];
+  const newPart = exam && (Q.i === 0 || Q.items[Q.i - 1].part !== it.part);
+  setView(`
+  <section aria-labelledby="qh">
+    <div class="quiz-top">
+      <a class="btn ghost sm" href="${Q.back || '#/'}" id="exitBtn">← Salir</a>
+      <div class="qprog"><div class="minibar" style="--c:${Q.c}"><span style="width:${(Q.i) / n * 100}%"></span></div><small>Ítem ${Q.i + 1} de ${n}</small></div>
+      ${exam ? '<span class="pill" id="timer" aria-label="Tiempo transcurrido">⏱ 00:00</span>' : `<span class="pill" title="Racha de aciertos" aria-label="Racha de ${Q.streak} aciertos">🔥 ${Q.streak}</span>`}
+    </div>
+    ${exam && it.part ? `<div class="card part-head" ${newPart ? '' : 'style="padding:8px 18px"'}><h2 id="qh">${esc(it.part)}</h2>${newPart ? `<p>${esc(it.partDesc)}</p>` : ''}</div>` : `<h2 id="qh" class="sr-only">${esc(Q.title)}: ítem ${Q.i + 1}</h2>`}
+    <article class="card qcard" style="--c:${lv.c}">
+      <div class="chips"><span class="chip" style="--c:${lv.c}">${lv.icon} ${esc(lv.short)}</span><span class="chip" style="--c:var(--lv0)">${TOPICS[it.t].icon} ${esc(TOPICS[it.t].short)}</span><span class="chip neutral">${esc(TYPE_LABEL[it.type])} · ${it.pts} pt${it.pts > 1 ? 's' : ''}</span></div>
+      <div id="qbody"></div>
+      <div id="fb" class="feedback" tabindex="-1"></div>
+      <div class="actions"><button class="btn primary" style="--c:${lv.c}" id="checkBtn" disabled>${exam ? (Q.i === n - 1 ? 'Entregar examen' : 'Guardar y continuar →') : 'Comprobar'}</button></div>
+    </article>
+  </section>`);
+  if (exam && timer) { const s = Math.floor((Date.now() - Q.t0) / 1000); $('#timer').textContent = '⏱ ' + String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  const btn = $('#checkBtn');
+  const ctl = RENDER[it.type](it, $('#qbody'), () => { btn.disabled = !ctl.ready(); }, exam);
+  $('#exitBtn').onclick = e => { if (Q.i > 0 && !confirm('¿Salir? Se perderá el avance de esta ronda.')) e.preventDefault(); };
+  let checked = false;
+  btn.onclick = () => {
+    if (!checked) {
+      checked = true;
+      const html = ctl.check();
+      if (exam) { record(it, ctl, html); return advance(); }
+      const fb = $('#fb'); fb.innerHTML = html; ctl.after && ctl.after(fb);
+      const sc = ctl.score();
+      Q.streak = sc >= 1 ? Q.streak + 1 : 0; Q.bestStreak = Math.max(Q.bestStreak, Q.streak);
+      announce(sc >= 1 ? 'Respuesta correcta.' : sc > 0 ? 'Respuesta parcialmente correcta.' : 'Respuesta incorrecta. Lee la explicación.');
+      btn.textContent = Q.i === n - 1 ? 'Ver resultados' : 'Siguiente →';
+      fb.focus({ preventScroll: true }); fb.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+      if (sc >= 1 && Q.streak > 0 && Q.streak % 5 === 0) toast('🔥 ¡Racha de ' + Q.streak + ' aciertos!');
+      return;
+    }
+    record(it, ctl, $('#fb').innerHTML);
+    advance();
+  };
+}
+function record(it, ctl, html){
+  // En revisión final se muestran los criterios sin posibilidad de edición
+  Q.results.push({ it, frac: Math.max(0, Math.min(1, ctl.score())), html: html.replace(/<input /g, '<input disabled ') });
+}
+function advance(){ Q.i++; if (Q.i < Q.items.length) { renderItem(); window.scrollTo(0, 0); focusMain(); } else finish(); }
+
+function feedbackBlock(it, frac, inner){
+  const st = frac >= 1 ? 'ok' : frac > 0 ? 'partial' : 'bad';
+  const title = st === 'ok' ? OK_MSGS[Math.floor(Math.random() * OK_MSGS.length)] : st === 'partial' ? 'Parcialmente correcto' : 'Aún no… revisemos juntos';
+  return `<div class="fb ${st}"><div class="fb-head"><span class="fb-icon" aria-hidden="true">${st === 'ok' ? '✓' : st === 'partial' ? '◐' : '✗'}</span><strong class="fb-title">${title}</strong><span class="fb-pts">${fmt(frac * it.pts)} / ${it.pts} pts</span></div>
+    ${inner}${it.exp ? `<div class="fb-exp"><b>Explicación:</b> ${esc(it.exp)}</div>` : ''}${it.tip ? `<div class="fb-tip">💡 <b>Para recordar:</b> ${esc(it.tip)}</div>` : ''}</div>`;
+}
+const srcHTML = it => it.src ? `<blockquote class="source"><span class="tag">${esc(it.src.tag)}</span>${esc(it.src.text)}<cite>${esc(it.src.cite)}</cite></blockquote>` : '';
+
+/* ---------- Renderizadores por tipo de ítem ---------- */
+const RENDER = {
+  mcq(it, el, onChange){
+    const opts = it.fixed ? it.o : shuffle(it.o), name = 'o' + uid(), qid = 'q' + uid();
+    el.innerHTML = `${srcHTML(it)}<fieldset class="opts" role="radiogroup" aria-labelledby="${qid}"><legend class="q" id="${qid}">${esc(it.q)}</legend>
+      ${opts.map((o, i) => `<label class="opt"><input type="radio" name="${name}" value="${i}"><span class="letter" aria-hidden="true">${'abcd'[i]}</span><span>${esc(o.x)}</span></label>`).join('')}</fieldset>`;
+    let sel = -1, fr = 0;
+    $$('input', el).forEach(inp => inp.addEventListener('change', () => { sel = +inp.value; onChange(); }));
+    return {
+      ready: () => sel >= 0,
+      check(){
+        const o = opts[sel], right = opts.find(x => x.ok); fr = o.ok ? 1 : 0;
+        el.querySelector('fieldset').classList.add('locked');
+        $$('input', el).forEach(i => i.disabled = true);
+        $$('.opt', el).forEach((lab, i) => { if (opts[i].ok) lab.classList.add('is-ok'); else if (i === sel) lab.classList.add('is-bad'); });
+        const inner = `<p><b>Tu respuesta:</b> ${esc(o.x)}</p>${o.fb ? `<p class="why">${esc(o.fb)}</p>` : ''}${!o.ok ? `<p><b>Respuesta correcta:</b> ${esc(right.x)}</p>${right.fb ? `<p class="why">${esc(right.fb)}</p>` : ''}` : ''}`;
+        return feedbackBlock(it, fr, inner);
+      },
+      score: () => fr
+    };
+  },
+  tf(it, el, onChange){
+    const proxy = Object.create(it);
+    proxy.fixed = true;
+    proxy.q = 'Enunciado: ' + it.q;
+    proxy.o = [ { x:'Verdadero', ok: it.ans === true }, { x:'Falso', ok: it.ans === false } ];
+    return RENDER.mcq(proxy, el, onChange);
+  },
+  match(it, el, onChange){
+    const L = 'ABCDEFGH', id = uid();
+    const right = shuffle(it.pairs.map((p, i) => ({ x: p[1], i })));
+    el.innerHTML = `${srcHTML(it)}<p class="q">${esc(it.q)}</p><div class="match">
+      <div class="colA"><h4>Columna A</h4><ol>${it.pairs.map((p, i) => `<li class="mrow" data-i="${i}"><label for="m${id}${i}">${i + 1}. ${esc(p[0])}</label>
+        <select id="m${id}${i}" data-i="${i}"><option value="">Elija una letra…</option>${right.map((r, k) => `<option value="${k}">${L[k]}) ${esc(r.x.length > 70 ? r.x.slice(0, 68) + '…' : r.x)}</option>`).join('')}</select></li>`).join('')}</ol></div>
+      <div class="colB"><h4>Columna B</h4><ul>${right.map((r, k) => `<li><b>${L[k]})</b>${esc(r.x)}</li>`).join('')}</ul></div></div>`;
+    const sels = $$('select', el); let fr = 0;
+    sels.forEach(s => s.addEventListener('change', onChange));
+    return {
+      ready: () => sels.every(s => s.value !== ''),
+      check(){
+        let ok = 0; const lines = [];
+        sels.forEach(s => {
+          const i = +s.dataset.i, k = +s.value, good = right[k].i === i; s.disabled = true;
+          if (good) ok++;
+          s.closest('.mrow').classList.add(good ? 'is-ok-row' : 'is-bad-row');
+          lines.push(`<li class="${good ? 'okc' : 'badc'}"><b>${esc(it.pairs[i][0])}</b> → ${esc(it.pairs[i][1])}${good ? '' : ` <span class="muted">(elegiste ${L[k]}: “${esc(right[k].x)}”)</span>`}</li>`);
+        });
+        fr = ok / sels.length;
+        return feedbackBlock(it, fr, `<p><b>${ok} de ${sels.length}</b> relaciones correctas.</p><ul>${lines.join('')}</ul>`);
+      },
+      score: () => fr
+    };
+  },
+  order(it, el, onChange){
+    const n = it.items.length;
+    let cur = shuffle([...Array(n).keys()]);
+    while (n > 1 && cur.every((v, i) => v === i)) cur = shuffle(cur);
+    let locked = false, fr = 0;
+    el.innerHTML = `${srcHTML(it)}<p class="q" id="oq${n}">${esc(it.q)}</p><p class="muted" style="font-size:.9rem;margin-top:-6px">Usa las flechas ↑ ↓ para mover cada hecho. El número 1 es el más antiguo.</p><ol class="olist" aria-label="Lista para ordenar"></ol>`;
+    const list = el.querySelector('.olist');
+    const draw = (focusIdx, dir) => {
+      list.innerHTML = cur.map((v, pos) => `<li class="oitem${pos === focusIdx ? ' flash' : ''}" data-pos="${pos}"><span class="num" aria-hidden="true">${pos + 1}</span><span>${esc(it.items[v][0])}</span>
+        ${locked ? '' : `<span class="mv"><button type="button" data-a="up" data-p="${pos}" aria-label="Subir: ${esc(it.items[v][0])}" ${pos === 0 ? 'disabled' : ''}>↑</button><button type="button" data-a="dn" data-p="${pos}" aria-label="Bajar: ${esc(it.items[v][0])}" ${pos === n - 1 ? 'disabled' : ''}>↓</button></span>`}</li>`).join('');
+      if (focusIdx != null && !locked) {
+        let b = list.querySelector(`button[data-p="${focusIdx}"][data-a="${dir}"]`);
+        if (!b || b.disabled) b = list.querySelector(`button[data-p="${focusIdx}"]:not([disabled])`);
+        b && b.focus();
+      }
+    };
+    list.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b || locked) return;
+      const p = +b.dataset.p, q = b.dataset.a === 'up' ? p - 1 : p + 1;
+      if (q < 0 || q >= n) return;
+      [cur[p], cur[q]] = [cur[q], cur[p]];
+      draw(q, b.dataset.a);
+      announce(`${it.items[cur[q]][0]} movido a la posición ${q + 1}.`);
+    });
+    draw(); setTimeout(onChange);
+    return {
+      ready: () => true,
+      check(){
+        locked = true; draw();
+        let ok = 0;
+        $$('.oitem', list).forEach((li, pos) => { const good = cur[pos] === pos; if (good) ok++; li.classList.add(good ? 'is-ok-row' : 'is-bad-row'); });
+        fr = ok / n;
+        return feedbackBlock(it, fr, `<p><b>${ok} de ${n}</b> posiciones correctas. Orden correcto:</p><ol>${it.items.map((x, i) => `<li class="${cur[i] === i ? 'okc' : 'badc'}"><b>${esc(x[1])}</b> · ${esc(x[0])}</li>`).join('')}</ol>`);
+      },
+      score: () => fr
+    };
+  },
+  classify(it, el, onChange){
+    const rows = shuffle(it.items.map((x, i) => ({ x: x[0], c: x[1], i })));
+    const id = uid(); let fr = 0;
+    el.innerHTML = `${srcHTML(it)}<p class="q">${esc(it.q)}</p><div class="clist">${rows.map((r, k) => `<fieldset class="crow" data-k="${k}"><legend class="ct">${esc(r.x)}</legend><div class="seg">
+      ${it.cats.map((c, ci) => `<label><input type="radio" name="c${id}${k}" value="${ci}"><span>${esc(c)}</span></label>`).join('')}</div></fieldset>`).join('')}</div>`;
+    const val = k => { const r = el.querySelector(`input[name="c${id}${k}"]:checked`); return r ? +r.value : -1; };
+    $$('input', el).forEach(i => i.addEventListener('change', onChange));
+    return {
+      ready: () => rows.every((_, k) => val(k) >= 0),
+      check(){
+        let ok = 0; const lines = [];
+        rows.forEach((r, k) => {
+          const v = val(k), good = v === r.c; if (good) ok++;
+          el.querySelector(`.crow[data-k="${k}"]`).classList.add(good ? 'is-ok-row' : 'is-bad-row');
+          lines.push(`<li class="${good ? 'okc' : 'badc'}">${esc(r.x)} → <b>${esc(it.cats[r.c])}</b>${good ? '' : ` <span class="muted">(elegiste: ${esc(it.cats[v])})</span>`}</li>`);
+        });
+        $$('input', el).forEach(i => i.disabled = true);
+        fr = ok / rows.length;
+        return feedbackBlock(it, fr, `<p><b>${ok} de ${rows.length}</b> clasificaciones correctas.</p><ul>${lines.join('')}</ul>`);
+      },
+      score: () => fr
+    };
+  },
+  short(it, el, onChange){
+    const id = 's' + uid(); let fr = 0;
+    el.innerHTML = `${srcHTML(it)}<label class="q" for="${id}" style="display:block">${esc(it.q)}</label><input type="text" id="${id}" autocomplete="off" spellcheck="true" placeholder="Escribe tu respuesta…">`;
+    const inp = $('#' + id, el);
+    inp.addEventListener('input', onChange);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && inp.value.trim()) { e.preventDefault(); $('#checkBtn').click(); } });
+    return {
+      ready: () => inp.value.trim().length > 0,
+      check(){
+        const v = norm(inp.value); fr = it.acc.some(a => v.includes(norm(a))) ? 1 : 0;
+        inp.disabled = true; inp.classList.add(fr ? 'is-ok-row' : 'is-bad-row');
+        return feedbackBlock(it, fr, `<p><b>Tu respuesta:</b> ${esc(inp.value)}</p><p><b>Respuesta esperada:</b> ${esc(it.ans)}</p>${fr ? '' : '<p class="why">Revisa la ortografía del nombre o concepto: en el examen, la precisión cuenta.</p>'}`);
+      },
+      score: () => fr
+    };
+  },
+  essay(it, el, onChange, exam){
+    const id = 'e' + uid(); let fr = 0, marks = [];
+    el.innerHTML = `${srcHTML(it)}<label class="q" for="${id}" style="display:block">${esc(it.q)}</label>
+      <p class="muted" style="font-size:.9rem;margin-top:-6px">Escribe al menos un párrafo. Usa conceptos del tema, fechas y ejemplos concretos.</p>
+      <textarea id="${id}" placeholder="Desarrolla tu respuesta aquí…"></textarea><div class="counter" aria-live="off"><span>0</span> palabras</div>`;
+    const ta = $('#' + id, el), cnt = el.querySelector('.counter span');
+    const words = () => (ta.value.trim().match(/\S+/g) || []).length;
+    ta.addEventListener('input', () => { cnt.textContent = words(); onChange(); });
+    const levelName = f => f >= .99 ? 'Avanzado' : f >= .5 ? 'Intermedio' : 'Inicial';
+    return {
+      ready: () => words() >= 12,
+      check(){
+        const v = norm(ta.value);
+        marks = it.keys.map(k => k.kw.some(w => v.includes(norm(w))));
+        fr = marks.filter(Boolean).length / marks.length;
+        ta.disabled = true;
+        const rub = it.keys.map((k, i) => `<label><input type="checkbox" data-r="${i}" ${marks[i] ? 'checked' : ''}><span>${esc(k.c)}</span></label>`).join('');
+        return feedbackBlock(it, fr, `
+          <p><b>Tu respuesta:</b></p><div class="yours">${esc(ta.value)}</div>
+          <p><b>Criterios de la rúbrica</b> ${exam ? '(detectados automáticamente, calificación orientativa)' : '— marcados según las ideas detectadas en tu texto. <b>Compara con la respuesta modelo y ajusta con honestidad</b>: la autoevaluación también es aprendizaje.'}</p>
+          <div class="rubric">${rub}</div>
+          <p>Nivel de desempeño: <span class="level-tag">${levelName(fr)}</span></p>
+          <div class="model"><b>Respuesta modelo:</b> ${esc(it.model)}</div>`);
+      },
+      after(fbEl){
+        $$('input[type=checkbox]', fbEl).forEach(cb => cb.addEventListener('change', () => {
+          marks[+cb.dataset.r] = cb.checked;
+          fr = marks.filter(Boolean).length / marks.length;
+          const box = fbEl.querySelector('.fb');
+          box.className = 'fb ' + (fr >= 1 ? 'ok' : fr > 0 ? 'partial' : 'bad');
+          box.querySelector('.fb-pts').textContent = `${fmt(fr * it.pts)} / ${it.pts} pts`;
+          box.querySelector('.fb-icon').textContent = fr >= 1 ? '✓' : fr > 0 ? '◐' : '✗';
+          box.querySelector('.fb-title').textContent = fr >= 1 ? '¡Respuesta completa!' : fr > 0 ? 'Parcialmente logrado' : 'Aún no logrado';
+          box.querySelector('.level-tag').textContent = levelName(fr);
+          $$('input[type=checkbox]', fbEl).forEach((c, i) => c.toggleAttribute('checked', marks[i]));
+        }));
+      },
+      score: () => fr
+    };
+  }
 };
 
-function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function worldOf(key){ return WORLDS.find(w=>w.key===key); }
-
-/* ================= NAVEGACIÓN ================= */
-function goHome(){ state.screen='home'; render(); }
-function openWorld(key){ state.worldKey=key; state.screen='worldMenu'; render(); }
-function startStudy(key){ state.worldKey=key; state.studyIndex=0; state.screen='study'; render(); }
-function startPractice(key){
-  state.worldKey=key; state.mode='practice';
-  state.questions = shuffle(QB[key]);
-  state.qIndex=0; state.gems=0; state.correctFirstTry=0; state.attempts=0;
-  state.screen='quiz'; render();
-}
-function startFinal(){
-  let all=[];
-  Object.keys(EXAM_PLAN).forEach(k=>{
-    const n=EXAM_PLAN[k];
-    const picked=shuffle(QB[k]).slice(0,n).map(q=>({...q, topic:k}));
-    all=all.concat(picked);
+/* ---------- Resultados ---------- */
+function finish(){
+  clearInterval(timer); timer = null;
+  const R = Q.results;
+  const tot = R.reduce((a, r) => a + r.it.pts, 0), got = R.reduce((a, r) => a + r.frac * r.it.pts, 0);
+  const score = tot ? Math.round(got / tot * 100) : 0;
+  const prevBest = Q.key ? S.best[Q.key] : 0;
+  if (Q.key) { S.tries[Q.key]++; S.best[Q.key] = Math.max(S.best[Q.key], score); }
+  const per = {};
+  R.forEach(r => {
+    const t = r.it.t; (per[t] = per[t] || { got: 0, tot: 0 });
+    per[t].got += r.frac * r.it.pts; per[t].tot += r.it.pts;
+    const s = (S.topic[t] = S.topic[t] || { got: 0, tot: 0 }); s.got += r.frac * r.it.pts; s.tot += r.it.pts;
+    const id = r.it.id;
+    if (r.frac < 1) { if (!S.missed.includes(id)) S.missed.push(id); }
+    else S.missed = S.missed.filter(x => x !== id);
   });
-  state.questions=shuffle(all);
-  state.qIndex=0; state.examAnswers=[]; state.examScore=0;
-  state.mode='exam'; state.screen='quiz'; render();
-}
-
-/* ================= RENDER ================= */
-function render(){
-  const root=document.getElementById('root');
-  if(state.screen==='home') root.innerHTML=renderHome();
-  else if(state.screen==='worldMenu') root.innerHTML=renderWorldMenu();
-  else if(state.screen==='study') root.innerHTML=renderStudy();
-  else if(state.screen==='quiz') root.innerHTML=renderQuiz();
-  else if(state.screen==='worldResult') root.innerHTML=renderWorldResult();
-  else if(state.screen==='examResult') root.innerHTML=renderExamResult();
-  window.scrollTo(0,0);
-}
-
-function renderHome(){
-  return `
-  <h1 class="title">⛏️ CraftHistoria</h1>
-  <p class="subtitle">La Aventura del I Periodo &mdash; Décimo Año</p>
-  <div class="panel center small">
-    Explora 6 mundos para dominar la Revolución Rusa, la Crisis de 1929 y la Segunda Guerra Mundial. Estudia, practica y luego enfréntate al <b>Examen Final</b>.
-  </div>
-  <div class="world-grid">
-    ${WORLDS.map(w=>`
-      <div class="world-card" style="background:${w.bg}; border-color:${w.accent}" data-action="openWorld" data-key="${w.key}">
-        <div class="emoji">${w.emoji}</div>
-        <h3>${w.name}</h3>
-        <p>${w.desc}</p>
-        <div class="stat">📘 ${STUDY[w.key].length} fichas &nbsp; ❓ ${QB[w.key].length} preguntas</div>
+  save();
+  const lvl = levelOf(score);
+  const weak = Object.entries(per).filter(([, v]) => v.got / v.tot < .7).map(([t]) => t);
+  const time = Q.t0 ? Math.round((Date.now() - Q.t0) / 60000) : null;
+  const st = f => f >= 1 ? 'ok' : f > 0 ? 'partial' : 'bad';
+  setView(`
+  <section class="card" aria-labelledby="rh">
+    <div class="res-head">
+      ${ringSVG(score, score >= 70 ? 'var(--ok)' : score >= 50 ? 'var(--part)' : 'var(--bad)', 'Nota', 'de 100')}
+      <div>
+        <p class="eyebrow">${esc(Q.title)}</p>
+        <h1 id="rh">${score >= 90 ? '¡Extraordinario!' : score >= 70 ? '¡Aprobado! Buen trabajo' : score >= 50 ? 'Vas por buen camino' : 'Cada intento suma'}</h1>
+        <p>Obtuviste <b>${fmt(got)} de ${tot} puntos</b>${time != null ? ` en ${time} min` : ''}. Nivel de desempeño: <span class="level-tag">${lvl.n}</span></p>
+        <p class="muted">${esc(lvl.d)}</p>
+        ${Q.key && score > prevBest && S.tries[Q.key] > 1 ? `<p><b>🎉 ¡Nuevo récord personal!</b> (antes: ${prevBest})</p>` : ''}
+        ${Q.bestStreak >= 3 ? `<p>🔥 Mejor racha: <b>${Q.bestStreak}</b> aciertos seguidos</p>` : ''}
       </div>
-    `).join('')}
+    </div>
+  </section>
+
+  <div class="grid g2" style="margin-top:16px">
+    <section class="card"><h2 style="font-size:1.2rem">Resultado por tema</h2><div class="mastery">
+      ${Object.entries(per).map(([t, v]) => { const p = Math.round(v.got / v.tot * 100); return `<a class="m" href="#/tema/${t}" style="--c:${p >= 70 ? 'var(--ok)' : p >= 50 ? 'var(--part)' : 'var(--bad)'}"><span class="n">${TOPICS[t].icon} ${esc(TOPICS[t].short)}</span><span class="v">${p}%</span><span class="minibar"><span style="width:${p}%"></span></span></a>`; }).join('')}
+    </div></section>
+    <section class="card"><h2 style="font-size:1.2rem">Plan de mejora</h2>
+      ${weak.length ? `<p>Te recomendamos repasar:</p><ul>${weak.map(t => `<li><a href="#/tema/${t}">${esc(TOPICS[t].title)}</a></li>`).join('')}</ul><p class="muted" style="font-size:.9rem">Los ítems fallados quedaron guardados en <a href="#/errores">Reforzar mis errores</a>.</p>`
+        : '<p>¡Superaste el 70 % en todos los temas evaluados! Sube de nivel o intenta el simulacro.</p>'}
+    </section>
   </div>
-  <div class="world-card mt" style="background:linear-gradient(160deg,#1a0000,#000); border-color:#ffd700;" data-action="goExamIntro">
-    <div class="emoji">🐉</div>
-    <h3 style="color:#ffd700">Examen Final: El Jefe Final</h3>
-    <p>40 preguntas de todos los mundos. ¡Demuestra que dominas el I Periodo!</p>
+
+  <section style="margin-top:16px" class="review" aria-labelledby="rv">
+    <h2 id="rv" style="font-size:1.2rem">Revisión ítem por ítem</h2>
+    ${R.map((r, i) => `<details${r.frac < 1 && Q.mode === 'exam' ? '' : ''}><summary><span class="st ${st(r.frac)}" aria-hidden="true">${r.frac >= 1 ? '✓' : r.frac > 0 ? '◐' : '✗'}</span><span class="sq"><span class="sr-only">${r.frac >= 1 ? 'Correcto' : r.frac > 0 ? 'Parcial' : 'Incorrecto'}: </span>${i + 1}. ${esc(r.it.q)}</span><span class="sp">${fmt(r.frac * r.it.pts)}/${r.it.pts}</span></summary><div class="body">${r.html}</div></details>`).join('')}
+  </section>
+
+  <div class="actions">
+    <a class="btn ghost" href="#/">Inicio</a>
+    ${Q.back ? `<a class="btn ghost" href="${Q.back}">Volver al tema</a>` : ''}
+    <button class="btn primary" style="--c:${Q.c}" id="againBtn">Intentar de nuevo</button>
+    ${Q.key && Q.key !== 'exam' && score >= 70 ? `<a class="btn primary" style="--c:var(--exam)" href="${Q.key === 'k' ? '#/nivel/a' : Q.key === 'a' ? '#/nivel/r' : '#/examen'}">Siguiente paso →</a>` : ''}
+  </div>`);
+  animateRings();
+  if (score >= 70) confetti();
+  announce(`Resultado: ${score} de 100. Nivel ${lvl.n}.`);
+  const again = Q.key === 'exam' ? examIntro : Q.key ? () => levelIntro(Q.key) : Q.back ? () => startTopicQuiz(Q.back.split('/').pop()) : startMissed;
+  $('#againBtn').onclick = () => { again(); window.scrollTo(0, 0); focusMain(); };
+}
+
+function confetti(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const box = document.createElement('div'); box.className = 'confetti'; box.setAttribute('aria-hidden', 'true');
+  const cols = ['var(--lv1)', 'var(--lv2)', 'var(--lv3)', 'var(--exam)', 'var(--lv0)'];
+  for (let i = 0; i < 70; i++) { const c = document.createElement('i'); c.style.left = Math.random() * 100 + '%'; c.style.background = cols[i % cols.length]; c.style.animationDelay = Math.random() * .8 + 's'; c.style.transform = `rotate(${Math.random() * 360}deg)`; box.appendChild(c); }
+  document.body.appendChild(box); setTimeout(() => box.remove(), 3800);
+}
+
+/* ---------- Tarjetas ---------- */
+function cardsView(filter){
+  const f = filter || 'all';
+  const list = CARDS.filter(c => f === 'all' || c[2] === f);
+  setView(`
+  <p><a class="btn ghost sm" href="#/">← Inicio</a></p>
+  <h1>🃏 Tarjetas de conceptos</h1>
+  <p class="muted">Lee el término, intenta definirlo en voz alta y luego voltea la tarjeta (clic, Enter o Espacio) para comprobar.</p>
+  <div class="filters" role="group" aria-label="Filtrar por tema">
+    <button aria-pressed="${f === 'all'}" data-f="all">Todas</button>
+    ${TOPIC_IDS.map(t => `<button aria-pressed="${f === t}" data-f="${t}">${TOPICS[t].icon} ${esc(TOPICS[t].short)}</button>`).join('')}
   </div>
-  `;
+  <div class="row" style="margin-bottom:12px"><button class="btn ghost sm" id="shuf">🔀 Mezclar</button><button class="btn ghost sm" id="flipAll">Voltear todas</button></div>
+  <div class="flash-grid" id="fg"></div>`);
+  const draw = arr => {
+    $('#fg').innerHTML = arr.map(c => `<button class="fc" aria-pressed="false" style="--c:var(--lv${['T1','T2','T3'].includes(c[2]) ? 1 : ['T4','T5'].includes(c[2]) ? 2 : 3})" aria-label="${esc(c[0])}. Voltear para ver la definición">
+      <span class="inner"><span class="face front"><b>${esc(c[0])}</b><small>${esc(TOPICS[c[2]].short)} · toca para voltear</small></span><span class="face back" aria-hidden="true">${esc(c[1])}</span></span></button>`).join('');
+    $$('.fc').forEach(b => b.onclick = () => flip(b));
+  };
+  const flip = (b, v) => {
+    const on = v != null ? v : b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on); b.querySelector('.back').setAttribute('aria-hidden', !on);
+    if (v == null && on) announce(b.querySelector('.back').textContent);
+  };
+  draw(list);
+  $$('.filters button').forEach(b => b.onclick = () => { cardsView(b.dataset.f); $(`.filters [data-f="${b.dataset.f}"]`).focus(); });
+  $('#shuf').onclick = () => draw(shuffle(list));
+  let all = false; $('#flipAll').onclick = () => { all = !all; $$('.fc').forEach(b => flip(b, all)); };
 }
 
-function renderWorldMenu(){
-  const w=worldOf(state.worldKey);
-  return `
-  <div class="topbar" style="background:${w.accent}"><span>${w.emoji} ${w.name.toUpperCase()}</span><span data-action="goHome" style="cursor:pointer">🏠 MAPA</span></div>
-  <div class="panel">
-    <p>${w.desc}</p>
-    <p class="small">Este mundo tiene <b>${STUDY[w.key].length}</b> fichas de estudio y <b>${QB[w.key].length}</b> preguntas de práctica.</p>
-  </div>
-  <button class="block-btn" style="background:${w.accent}" data-action="startStudy" data-key="${w.key}">📘 Modo Estudio</button>
-  <div style="height:10px"></div>
-  <button class="block-btn dirt" data-action="startPractice" data-key="${w.key}">⚔️ Modo Práctica</button>
-  <div style="height:16px"></div>
-  <button class="block-btn stone" data-action="goHome">← Volver al mapa</button>
-  `;
+/* ---------- Línea de tiempo ---------- */
+function timelineView(){
+  setView(`
+  <p><a class="btn ghost sm" href="#/">← Inicio</a></p>
+  <h1>🗓️ Línea de tiempo</h1>
+  <p class="muted">Ubica cada hecho en su fase. En el examen, la cronología te ayuda a descartar opciones incorrectas.</p>
+  ${PHASES.map((ph, pi) => `
+    <div class="phase-title"><h2 style="color:${ph.c}">${esc(ph.n)}</h2><span class="chip" style="--c:${ph.c}">${ph.r}</span></div>
+    <ol class="tl">${EVENTS.filter(e => e[0] === pi).map(e => `<li style="--c:${ph.c}"><div class="card ev"><span class="yr">${e[1]}</span>${esc(e[2])}</div></li>`).join('')}</ol>`).join('')}
+  <div class="actions"><a class="btn primary" style="--c:var(--lv1)" href="#/practica/T3">Practicar fases →</a></div>`);
 }
 
-function renderStudy(){
-  const w=worldOf(state.worldKey);
-  const cards=STUDY[state.worldKey];
-  const i=state.studyIndex;
-  const pct=Math.round(((i+1)/cards.length)*100);
-  return `
-  <div class="topbar" style="background:${w.accent}"><span>${w.emoji} ESTUDIO</span><span>${i+1}/${cards.length}</span></div>
-  <div class="progresswrap"><div class="progressbar" style="width:${pct}%"></div></div>
-  <div class="flash"><span class="n">FICHA ${i+1}</span>${cards[i]}</div>
-  <div class="row">
-    <button class="block-btn stone" data-action="studyPrev" ${i===0?'disabled':''}>← Anterior</button>
-    ${i===cards.length-1
-      ? `<button class="block-btn" style="background:${w.accent}" data-action="openWorld" data-key="${w.key}">Terminar ✔</button>`
-      : `<button class="block-btn" style="background:${w.accent}" data-action="studyNext">Siguiente →</button>`}
-  </div>
-  <div style="height:16px"></div>
-  <button class="block-btn dirt" data-action="goHome">🏠 Volver al mapa</button>
-  `;
+/* =========================================================
+   ROUTER, TEMA Y TAMAÑO DE LETRA
+   ========================================================= */
+const routes = [
+  [/^#?\/?$/, home],
+  [/^#\/guia$/, guideIndex],
+  [/^#\/tema\/(T\d)$/, m => topicView(m[1])],
+  [/^#\/nivel\/([kar])$/, m => levelIntro(m[1])],
+  [/^#\/practica\/(T\d)$/, m => startTopicQuiz(m[1])],
+  [/^#\/examen$/, examIntro],
+  [/^#\/errores$/, startMissed],
+  [/^#\/tarjetas$/, () => cardsView()],
+  [/^#\/linea$/, timelineView]
+];
+function router(){
+  clearInterval(timer); timer = null;
+  const h = location.hash || '#/';
+  const r = routes.find(([re]) => re.test(h));
+  r ? r[1](h.match(r[0])) : home();
+  window.scrollTo(0, 0); focusMain();
 }
-function studyNext(){ state.studyIndex++; render(); }
-function studyPrev(){ state.studyIndex--; render(); }
+window.addEventListener('hashchange', router);
 
-function renderQuiz(){
-  const isExam = state.mode==='exam';
-  const w = isExam ? null : worldOf(state.worldKey);
-  const total = state.questions.length;
-  const i = state.qIndex;
-  const q = state.questions[i];
-  const pct = Math.round((i/total)*100);
-  const accent = isExam ? '#ffd700' : w.accent;
-  const label = isExam ? `🐉 EXAMEN FINAL` : `${w.emoji} ${w.name.toUpperCase()}`;
-  const rightbadge = isExam ? `Pregunta ${i+1}/${total}` : `💎 ${state.gems}`;
-  return `
-  <div class="topbar" style="background:${accent}; color:${isExam?'#1a1000':'#fff'}"><span>${label}</span><span class="badge">${rightbadge}</span></div>
-  <div class="progresswrap"><div class="progressbar" style="width:${pct}%; background:${accent}"></div></div>
-  <div class="qbox">${q.q}</div>
-  <div id="options">
-    ${q.o.map((opt,idx)=>`<button class="option" data-action="answer" data-idx="${idx}">${opt}</button>`).join('')}
-  </div>
-  <div id="feedback"></div>
-  <div style="height:10px"></div>
-  <button class="block-btn stone" data-action="${isExam?'goHome':'openWorld'}" data-key="${state.worldKey}">✖ Salir</button>
-  `;
+function applyTheme(){
+  const root = document.documentElement;
+  if (S.theme === 'auto') root.removeAttribute('data-theme'); else root.dataset.theme = S.theme;
+  root.style.setProperty('--fs', S.fs);
+  const lbl = { auto:'automático', light:'claro', dark:'oscuro' }[S.theme];
+  const tb = $('#themeBtn'); tb.textContent = { auto:'◐', light:'☀', dark:'☾' }[S.theme]; tb.setAttribute('aria-label', 'Tema de color: ' + lbl + '. Cambiar');
+  tb.title = 'Tema: ' + lbl;
 }
+$('#themeBtn').onclick = () => { S.theme = { auto:'light', light:'dark', dark:'auto' }[S.theme] || 'auto'; save(); applyTheme(); toast('Tema ' + { auto:'automático', light:'claro', dark:'oscuro' }[S.theme]); };
+$('#fsUp').onclick = () => { S.fs = Math.min(1.3, +(S.fs + .1).toFixed(2)); save(); applyTheme(); };
+$('#fsDown').onclick = () => { S.fs = Math.max(.9, +(S.fs - .1).toFixed(2)); save(); applyTheme(); };
 
-function answer(idx){
-  const q = state.questions[state.qIndex];
-  const opts = document.querySelectorAll('#options .option');
-  const isExam = state.mode==='exam';
-  opts.forEach(o=>o.classList.add('disabled'));
-
-  if(isExam){
-    // examen: un solo intento, avanza al confirmar
-    const correct = idx===q.a;
-    if(correct) state.examScore++;
-    state.examAnswers.push({...q, chosen:idx, correct});
-    opts[q.a].classList.add('correct');
-    if(!correct) opts[idx].classList.add('incorrect');
-    document.getElementById('feedback').innerHTML =
-      `<div class="explain ${correct?'':'bad'}">${correct?'✅ ¡Correcto! ':'❌ Incorrecto. '}${q.e}</div>
-       <button class="block-btn gold" data-action="nextExam">${state.qIndex===state.questions.length-1?'Ver resultados 🏆':'Siguiente →'}</button>`;
-  } else {
-    // práctica: reintentar hasta acertar
-    state.attempts++;
-    if(idx===q.a){
-      if(state.attempts===1){ state.gems+=10; state.correctFirstTry++; }
-      else { state.gems+=2; }
-      opts[idx].classList.add('correct');
-      document.getElementById('feedback').innerHTML =
-        `<div class="explain">✅ ¡Correcto! ${q.e}</div>
-         <button class="block-btn" style="background:${worldOf(state.worldKey).accent}" data-action="nextPractice">${state.qIndex===state.questions.length-1?'Ver resultados 🏆':'Siguiente →'}</button>`;
-    } else {
-      opts[idx].classList.add('incorrect');
-      opts.forEach(o=>o.classList.remove('disabled'));
-      opts[idx].classList.add('disabled');
-      document.getElementById('feedback').innerHTML =
-        `<div class="explain bad">❌ Intenta de nuevo. Pista: revisa bien las opciones restantes.</div>`;
-    }
-  }
-}
-function nextPractice(){
-  state.attempts=0;
-  if(state.qIndex < state.questions.length-1){ state.qIndex++; render(); }
-  else { state.screen='worldResult'; render(); }
-}
-function nextExam(){
-  if(state.qIndex < state.questions.length-1){ state.qIndex++; render(); }
-  else { state.screen='examResult'; render(); }
-}
-
-function renderWorldResult(){
-  const w=worldOf(state.worldKey);
-  const total=state.questions.length;
-  return `
-  <h1 class="title">🏆 ¡Mundo completado!</h1>
-  <div class="panel center">
-    <div class="score-big">💎 ${state.gems}</div>
-    <p>Gemas obtenidas en <b>${w.name}</b></p>
-    <p class="small">Aciertos al primer intento: ${state.correctFirstTry} / ${total}</p>
-  </div>
-  <button class="block-btn" style="background:${w.accent}" data-action="startPractice" data-key="${w.key}">🔁 Reintentar mundo</button>
-  <div style="height:10px"></div>
-  <button class="block-btn stone" data-action="goHome">🏠 Volver al mapa</button>
-  `;
-}
-
-function renderExamResult(){
-  const total=state.questions.length;
-  const score100=Math.round((state.examScore/total)*100);
-  let msg,color;
-  if(score100>=90){msg='¡Excelente! Dominas el I Periodo.'; color='#5cc95c';}
-  else if(score100>=80){msg='¡Muy bueno! Vas muy sólido.'; color='#9ccc65';}
-  else if(score100>=65){msg='Aprobado. Bien, pero repasa los temas fallados.'; color='#ffd700';}
-  else {msg='Necesitas repasar antes del examen real.'; color='#e13a2e';}
-
-  const byTopic={};
-  state.examAnswers.forEach(a=>{
-    byTopic[a.topic]=byTopic[a.topic]||{ok:0,total:0};
-    byTopic[a.topic].total++;
-    if(a.correct) byTopic[a.topic].ok++;
-  });
-
-  return `
-  <h1 class="title">🐉 Resultado del Examen Final</h1>
-  <div class="panel center">
-    <div class="score-big" style="color:${color}">${score100} / 100</div>
-    <p style="color:${color}">${msg}</p>
-    <p class="small">${state.examScore} de ${total} preguntas correctas</p>
-  </div>
-  <div class="panel">
-    <p class="pixel-font" style="font-size:11px; color:#ffd700; margin-bottom:10px;">DESGLOSE POR MUNDO</p>
-    ${Object.keys(byTopic).map(k=>{
-      const w=worldOf(k); const b=byTopic[k]; const p=Math.round((b.ok/b.total)*100);
-      return `<div class="small" style="margin-bottom:8px;">${w.emoji} ${w.name}: ${b.ok}/${b.total} (${p}%)
-        <div class="progresswrap" style="height:10px;"><div class="progressbar" style="width:${p}%; background:${w.accent}"></div></div></div>`;
-    }).join('')}
-  </div>
-  <button class="block-btn gold" data-action="showReview">📋 Ver repaso de respuestas</button>
-  <div style="height:10px"></div>
-  <button class="block-btn" data-action="startFinal">🔁 Repetir examen final</button>
-  <div style="height:10px"></div>
-  <button class="block-btn stone" data-action="goHome">🏠 Volver al mapa</button>
-  <div id="reviewArea"></div>
-  `;
-}
-
-function showReview(){
-  const area=document.getElementById('reviewArea');
-  area.innerHTML = `<div class="panel mt"><p class="pixel-font" style="font-size:11px;color:#ffd700;margin-bottom:10px;">REPASO</p>` +
-    state.examAnswers.map((a,i)=>`
-      <div class="review-item ${a.correct?'right':'wrong'}">
-        <span class="tag">${worldOf(a.topic).name}</span>
-        <p><b>${i+1}. ${a.q}</b></p>
-        <p>Tu respuesta: ${a.o[a.chosen]} ${a.correct?'✅':'❌'}</p>
-        ${!a.correct?`<p>Correcta: ${a.o[a.a]}</p>`:''}
-        <p class="small">${a.e}</p>
-      </div>
-    `).join('') + `</div>`;
-}
-
-function goExamIntro(){
-  document.getElementById('root').innerHTML = `
-  <h1 class="title">🐉 Examen Final</h1>
-  <div class="panel">
-    <p>Este es el jefe final del I Periodo: <b>40 preguntas</b> tomadas de los 6 mundos, con la misma proporción que un examen real del MEP.</p>
-    <p class="small">Cada pregunta tiene un solo intento. Al final verás tu nota sobre 100, el desglose por tema y el repaso completo de respuestas.</p>
-  </div>
-  <button class="block-btn gold" data-action="startFinal">⚔️ Comenzar Examen Final</button>
-  <div style="height:10px"></div>
-  <button class="block-btn stone" data-action="goHome">🏠 Volver al mapa</button>
-  `;
-}
-
-/* ================= EVENTOS ================= */
-document.getElementById('root').addEventListener('click', (e)=>{
-  const el = e.target.closest('[data-action]');
-  if(!el) return;
-  const action = el.dataset.action;
-  const key = el.dataset.key;
-  const idx = el.dataset.idx;
-  if(action==='openWorld') openWorld(key);
-  else if(action==='goHome') goHome();
-  else if(action==='startStudy') startStudy(key);
-  else if(action==='startPractice') startPractice(key);
-  else if(action==='studyNext') studyNext();
-  else if(action==='studyPrev') studyPrev();
-  else if(action==='answer') answer(parseInt(idx));
-  else if(action==='nextPractice') nextPractice();
-  else if(action==='nextExam') nextExam();
-  else if(action==='goExamIntro') goExamIntro();
-  else if(action==='startFinal') startFinal();
-  else if(action==='showReview') showReview();
-});
-
-render();
+applyTheme();
+router();
 </script>
 </body>
 </html>
